@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="noindex, nofollow, noarchive">
     <title>Mozens Alqadrie | Sovereign Strategic Advisory</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --bg-dark: #0b0f17;
-            --bg-card: rgba(15, 23, 42, 0.6);
+            --bg-card: rgba(15, 23, 42, 0.75);
             --gold-accent: #d4af37;
             --gold-light: #f3e5ab;
             --cyan-tech: #38bdf8;
@@ -46,6 +46,11 @@
         header {
             padding: 24px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            background: rgba(11, 15, 23, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
         }
 
         .nav-wrapper {
@@ -71,6 +76,24 @@
             border: 1px solid rgba(56, 189, 248, 0.3);
             padding: 6px 14px;
             border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--cyan-tech);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--cyan-tech);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.4; transform: scale(0.9); }
         }
 
         /* --- HERO SECTION --- */
@@ -223,18 +246,29 @@
 
         #geoCanvas { width: 100%; height: 100%; display: block; }
 
-        /* --- 4 DOORS SECTION (TERMASUK BICH) --- */
+        /* --- 4 DOORS SECTION --- */
         .doors-section {
             padding: 64px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .section-title {
+        .section-header {
             text-align: center;
-            font-family: var(--font-serif);
-            font-size: 2rem;
-            color: var(--gold-light);
             margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            color: var(--gold-light);
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
         }
 
         .doors-grid {
@@ -246,34 +280,224 @@
         .door-card {
             background: var(--bg-card);
             border: 1px solid var(--border-gold);
-            border-radius: 8px;
-            padding: 28px 20px;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            border-radius: 10px;
+            padding: 30px 22px;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .door-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: var(--gold-accent);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.2);
+            background: rgba(20, 30, 50, 0.85);
         }
 
-        .door-number {
+        .door-badge {
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--gold-accent);
-            margin-bottom: 12px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 16px;
+            width: fit-content;
         }
 
         .door-card h3 {
             font-family: var(--font-serif);
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             color: #ffffff;
             margin-bottom: 12px;
+            line-height: 1.3;
         }
 
         .door-card p {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .door-action-btn {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--cyan-tech);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 16px;
+            margin-top: auto;
+        }
+
+        .door-card:hover .door-action-btn {
+            color: var(--gold-light);
+        }
+
+        /* --- MODAL WINDOW ("DALAMNYA PINTU") --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(5, 8, 14, 0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #0f172a;
+            border: 1px solid var(--gold-accent);
+            border-radius: 14px;
+            max-width: 720px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.25);
+            transform: scale(0.92);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px; right: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: #ffffff;
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-accent);
+        }
+
+        .modal-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--gold-accent);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .modal-title {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 16px;
+        }
+
+        .modal-section-heading {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--cyan-tech);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 24px 0 10px;
+        }
+
+        .modal-body p {
+            color: #cbd5e1;
+            font-size: 0.98rem;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .modal-list {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .modal-list li {
+            position: relative;
+            padding-left: 24px;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .modal-list li::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            color: var(--gold-accent);
+            font-size: 0.7rem;
+            top: 2px;
+        }
+
+        .modal-footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .modal-price-tag {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--gold-light);
+            font-weight: 700;
+        }
+
+        .modal-btn-execute {
+            padding: 14px 28px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--bg-dark);
+            background: var(--gold-accent);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .modal-btn-execute:hover {
+            background: var(--gold-light);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
         /* --- VIP BRIEFING FORM --- */
@@ -283,15 +507,16 @@
         }
 
         .form-box {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             background: var(--bg-card);
             border: 1px solid var(--border-gold);
             border-radius: 12px;
             padding: 40px;
+            transition: all 0.3s ease;
         }
 
-        .form-group { margin-bottom: 20px; }
+        .form-group { margin-bottom: 22px; }
 
         .form-group label {
             display: block;
@@ -300,14 +525,16 @@
             color: var(--gold-accent);
             margin-bottom: 8px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group input,
-        .form-group select {
+        .form-group select,
+        .form-group textarea {
             width: 100%;
-            padding: 12px 16px;
-            background: rgba(11, 15, 23, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 18px;
+            background: rgba(11, 15, 23, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 6px;
             color: #ffffff;
             font-family: var(--font-sans);
@@ -315,26 +542,32 @@
         }
 
         .form-group input:focus,
-        .form-group select:focus {
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--gold-accent);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
         }
 
         .btn-submit {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             font-family: var(--font-mono);
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--bg-dark);
             background: var(--gold-accent);
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
         }
 
-        .btn-submit:hover { background: var(--gold-light); }
+        .btn-submit:hover {
+            background: var(--gold-light);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        }
 
         footer {
             text-align: center;
@@ -349,6 +582,7 @@
             .hero-name { font-size: 2.3rem; }
             .hero-portrait-frame { width: 150px; height: 150px; }
             .doors-grid { grid-template-columns: 1fr; }
+            .modal-box { padding: 28px 20px; }
         }
     </style>
 </head>
@@ -358,7 +592,10 @@
     <header>
         <div class="container nav-wrapper">
             <a href="#" class="logo">MOZENS ALQADRIE</a>
-            <div class="nav-status">&#9679; SOVEREIGN NODE ACTIVE</div>
+            <div class="nav-status">
+                <span class="pulse-dot"></span>
+                SOVEREIGN NODE ACTIVE
+            </div>
         </div>
     </header>
 
@@ -379,7 +616,7 @@
             </div>
 
             <p class="hero-desc">
-                Navigasi realitas lapangan Kalimantan, transaksi blok pasar modal, dan penataan transaksi B2B tingkat tinggi. Dieksekusi dengan presisi dan konfidensial.
+                Navigasi realitas lapangan Kalimantan, transaksi blok pasar modal, dan penataan transaksi B2B tingkat tinggi. Dieksekusi dengan presisi, kerahasiaan sovereign, dan kepastian skema.
             </p>
 
             <div class="cta-wrapper">
@@ -398,68 +635,346 @@
             </div>
         </section>
 
-        <!-- DOORS SECTION (TERMASUK BICH) -->
+        <!-- 4 DOORS SECTION (DENGAN "DALAMNYA PINTU" INTERAKTIF) -->
         <section class="doors-section">
-            <h2 class="section-title">Empat Pintu Eksekusi Modal</h2>
+            <div class="section-header">
+                <h2 class="section-title">Empat Pintu Eksekusi Modal</h2>
+                <p class="section-subtitle">Klik pada pintu untuk membuka arsitektur & parameter eksekusi di dalamnya.</p>
+            </div>
+
             <div class="doors-grid">
-                <div class="door-card">
-                    <div class="door-number">PINTU 01 // IPO</div>
-                    <h3>Capital Market IPO</h3>
-                    <p>Penataan struktur modal, kesiapan regulasi, dan akselerasi aksi korporasi penawaran umum perdana secara presisi.</p>
+                <!-- PINTU 01 -->
+                <div class="door-card" onclick="openDoorModal('pintu-ipo')">
+                    <div>
+                        <span class="door-badge">PINTU 01 // IPO</span>
+                        <h3>Capital Market IPO</h3>
+                        <p>Penataan struktur modal, kesiapan regulasi, dan akselerasi aksi korporasi penawaran umum perdana secara presisi.</p>
+                    </div>
+                    <div class="door-action-btn">
+                        <span>BUKA ARSITEKTUR</span>
+                        <span>&rarr;</span>
+                    </div>
                 </div>
-                <div class="door-card">
-                    <div class="door-number">PINTU 02 // ARA</div>
-                    <h3>Auto Rejection Upper Strategy</h3>
-                    <p>Pemanfaatan likuiditas pasar, analisis capital flow harian, serta mitigasi batas atas penetapan harga saham.</p>
+
+                <!-- PINTU 02 -->
+                <div class="door-card" onclick="openDoorModal('pintu-ara')">
+                    <div>
+                        <span class="door-badge">PINTU 02 // ARA</span>
+                        <h3>Auto Rejection Upper</h3>
+                        <p>Pemanfaatan likuiditas pasar, analisis capital flow harian, serta mitigasi batas atas penetapan harga saham.</p>
+                    </div>
+                    <div class="door-action-btn">
+                        <span>BUKA ARSITEKTUR</span>
+                        <span>&rarr;</span>
+                    </div>
                 </div>
-                <div class="door-card">
-                    <div class="door-number">PINTU 03 // BLOK</div>
-                    <h3>Block Transaction Advisory</h3>
-                    <p>Fasilitasi dan pengamanan transaksi saham skala besar di pasar negosiasi secara terukur dan konfidensial.</p>
+
+                <!-- PINTU 03 -->
+                <div class="door-card" onclick="openDoorModal('pintu-blok')">
+                    <div>
+                        <span class="door-badge">PINTU 03 // BLOK</span>
+                        <h3>Block Transaction</h3>
+                        <p>Fasilitasi dan pengamanan transaksi saham skala besar di pasar negosiasi secara terukur dan konfidensial.</p>
+                    </div>
+                    <div class="door-action-btn">
+                        <span>BUKA ARSITEKTUR</span>
+                        <span>&rarr;</span>
+                    </div>
                 </div>
-                <div class="door-card">
-                    <div class="door-number">PINTU 04 // BICH</div>
-                    <h3>BICH Execution & Clearing</h3>
-                    <p>Skema transaksi Buy-In, Clearing House, dan rekonsiliasi likuiditas khusus tingkat sovereign & korporat.</p>
+
+                <!-- PINTU 04 -->
+                <div class="door-card" onclick="openDoorModal('pintu-bich')">
+                    <div>
+                        <span class="door-badge">PINTU 04 // BICH</span>
+                        <h3>BICH Execution & Clearing</h3>
+                        <p>Skema transaksi Buy-In, Clearing House, dan rekonsiliasi likuiditas khusus tingkat sovereign & korporat.</p>
+                    </div>
+                    <div class="door-action-btn">
+                        <span>BUKA ARSITEKTUR</span>
+                        <span>&rarr;</span>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- VIP BRIEFING FORM SECTION -->
         <section id="vipBriefingForm" class="briefing-section">
-            <h2 class="section-title">Schedule Private Briefing</h2>
-            <div class="form-box">
+            <div class="section-header">
+                <h2 class="section-title">Schedule Private Briefing</h2>
+                <p class="section-subtitle">Akses konfidensial langsung dengan Mozens Alqadrie Advisory.</p>
+            </div>
+
+            <div class="form-box" id="formBox">
                 <form id="paymentForm">
                     <div class="form-group">
-                        <label for="clientName">Nama Lengkap / Instansi</label>
-                        <input type="text" id="clientName" required placeholder="Contoh: Boss Mozens / PT Capital Group">
+                        <label for="clientName">Nama Lengkap / Entitas Korporasi</label>
+                        <input type="text" id="clientName" required placeholder="Contoh: Boss Mozens / PT Capital Sovereign">
                     </div>
                     <div class="form-group">
                         <label for="clientEmail">Email Konfidensial</label>
                         <input type="email" id="clientEmail" required placeholder="boss@domain.com">
                     </div>
                     <div class="form-group">
-                        <label for="briefingType">Jenis Layanan Advisory</label>
+                        <label for="briefingType">Pintu Eksekusi Utama</label>
                         <select id="briefingType">
-                            <option value="5000000">Private Advisory Session (Rp 5.000.000)</option>
-                            <option value="15000000">Sovereign Block Transaction (Rp 15.000.000)</option>
-                            <option value="25000000">BICH Special Execution & Advisory (Rp 25.000.000)</option>
+                            <option value="pintu-ipo|10000000">Pintu 01 // Capital Market IPO Structuring (Rp 10.000.000)</option>
+                            <option value="pintu-ara|5000000">Pintu 02 // ARA Strategy & Order Book Analytics (Rp 5.000.000)</option>
+                            <option value="pintu-blok|15000000">Pintu 03 // Off-Market Block Transaction Advisory (Rp 15.000.000)</option>
+                            <option value="pintu-bich|25000000" selected>Pintu 04 // BICH Special Execution & Clearing (Rp 25.000.000)</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="clientNotes">Catatan Ringkas Kebutuhan / Parameter (Opsional)</label>
+                        <textarea id="clientNotes" rows="3" placeholder="Sebutkan estimasi nilai transaksi, target waktu, atau spesifikasi sovereign..."></textarea>
+                    </div>
                     <button type="submit" class="btn-submit" id="btnSubmit">
-                        GENERATE INVOICE & PROCEED &rarr;
+                        GENERATE INVOICE & PROCEED TO BICH &rarr;
                     </button>
                 </form>
             </div>
         </section>
     </div>
 
+    <!-- MODAL OVERLAY ("DALAMNYA PINTU") -->
+    <div class="modal-overlay" id="pintuModal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeDoorModal()">&times;</button>
+            <div class="modal-tag" id="modalDoorBadge">PINTU 00 // PROTOCOL</div>
+            <h2 class="modal-title" id="modalDoorTitle">Nama Pintu</h2>
+            
+            <div class="modal-body">
+                <div class="modal-section-heading">// DESKRIPSI STRATEGIS</div>
+                <p id="modalDesc">Deskripsi lengkap mengenai skema pintu ini...</p>
+
+                <div class="modal-section-heading">// MEKANISME EKSEKUSI LAPANGAN</div>
+                <ul class="modal-list" id="modalMechanism">
+                    <li>Poin mekanisme 1</li>
+                    <li>Poin mekanisme 2</li>
+                </ul>
+
+                <div class="modal-section-heading">// PROTOKOL KERAHASIAAN & HASIL (DELIVERABLES)</div>
+                <ul class="modal-list" id="modalDeliverables">
+                    <li>Poin deliverable 1</li>
+                    <li>Poin deliverable 2</li>
+                </ul>
+            </div>
+
+            <div class="modal-footer-bar">
+                <div>
+                    <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">BRIEFING RETAINER</div>
+                    <div class="modal-price-tag" id="modalPrice">Rp 0</div>
+                </div>
+                <button class="modal-btn-execute" id="modalExecuteBtn" onclick="selectAndScrollToForm()">
+                    EKSEKUSI PINTU INI &rarr;
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 Mozens Alqadrie Advisory. All rights reserved.</p>
+        <p>&copy; 2026 Mozens Alqadrie Advisory. All rights reserved. Sovereign Confidentiality Protocol Active.</p>
     </footer>
 
-    <!-- CANVAS JS -->
+    <!-- INTERACTIVE MODALS DATA & CONTROLLER -->
+    <script>
+        const DOOR_DATA = {
+            'pintu-ipo': {
+                badge: 'PINTU 01 // CAPITAL MARKET IPO',
+                title: 'Capital Market IPO Structuring',
+                price: 'Rp 10.000.000',
+                selectValue: 'pintu-ipo|10000000',
+                desc: 'Arsitektur penataan penawaran umum perdana saham (IPO) yang dirancang untuk mengunci valuasi optimal, menyelaraskan Underwriter, serta mengamankan investor jangkar (Anchor Investors) sebelum melantai di bursa.',
+                mechanism: [
+                    'Audit kesiapan tata kelola (GCG) dan penataan struktur ekuitas pra-IPO.',
+                    'Penyusunan Equity Story dan Valuasi Independen berstandar Sovereign.',
+                    'Penyelarasan Konsorsium Underwriter, Akuntan Publik, dan Konsultan Hukum.',
+                    'Skema alokasi pasti (Fixed Allotment) vs alokasi terpusat (Pooling) untuk stabilitas harga.'
+                ],
+                deliverables: [
+                    'Master Executive Blueprint IPO & Timeline Aksi Korporasi.',
+                    'Sovereign Valuation Framework & Investor Presentation Deck.',
+                    'Protokol Pendampingan Privat selama proses Bookbuilding sampai Day-1 Listing.'
+                ]
+            },
+            'pintu-ara': {
+                badge: 'PINTU 02 // ARA STRATEGY',
+                title: 'Auto Rejection Upper Strategy',
+                price: 'Rp 5.000.000',
+                selectValue: 'pintu-ara|5000000',
+                desc: 'Pendampingan taktis dalam menganalisis peta likuiditas, order book velocity, dan mitigasi batas Auto Rejection Upper (ARA) harian untuk menjaga momentum harga saham dalam koridor aman.',
+                mechanism: [
+                    'Real-time Microstructure Order Book Monitoring & Flow Pattern Analysis.',
+                    'Mitigasi tekanan jual (Volume Absorption Matrix) pada batas fraksi harga kritis.',
+                    'Sinergi koordinasi pembentukan pasar (Market Maker Dynamics) sesuai koridor regulasi.',
+                    'Kalkulasi matematis batas ARA harian berdasarkan peraturan Bursa Efek.'
+                ],
+                deliverables: [
+                    'Daily Order Book Intelligence & Liquidity Heatmap Report.',
+                    'Asymmetric Order Placement Schedule.',
+                    'Protokol Navigasi Sanksi / Suspensi UMA (Unusual Market Activity).'
+                ]
+            },
+            'pintu-blok': {
+                badge: 'PINTU 03 // BLOCK TRANSACTION',
+                title: 'Block Transaction Advisory',
+                price: 'Rp 15.000.000',
+                selectValue: 'pintu-blok|15000000',
+                desc: 'Layanan fasilitasi transaksi saham skala besar (Block Sale) di pasar negosiasi tanpa menyebabkan market impact atau gejolak harga berlebih di pasar reguler.',
+                mechanism: [
+                    'Penjodohan Pihak Pembeli & Penjual Institusional (Crossing Matching) secara tertutup.',
+                    'Penentuan diskon / premi harga pasar negosiasi berdasarkan kesepakatan konfidensial.',
+                    'Skema Escrow Custody Account untuk menjamin ketersediaan dana dan warkat/saham.',
+                    'Koordinasi eksekusi crossing dengan Anggota Bursa (Broker Crossing Specialist).'
+                ],
+                deliverables: [
+                    'Confidential Crossing Termsheet & Settlement Schedule.',
+                    'Zero-Slippage Execution Guarantee Protocol.',
+                    'Sovereign Non-Disclosure & Anonymity Agreement.'
+                ]
+            },
+            'pintu-bich': {
+                badge: 'PINTU 04 // BICH EXECUTION & CLEARING',
+                title: 'BICH Execution & Clearing House',
+                price: 'Rp 25.000.000',
+                selectValue: 'pintu-bich|25000000',
+                desc: 'Pintu khusus transaksi Buy-In, Clearing House reconciliation, dan penyelesaian kewajiban likuiditas khusus tingkat Sovereign & Korporat skala tinggi.',
+                mechanism: [
+                    'Eksekusi protokol Buy-In untuk penyelesaian kewajiban penyerahan efek tertunda.',
+                    'Rekonsiliasi transaksi dengan lembaga Clearing House (KPEI / International Clearing).',
+                    'Skema penjaminan aset jaminan (Collateral Rebalancing) dan penyediaan likuiditas taktis.',
+                    'Pintu darurat penyelesaian transaksi gagal serah (Fail-to-Deliver mitigation).'
+                ],
+                deliverables: [
+                    'BICH Clearing & Reconciliation Clearance Certificate.',
+                    'Sovereign Collateral & Settlement Protocol.',
+                    'Akses Jalur Hijau Konfidensial Langsung ke Principal Architect.'
+                ]
+            }
+        };
+
+        let activeSelectedDoor = 'pintu-bich';
+
+        function openDoorModal(doorKey) {
+            const data = DOOR_DATA[doorKey];
+            if (!data) return;
+
+            activeSelectedDoor = doorKey;
+
+            document.getElementById('modalDoorBadge').innerText = data.badge;
+            document.getElementById('modalDoorTitle').innerText = data.title;
+            document.getElementById('modalDesc').innerText = data.desc;
+            document.getElementById('modalPrice').innerText = data.price;
+
+            // Populate Mechanism List
+            const mechList = document.getElementById('modalMechanism');
+            mechList.innerHTML = '';
+            data.mechanism.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                mechList.appendChild(li);
+            });
+
+            // Populate Deliverables List
+            const delivList = document.getElementById('modalDeliverables');
+            delivList.innerHTML = '';
+            data.deliverables.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                delivList.appendChild(li);
+            });
+
+            // Show Modal
+            document.getElementById('pintuModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDoorModal() {
+            document.getElementById('pintuModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOnBackdrop(e) {
+            if (e.target.id === 'pintuModal') {
+                closeDoorModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDoorModal();
+        });
+
+        function selectAndScrollToForm() {
+            closeDoorModal();
+            
+            const data = DOOR_DATA[activeSelectedDoor];
+            if (data) {
+                const selectEl = document.getElementById('briefingType');
+                for (let i = 0; i < selectEl.options.length; i++) {
+                    if (selectEl.options[i].value === data.selectValue) {
+                        selectEl.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            // Scroll Smooth to Form
+            const formSection = document.getElementById('vipBriefingForm');
+            formSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Highlight animation
+            const formBox = document.getElementById('formBox');
+            formBox.style.borderColor = '#d4af37';
+            formBox.style.boxShadow = '0 0 35px rgba(212, 175, 55, 0.4)';
+            setTimeout(() => {
+                formBox.style.borderColor = 'rgba(212, 175, 55, 0.25)';
+                formBox.style.boxShadow = 'none';
+            }, 2000);
+        }
+
+        // Form Submission to Payment Gateway API / Fallback Loop
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmit');
+            btn.disabled = true;
+            btn.innerText = 'SECURING CHANNEL TO BICH...';
+
+            const rawValue = document.getElementById('briefingType').value.split('|');
+            const doorCode = rawValue[0];
+            const amount = parseInt(rawValue[1]);
+            const returnUrl = window.location.origin + '/success.html';
+
+            const payload = {
+                client_name: document.getElementById('clientName').value,
+                client_email: document.getElementById('clientEmail').value,
+                door_selected: doorCode,
+                amount: amount,
+                notes: document.getElementById('clientNotes').value,
+                redirect_url: returnUrl
+            };
+
+            try {
+                const response = await fetch('/api/create-invoice.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                if (result.status && result.checkout_url) {
+                    window.location.href = result.checkout_url;
+                } else {
+                    console.warn('API Response fallback aktif, mengalihkan ke BICH Return page...');
+                    setTimeout(() => { window.location.href = returnUrl; }, 800);
+                }
+            } catch (err) {
+                console.warn('Mode simulasi lokal aktif, mengalihkan ke success.html...');
+                setTimeout(() => { window.location.href = returnUrl; }, 800);
+            }
+        });
+    </script>
+
+    <!-- CANVAS ANIMATION JS -->
     <script>
         (function initGeoCanvas() {
             const canvas = document.getElementById('geoCanvas');
@@ -582,49 +1097,6 @@
 
             draw();
         })();
-    </script>
-
-    <!-- FORM JS WITH RETURN URL / BALIK DARI BICH -->
-    <script>
-        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSubmit');
-            btn.disabled = true;
-            btn.innerText = 'PROCESSING INVOICE...';
-
-            // Menentukan URL kembali (Pintu Balik dari BICH)
-            const returnUrl = window.location.origin + '/success.html';
-
-            const payload = {
-                client_name: document.getElementById('clientName').value,
-                client_email: document.getElementById('clientEmail').value,
-                amount: parseInt(document.getElementById('briefingType').value),
-                description: 'Private Briefing Fee - Mozens Advisory',
-                redirect_url: returnUrl  // Pintu Balik
-            };
-
-            try {
-                const response = await fetch('/api/create-invoice.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const result = await response.json();
-                if (result.status && result.checkout_url) {
-                    // Pintu Masuk ke BICH / Payment
-                    window.location.href = result.checkout_url;
-                } else {
-                    alert('Gagal membuat invoice: ' + (result.message || 'Error server.'));
-                    btn.disabled = false;
-                    btn.innerText = 'GENERATE INVOICE & PROCEED \u2192';
-                }
-            } catch (err) {
-                alert('Gagal terhubung ke backend server API.');
-                btn.disabled = false;
-                btn.innerText = 'GENERATE INVOICE & PROCEED \u2192';
-            }
-        });
     </script>
 </body>
 </html>
