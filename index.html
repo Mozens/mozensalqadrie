@@ -26,11 +26,7 @@
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-dark);
@@ -159,9 +155,7 @@
             line-height: 1.7;
         }
 
-        .cta-wrapper {
-            margin-bottom: 60px;
-        }
+        .cta-wrapper { margin-bottom: 60px; }
 
         .btn-cta {
             display: inline-block;
@@ -183,10 +177,8 @@
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
         }
 
-        /* --- MAP CANVAS SECTION (TERPISAH DIBAWAH HERO) --- */
-        .map-section {
-            margin-bottom: 80px;
-        }
+        /* --- MAP CANVAS SECTION --- */
+        .map-section { margin-bottom: 80px; }
 
         .hero-visual-side {
             position: relative;
@@ -203,8 +195,7 @@
 
         .geo-badge {
             position: absolute;
-            top: 16px;
-            left: 16px;
+            top: 16px; left: 16px;
             font-family: var(--font-mono);
             font-size: 0.7rem;
             color: var(--gold-accent);
@@ -213,14 +204,12 @@
             padding: 6px 12px;
             border-radius: 4px;
             letter-spacing: 1px;
-            pointer-events: none;
             z-index: 5;
         }
 
         .geo-status {
             position: absolute;
-            bottom: 16px;
-            right: 16px;
+            bottom: 16px; right: 16px;
             font-family: var(--font-mono);
             font-size: 0.7rem;
             color: var(--cyan-tech);
@@ -229,17 +218,12 @@
             padding: 6px 12px;
             border-radius: 4px;
             letter-spacing: 1px;
-            pointer-events: none;
             z-index: 5;
         }
 
-        #geoCanvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+        #geoCanvas { width: 100%; height: 100%; display: block; }
 
-        /* --- 3 DOORS SECTION --- */
+        /* --- 4 DOORS SECTION (TERMASUK BICH) --- */
         .doors-section {
             padding: 64px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -255,15 +239,15 @@
 
         .doors-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
         }
 
         .door-card {
             background: var(--bg-card);
             border: 1px solid var(--border-gold);
             border-radius: 8px;
-            padding: 32px 24px;
+            padding: 28px 20px;
             transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
@@ -274,21 +258,21 @@
 
         .door-number {
             font-family: var(--font-mono);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--gold-accent);
             margin-bottom: 12px;
         }
 
         .door-card h3 {
             font-family: var(--font-serif);
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             color: #ffffff;
             margin-bottom: 12px;
         }
 
         .door-card p {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.6;
         }
 
@@ -307,9 +291,7 @@
             padding: 40px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         .form-group label {
             display: block;
@@ -352,9 +334,7 @@
             transition: background 0.3s ease;
         }
 
-        .btn-submit:hover {
-            background: var(--gold-light);
-        }
+        .btn-submit:hover { background: var(--gold-light); }
 
         footer {
             text-align: center;
@@ -365,21 +345,10 @@
             color: var(--text-muted);
         }
 
-        /* --- RESPONSIVE MOBILE --- */
         @media (max-width: 992px) {
-            .hero-name {
-                font-size: 2.3rem;
-            }
-            .hero-portrait-frame {
-                width: 150px;
-                height: 150px;
-            }
-            .hero-visual-side {
-                height: 320px;
-            }
-            .doors-grid {
-                grid-template-columns: 1fr;
-            }
+            .hero-name { font-size: 2.3rem; }
+            .hero-portrait-frame { width: 150px; height: 150px; }
+            .doors-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -394,7 +363,7 @@
     </header>
 
     <div class="container">
-        <!-- HERO SECTION (PROFIL TERPISAH) -->
+        <!-- HERO SECTION -->
         <section class="hero">
             <p class="hero-subhead">SOVEREIGN STRATEGIC ADVISORY &bull; SOVEREIGN ARCHITECT</p>
             
@@ -420,7 +389,7 @@
             </div>
         </section>
 
-        <!-- MAP CANVAS SECTION (PETA TERKONEKSI DIBAWAH) -->
+        <!-- MAP CANVAS SECTION -->
         <section class="map-section">
             <div class="hero-visual-side">
                 <div class="geo-badge">GLOBAL CAPITAL CORRIDOR // NODE 01</div>
@@ -429,9 +398,9 @@
             </div>
         </section>
 
-        <!-- 3 DOORS SECTION -->
+        <!-- DOORS SECTION (TERMASUK BICH) -->
         <section class="doors-section">
-            <h2 class="section-title">Tiga Pintu Eksekusi Modal</h2>
+            <h2 class="section-title">Empat Pintu Eksekusi Modal</h2>
             <div class="doors-grid">
                 <div class="door-card">
                     <div class="door-number">PINTU 01 // IPO</div>
@@ -447,6 +416,11 @@
                     <div class="door-number">PINTU 03 // BLOK</div>
                     <h3>Block Transaction Advisory</h3>
                     <p>Fasilitasi dan pengamanan transaksi saham skala besar di pasar negosiasi secara terukur dan konfidensial.</p>
+                </div>
+                <div class="door-card">
+                    <div class="door-number">PINTU 04 // BICH</div>
+                    <h3>BICH Execution & Clearing</h3>
+                    <p>Skema transaksi Buy-In, Clearing House, dan rekonsiliasi likuiditas khusus tingkat sovereign & korporat.</p>
                 </div>
             </div>
         </section>
@@ -469,6 +443,7 @@
                         <select id="briefingType">
                             <option value="5000000">Private Advisory Session (Rp 5.000.000)</option>
                             <option value="15000000">Sovereign Block Transaction (Rp 15.000.000)</option>
+                            <option value="25000000">BICH Special Execution & Advisory (Rp 25.000.000)</option>
                         </select>
                     </div>
                     <button type="submit" class="btn-submit" id="btnSubmit">
@@ -484,7 +459,7 @@
         <p>&copy; 2026 Mozens Alqadrie Advisory. All rights reserved.</p>
     </footer>
 
-    <!-- JS 1: CANVAS ANIMATION (PETA KALIMANTAN GLOBAL CORRIDOR) -->
+    <!-- CANVAS JS -->
     <script>
         (function initGeoCanvas() {
             const canvas = document.getElementById('geoCanvas');
@@ -525,7 +500,6 @@
 
                 ctx.clearRect(0, 0, w, h);
 
-                // Grid Background
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
                 ctx.lineWidth = 1;
                 const gridSize = 30;
@@ -539,7 +513,6 @@
                 const hX = hub.xRel * w;
                 const hY = hub.yRel * h;
 
-                // Radar Pulse
                 pulseRadius = (pulseRadius + 0.6) % 120;
                 ctx.beginPath();
                 ctx.arc(hX, hY, pulseRadius, 0, Math.PI * 2);
@@ -547,7 +520,6 @@
                 ctx.lineWidth = 1.5;
                 ctx.stroke();
 
-                // Connecting Arcs & Particles
                 nodes.forEach((node, idx) => {
                     const nX = node.xRel * w;
                     const nY = node.yRel * h;
@@ -588,7 +560,6 @@
                     ctx.fillText(node.label, nX + 8, nY + 3);
                 });
 
-                // Central Hub (Kalimantan)
                 ctx.beginPath();
                 ctx.arc(hX, hY, 7, 0, Math.PI * 2);
                 ctx.fillStyle = '#d4af37';
@@ -613,7 +584,7 @@
         })();
     </script>
 
-    <!-- JS 2: FORM SUBMISSION TO BACKEND API -->
+    <!-- FORM JS WITH RETURN URL / BALIK DARI BICH -->
     <script>
         document.getElementById('paymentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -621,11 +592,15 @@
             btn.disabled = true;
             btn.innerText = 'PROCESSING INVOICE...';
 
+            // Menentukan URL kembali (Pintu Balik dari BICH)
+            const returnUrl = window.location.origin + '/success.html';
+
             const payload = {
                 client_name: document.getElementById('clientName').value,
                 client_email: document.getElementById('clientEmail').value,
                 amount: parseInt(document.getElementById('briefingType').value),
-                description: 'Private Briefing Fee - Mozens Advisory'
+                description: 'Private Briefing Fee - Mozens Advisory',
+                redirect_url: returnUrl  // Pintu Balik
             };
 
             try {
@@ -637,6 +612,7 @@
                 
                 const result = await response.json();
                 if (result.status && result.checkout_url) {
+                    // Pintu Masuk ke BICH / Payment
                     window.location.href = result.checkout_url;
                 } else {
                     alert('Gagal membuat invoice: ' + (result.message || 'Error server.'));
