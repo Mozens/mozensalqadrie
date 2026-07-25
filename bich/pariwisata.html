@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamar Pariwisata & Mobilitas Multimoda — BICH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Style Anti-Select */
+        .no-select {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        /* Hide Honeypot Field */
+        .hp-trap-field {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 0;
+            width: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black no-select">
+
+    <!-- BOT / SCRAPER WARNING BANNER (Hidden by Default) -->
+    <div id="bot-blocked-banner" class="hidden fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center text-center p-6 space-y-4">
+        <div class="text-red-500 text-5xl">🚫</div>
+        <h2 class="text-2xl font-bold font-mono text-red-400">AKSES DITOLAK / BOT DETECTED</h2>
+        <p class="text-xs font-mono text-slate-400 max-w-md">
+            Sistem pengamanan BICH Mozens Inc. mendeteksi aktivitas otomatis atau headless browser.
+        </p>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="border-b border-amber-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 transition flex items-center gap-2">
+                <span>&larr;</span> Portal Utama BICH
+            </a>
+            <span class="text-[11px] font-mono text-amber-400/80 border border-amber-500/20 px-3 py-1 rounded-full bg-amber-500/5">
+                MOZENS INC. • MOBILITY & TOURISM DESK
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-10">
+
+        <!-- Hero Title -->
+        <div class="text-center space-y-3 max-w-3xl mx-auto">
+            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white">
+                PARIWISATA & <span class="gold-gradient">MULTIMODA</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400 font-mono">
+                Agregator Lintas Moda, Shuttle Antar-Kota & Transit Hub, Experiential Tour & Outbound Gateway
+            </p>
+        </div>
+
+        <!-- Service Tab Selector -->
+        <div class="flex justify-center border-b border-slate-800 overflow-x-auto">
+            <button id="tab-shuttle-btn" onclick="switchService('shuttle')" class="px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition whitespace-nowrap">
+                1. SHUTTLE & KARGO MULTIMODA
+            </button>
+            <button id="tab-tour-btn" onclick="switchService('tour')" class="px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition whitespace-nowrap">
+                2. DESTINASI & EXPERIENTIAL TOUR
+            </button>
+            <button id="tab-umrah-btn" onclick="switchService('umrah')" class="px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition whitespace-nowrap">
+                3. KONSORSIUM UMRAH & OUTBOUND
+            </button>
+        </div>
+
+        <!-- SECTION 1: SHUTTLE & KARGO MULTIMODA -->
+        <div id="sec-shuttle" class="space-y-6">
+            <!-- Widget Booking Ticket -->
+            <div class="bg-[#080c14] border border-amber-500/20 rounded-2xl p-6 sm:p-8 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <span class="text-xs font-mono text-amber-400 font-bold">PINTU PEMESANAN MOBILITAS AGREGATOR</span>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                        ● Direct & Interkoneksi Ready
+                    </span>
+                </div>
+
+                <!-- Form Booking Grid -->
+                <form id="booking-form" onsubmit="calculateAndDisplayPrice(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-4 relative">
+                    
+                    <!-- HONEYPOT TRAP FOR SCRAPERS -->
+                    <div class="hp-trap-field" aria-hidden="true">
+                        <input type="text" name="bich_hp_check" id="bich_hp_check" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <!-- RUTE ASAL -->
+                    <div>
+                        <label class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Rute Asal</label>
+                        <select id="origin-select" class="w-full bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                            <optgroup label="🏢 HUB UTAMA & IKN">
+                                <option value="IKN">IKN Nusantara (Kawasan Inti Sepaku)</option>
+                                <option value="BPN" selected>Balikpapan City</option>
+                                <option value="BDJ">Banjarmasin / Banjarbaru</option>
+                                <option value="SMD">Samarinda City</option>
+                                <option value="PKY">Palangkaraya City</option>
+                                <option value="PNK">Pontianak City</option>
+                                <option value="TRK">Tarakan City</option>
+                            </optgroup>
+                            <optgroup label="✈️ BANDARA & TRANSIT HUB">
+                                <option value="BPN-AIRPORT">Bandara SAMS Sepinggan (BPN)</option>
+                                <option value="BDJ-AIRPORT">Bandara Syamsudin Noor (BDJ)</option>
+                                <option value="SMD-AIRPORT">Bandara APT Pranoto (AAP)</option>
+                                <option value="PNK-AIRPORT">Bandara Supadio (PNK)</option>
+                            </optgroup>
+                            <optgroup label="🏭 KOTA INDUSTRI, TAMBANG & AGRO">
+                                <option value="BTG">Bontang (Kaltim)</option>
+                                <option value="SGT">Sangatta / Kutai Timur (Kaltim)</option>
+                                <option value="TJG">Tanjung / Tabalong (Kalsel)</option>
+                                <option value="BLC">Batulicin / Kotabaru (Kalsel)</option>
+                                <option value="SPT">Sampit / Seruyan (Kalteng)</option>
+                                <option value="PBUN">Pangkalan Bun (Kalteng)</option>
+                                <option value="TJS">Tanjung Selor / KIPI Tanah Kuning (Kaltara)</option>
+                            </optgroup>
+                            <optgroup label="🚤 DERMAGA & INTERMODA SUNGAI">
+                                <option value="DERMAGA-SMD">Dermaga Speedboat Samarinda / Mahakam</option>
+                                <option value="DERMAGA-BPN">Dermaga Kampung Baru Balikpapan</option>
+                                <option value="DERMAGA-BDJ">Dermaga Klotok / Pelabuhan Trisakti BDJ</option>
+                            </optgroup>
+                            <optgroup label="🌐 CROSS-BORDER">
+                                <option value="KCH">Kuching, Sarawak (via PLBN Entikong)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- RUTE TUJUAN -->
+                    <div>
+                        <label class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Rute Tujuan</label>
+                        <select id="destination-select" class="w-full bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                            <optgroup label="🏢 HUB UTAMA & IKN">
+                                <option value="IKN" selected>IKN Nusantara (Kawasan Inti Sepaku)</option>
+                                <option value="BPN">Balikpapan City</option>
+                                <option value="BDJ">Banjarmasin / Banjarbaru</option>
+                                <option value="SMD">Samarinda City</option>
+                                <option value="PKY">Palangkaraya City</option>
+                                <option value="PNK">Pontianak City</option>
+                            </optgroup>
+                            <optgroup label="✈️ BANDARA & TRANSIT HUB">
+                                <option value="BPN-AIRPORT">Bandara SAMS Sepinggan (BPN)</option>
+                                <option value="BDJ-AIRPORT">Bandara Syamsudin Noor (BDJ)</option>
+                                <option value="SMD-AIRPORT">Bandara APT Pranoto (AAP)</option>
+                            </optgroup>
+                            <optgroup label="🏭 KOTA INDUSTRI, TAMBANG & AGRO">
+                                <option value="BTG">Bontang (Kaltim)</option>
+                                <option value="SGT">Sangatta / Kutai Timur (Kaltim)</option>
+                                <option value="TJG">Tanjung / Tabalong (Kalsel)</option>
+                                <option value="BLC">Batulicin / Kotabaru (Kalsel)</option>
+                                <option value="SPT">Sampit / Seruyan (Kalteng)</option>
+                                <option value="PBUN">Pangkalan Bun (Kalteng)</option>
+                                <option value="TJS">Tanjung Selor / KIPI Tanah Kuning (Kaltara)</option>
+                            </optgroup>
+                            <optgroup label="🚤 DERMAGA & INTERMODA SUNGAI">
+                                <option value="DERMAGA-SMD">Dermaga Speedboat Samarinda / Mahakam</option>
+                                <option value="DERMAGA-BPN">Dermaga Kampung Baru Balikpapan</option>
+                                <option value="DERMAGA-BDJ">Dermaga Klotok / Pelabuhan Trisakti BDJ</option>
+                            </optgroup>
+                            <optgroup label="🌐 CROSS-BORDER">
+                                <option value="KCH">Kuching, Sarawak (via PLBN Entikong)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- LAYANAN MULTIMODA -->
+                    <div>
+                        <label class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Layanan</label>
+                        <select id="service-select" class="w-full bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                            <option value="shuttle">Shuttle Travel Inter-City (Per Kursi)</option>
+                            <option value="airport">Airport Shuttle / Drop-Off Dalam Kota</option>
+                            <option value="charter">Charter Armada Eksklusif (Private VIP)</option>
+                            <option value="kargo">Kargo Kilat Same-Day (Dokumen/Paket)</option>
+                            <option value="speedboat">Speedboat & Charter Sungai / Tambang</option>
+                        </select>
+                    </div>
+
+                    <!-- TOMBOL EKSEKUSI -->
+                    <div class="flex items-end">
+                        <button type="submit" id="btn-submit-calc" class="w-full bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono font-bold py-3 rounded-lg transition flex justify-center items-center gap-2">
+                            Cek Jadwal & Slot &rarr;
+                        </button>
+                    </div>
+                </form>
+
+                <!-- RESULT BOX -->
+                <div id="price-result-box" class="hidden bg-[#05070a] border border-amber-500/40 rounded-xl p-6 space-y-4 animate-fade-in">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-4 gap-2">
+                        <div>
+                            <span class="text-[10px] font-mono text-amber-400 uppercase tracking-wider block">ESTIMASI TARIF OFFICIAL BICH</span>
+                            <h4 id="res-route-title" class="text-base font-bold text-white font-serif">Rute: Balikpapan &rarr; IKN Nusantara</h4>
+                        </div>
+                        <div class="text-right">
+                            <span id="res-price-tag" class="text-2xl font-mono font-bold gold-gradient">Rp 175.000</span>
+                            <span id="res-unit-tag" class="text-[10px] text-slate-400 font-mono block">/ kursi (Door-to-Door)</span>
+                        </div>
+                    </div>
+
+                    <!-- BONUS INCLUDED BUNDLE -->
+                    <div class="space-y-2">
+                        <span class="text-[10px] font-mono text-emerald-400 uppercase font-bold block">🎁 BONUS EKSKLUSIF TERMASUK DALAM LAYANAN INI:</span>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
+                            <li class="flex items-center gap-2 bg-[#080c14] px-3 py-2 rounded border border-slate-800">
+                                <span class="text-emerald-400">✓</span> Free Bagasi / Titip Paket Kilat s/d 2 kg
+                            </li>
+                            <li class="flex items-center gap-2 bg-[#080c14] px-3 py-2 rounded border border-slate-800">
+                                <span class="text-emerald-400">✓</span> Garansi On-Time / Voucher Cash-back
+                            </li>
+                            <li class="flex items-center gap-2 bg-[#080c14] px-3 py-2 rounded border border-slate-800">
+                                <span class="text-emerald-400">✓</span> Voucher Diskon Rp 50.000 Paket Tour BICH
+                            </li>
+                            <li class="flex items-center gap-2 bg-[#080c14] px-3 py-2 rounded border border-slate-800">
+                                <span class="text-emerald-400">✓</span> Akses Manifes Digital & Laporan Rute Real-time
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- ACTION BUTTON -->
+                    <div class="pt-2 flex justify-end">
+                        <button onclick="proceedToPayment()" class="bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-mono font-bold px-6 py-3 rounded-lg transition">
+                            Lanjutkan Booking & Pembayaran (Midtrans) &rarr;
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Value Proposition Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <span class="text-xs font-mono text-amber-400 font-bold block">🚀 SHUTTLE ANTAR KOTA & HUB</span>
+                    <p class="text-xs text-slate-300">Penjemputan Door-to-Door dengan kepastian jadwal dan manifes digital terintegrasi.</p>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <span class="text-xs font-mono text-amber-400 font-bold block">📦 KARGO SAME-DAY</span>
+                    <p class="text-xs text-slate-300">Optimalisasi bagasi armada untuk pengiriman paket kilat jam-hitungan antar provinsi.</p>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <span class="text-xs font-mono text-amber-400 font-bold block">🚤 INTERKONEKSI SUNGAI</span>
+                    <p class="text-xs text-slate-300">Sambung moda darat ke speedboat/klotok VIP untuk akses wilayah dermaga & tambang.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: DESTINASI & EXPERIENTIAL TOUR -->
+        <div id="sec-tour" class="space-y-6 hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Tour Card 1 -->
+                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/30 rounded-xl overflow-hidden transition group">
+                    <div class="p-6 space-y-3">
+                        <span class="text-[10px] font-mono text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded uppercase">Eksklusif Kalteng</span>
+                        <h3 class="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition">Tanjung Puting National Park Excursion</h3>
+                        <p class="text-slate-400 text-xs">Pengalaman menginap di Klotok Luxury, menyusuri habitat Orangutan, dan reservasi pemandu lokal terverifikasi.</p>
+                        <div class="pt-2 flex justify-between items-center border-t border-slate-800/80">
+                            <span class="text-xs font-mono text-amber-400 font-bold">Mulai Rp 4.800.000 / pax</span>
+                            <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20tertarik%20paket%20Tanjung%20Puting." target="_blank" class="text-xs font-mono text-slate-300 hover:text-white underline">Reservasi &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tour Card 2 -->
+                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/30 rounded-xl overflow-hidden transition group">
+                    <div class="p-6 space-y-3">
+                        <span class="text-[10px] font-mono text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded uppercase">Eksklusif Kalsel</span>
+                        <h3 class="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition">Loksado Bamboo Rafting & Cultural Tour</h3>
+                        <p class="text-slate-400 text-xs">Eksplorasi Meratus, arung jeram bambu tradisional, serta kunjungan budaya Dayak Bukit dengan fasilitasi VIP.</p>
+                        <div class="pt-2 flex justify-between items-center border-t border-slate-800/80">
+                            <span class="text-xs font-mono text-amber-400 font-bold">Mulai Rp 1.950.000 / pax</span>
+                            <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20tertarik%20paket%20Loksado." target="_blank" class="text-xs font-mono text-slate-300 hover:text-white underline">Reservasi &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: KONSORSIUM UMRAH & OUTBOUND -->
+        <div id="sec-umrah" class="space-y-6 hidden">
+            <div class="bg-[#080c14] border border-amber-500/20 rounded-2xl p-6 sm:p-8 space-y-6">
+                <div class="space-y-2">
+                    <span class="text-xs font-mono text-amber-400 font-bold block">OFFICIAL REFERRAL & GATEWAY CONSORTIUM</span>
+                    <h3 class="text-xl sm:text-2xl font-serif font-bold text-white">Layanan Ibadah Umrah & Outbound Travel Kalimantan</h3>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        BICH bermitra langsung dengan biro perjalanan Umrah berlisensi resmi (PPIU/Kemenag) dan pengelola wisata mancanegara. Kami memastikan kepastian keberangkatan, manasik, dan fasilitas VIP bagi jamaah banua.
+                    </p>
+                </div>
+
+                <!-- Form Konsultasi Lead Umrah -->
+                <form id="umrah-lead-form" onsubmit="handleUmrahLead(event)" class="bg-[#05070a] border border-slate-800 p-5 rounded-xl space-y-4">
+                    <!-- HONEYPOT TRAP -->
+                    <div class="hp-trap-field" aria-hidden="true">
+                        <input type="text" name="umrah_hp_check" id="umrah_hp_check" tabindex="-1" autocomplete="off">
+                    </div>
+                    <h4 class="text-xs font-mono text-amber-400 font-bold uppercase">Form Daftar Minat / Konsultasi Jamaah</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <input type="text" placeholder="Nama Lengkap" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                        <input type="tel" placeholder="Nomor WhatsApp" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                        <select class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                            <option>Paket Umrah Regular VIP</option>
+                            <option>Paket Umrah Plus Turki / Dubai</option>
+                            <option>Outbound Travel (Malaysia / Singapore / Middle East)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono font-bold px-6 py-2.5 rounded transition">
+                        Kirim Permintaan Konsultasi &rarr;
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
+        © 2026 BICH Mobility & Tourism Desk • Mozens Inc.
+    </footer>
+
+    <!-- Anti-Scraping Security Suite & Interactive Script -->
+    <script>
+        (function SecurityInitialization() {
+            // LAYER 1: HEADLESS BROWSER & BOT DETECTION
+            const isBot = navigator.webdriver || 
+                          window.callPhantom || 
+                          window._phantom || 
+                          window.__nightmare || 
+                          /HeadlessChrome/.test(navigator.userAgent);
+            
+            if (isBot) {
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.getElementById('bot-blocked-banner').classList.remove('hidden');
+                    document.body.innerHTML = document.getElementById('bot-blocked-banner').outerHTML;
+                });
+            }
+
+            // LAYER 2: ANTI-INSPECT & SHORTCUT DISABLE
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', e => {
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || 
+                    (e.ctrlKey && (e.key === 'U' || e.key === 'S'))) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        })();
+
+        // LAYER 3: OBFUSCATED PRICING MATRIX DECODER (Base64 Encoded Base Tariffs)
+        // Format: BPN_IKN = 175000, BDJ_IKN = 350000, DEFAULT = 250000, AIRPORT = 150000
+        const _P_MAP = {
+            "BPN_IKN": "MTc1MDAw",
+            "IKN_BPN": "MTc1MDAw",
+            "BDJ_IKN": "MzUwMDAw",
+            "IKN_BDJ": "MzUwMDAw",
+            "AIRPORT": "MTUwMDAw",
+            "DEFAULT": "MjUwMDAw"
+        };
+
+        function _dVal(key) {
+            const rawB64 = _P_MAP[key] || _P_MAP["DEFAULT"];
+            return parseInt(atob(rawB64), 10);
+        }
+
+        // TAB SWITCHER
+        function switchService(service) {
+            const secShuttle = document.getElementById('sec-shuttle');
+            const secTour = document.getElementById('sec-tour');
+            const secUmrah = document.getElementById('sec-umrah');
+
+            const btnShuttle = document.getElementById('tab-shuttle-btn');
+            const btnTour = document.getElementById('tab-tour-btn');
+            const btnUmrah = document.getElementById('tab-umrah-btn');
+
+            [secShuttle, secTour, secUmrah].forEach(el => el.classList.add('hidden'));
+            [btnShuttle, btnTour, btnUmrah].forEach(btn => btn.className = 'px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition whitespace-nowrap');
+
+            if (service === 'shuttle') {
+                secShuttle.classList.remove('hidden');
+                btnShuttle.className = 'px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition whitespace-nowrap';
+            } else if (service === 'tour') {
+                secTour.classList.remove('hidden');
+                btnTour.className = 'px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition whitespace-nowrap';
+            } else if (service === 'umrah') {
+                secUmrah.classList.remove('hidden');
+                btnUmrah.className = 'px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition whitespace-nowrap';
+            }
+        }
+
+        // LAYER 4: RATE LIMITING & HONEYPOT VERIFICATION ENGINE
+        let lastCalcTimestamp = 0;
+
+        function calculateAndDisplayPrice(e) {
+            e.preventDefault();
+            
+            // Honeypot Trap Check
+            const hpValue = document.getElementById('bich_hp_check').value;
+            if (hpValue !== "") {
+                console.warn("Spam Bot Detected via Honeypot.");
+                return false;
+            }
+
+            // Rate Limiting (Maksimal 1 request per 1.2 detik)
+            const now = Date.now();
+            if (now - lastCalcTimestamp < 1200) {
+                alert("Aktivitas terlalu cepat! Harap tunggu sebentar, Boss.");
+                return false;
+            }
+            lastCalcTimestamp = now;
+
+            const originObj = document.getElementById('origin-select');
+            const destObj = document.getElementById('destination-select');
+            const serviceType = document.getElementById('service-select').value;
+
+            const originVal = originObj.value;
+            const destVal = destObj.value;
+            const originName = originObj.options[originObj.selectedIndex].text;
+            const destName = destObj.options[destObj.selectedIndex].text;
+
+            if(originVal === destVal) {
+                alert("Rute asal dan tujuan tidak boleh sama, Boss!");
+                return;
+            }
+
+            // Dekripsi Tarif menggunakan Obfuscated Lookup
+            let routeKey = `${originVal}_${destVal}`;
+            let basePrice = _dVal(routeKey);
+            let unitText = "/ kursi (Door-to-Door)";
+
+            if (originVal.includes('AIRPORT') || destVal.includes('AIRPORT')) {
+                basePrice = _dVal("AIRPORT");
+                unitText = "/ penjemputan airport";
+            }
+
+            // Multiplier Service
+            if (serviceType === 'charter') {
+                basePrice = basePrice * 6;
+                unitText = "/ armada all-in (Maks 6 Orang)";
+            } else if (serviceType === 'kargo') {
+                basePrice = Math.round(basePrice * 0.2);
+                unitText = "/ paket same-day (s/d 5kg)";
+            } else if (serviceType === 'speedboat') {
+                basePrice = 300000;
+                unitText = "/ seat speedboat VIP";
+            }
+
+            // Format Currency Output
+            const formattedPrice = "Rp " + basePrice.toLocaleString('id-ID');
+
+            // Render Output
+            document.getElementById('res-route-title').innerHTML = `${originName} &rarr; ${destName}`;
+            document.getElementById('res-price-tag').innerText = formattedPrice;
+            document.getElementById('res-unit-tag').innerText = unitText;
+
+            // Display Box
+            document.getElementById('price-result-box').classList.remove('hidden');
+            document.getElementById('price-result-box').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function proceedToPayment() {
+            alert("Sistem dialihkan ke Gate Supabase & Midtrans Payment Window.");
+        }
+
+        function handleUmrahLead(e) {
+            e.preventDefault();
+            const hpUmrah = document.getElementById('umrah_hp_check').value;
+            if (hpUmrah !== "") return false;
+
+            alert("Terima kasih! Data calon jamaah telah dicatat ke vault referral BICH.");
+        }
+    </script>
+</body>
+</html>

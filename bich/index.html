@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id" class="h-screen overflow-hidden">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BICH — Borneo Insight & Career Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#080C14',
+                        brandCard: '#0F172A',
+                        brandGold: '#D4AF37',
+                        brandEmerald: '#059669',
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brandDark text-slate-100 font-sans antialiased h-screen overflow-hidden flex flex-col justify-between p-2.5 sm:p-4">
+
+    <!-- 1. TICKER RUNNING -->
+    <div class="shrink-0 bg-slate-950 border border-emerald-900/40 rounded-lg py-1 px-3 text-[11px] font-mono text-slate-300 flex items-center justify-between gap-2 mb-1.5">
+        <div class="flex items-center gap-2 overflow-hidden w-full">
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-400 font-bold shrink-0 text-[9px]">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                LIVE INTEL
+            </span>
+            <marquee behavior="scroll" direction="left" scrollamount="4" class="text-slate-300 w-full">
+                <span class="text-emerald-400 font-bold">🟢 Pontianak Sawit:</span> Rp 13.450/Kg &nbsp;•&nbsp; 
+                <span class="text-emerald-400 font-bold">🟢 Samarinda Batubara:</span> Rp 1.450/Ton &nbsp;•&nbsp; 
+                <span class="text-brandGold font-bold">📈 IHSG Index:</span> 7.320,50 ▲ 0.4% &nbsp;•&nbsp;
+                <span class="text-blue-400 font-bold">💼 Update Loker:</span> Terintegrasi Supabase Feed
+            </marquee>
+        </div>
+        <span class="shrink-0 text-[10px] bg-slate-900 px-2 py-0.5 rounded text-slate-400 border border-slate-800 hidden md:inline">
+            👤 <span class="text-brandGold font-bold font-mono">3.420</span> online
+        </span>
+    </div>
+
+    <!-- 2. NAVBAR LOGO BICH + KEMBALI KE MOZENS ALQADRIE -->
+    <nav class="shrink-0 flex items-center justify-between px-1 mb-1.5">
+        <a href="index.html" class="flex items-center gap-2">
+            <span class="text-lg sm:text-xl font-bold tracking-tight text-white font-serif flex items-center gap-2">
+                <span class="text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2 py-0.5 rounded-md">BICH</span>
+                <span class="text-xs sm:text-sm font-sans font-medium text-slate-300 hidden sm:inline">Borneo Insight & Career Hub</span>
+            </span>
+        </a>
+
+        <a href="../index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-white bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-lg transition-all shadow-sm">
+            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            <span>Kembali ke Mozens Alqadrie</span>
+        </a>
+    </nav>
+
+    <!-- 3. HEADER TITLE BICH -->
+    <div class="shrink-0 text-center my-auto py-0.5">
+        <span class="text-emerald-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest block">
+            Gerbang Digital Intelijen Faktual Strategis Kalimantan
+        </span>
+        <h1 class="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-white mt-0.5">
+            Borneo Insight & Career Hub
+        </h1>
+        <p class="text-slate-300 text-[11px] sm:text-xs max-w-2xl mx-auto mt-0.5 leading-snug">
+            Menerangi jalan karir, mengawal investasi, dan menghubungkan talenta terbaik dengan ekosistem bisnis strategis kalimantan.
+        </p>
+    </div>
+
+    <!-- 4. 6 KAMAR (GRID 2 x 3) -->
+    <div class="shrink-0 grid grid-cols-2 gap-2 sm:gap-2.5 max-w-3xl mx-auto w-full my-auto">
+        <a href="loker.html" class="group bg-brandCard border border-slate-800 hover:border-emerald-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
+            <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Proyek & Loker">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="relative z-10 flex items-center gap-1.5">
+                <span class="text-xs">💼</span>
+                <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Proyek & Loker</h2>
+            </div>
+        </a>
+
+        <a href="berita.html" class="group bg-brandCard border border-slate-800 hover:border-blue-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
+            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Berita & Intel">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="relative z-10 flex items-center gap-1.5">
+                <span class="text-xs">📰</span>
+                <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-blue-400 transition-colors">Berita & Intel</h2>
+            </div>
+        </a>
+
+        <a href="edukasi.html" class="group bg-brandCard border border-slate-800 hover:border-purple-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
+            <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Edukasi & Podcast">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="relative z-10 flex items-center gap-1.5">
+                <span class="text-xs">📚</span>
+                <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-purple-400 transition-colors">Edukasi & Podcast</h2>
+            </div>
+        </a>
+
+        <a href="ekonomi.html" class="group bg-brandCard border border-slate-800 hover:border-orange-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
+            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Ekonomi Riset">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="relative z-10 flex items-center justify-between w-full">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xs">📈</span>
+                    <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-orange-400 transition-colors">Ekonomi Riset</h2>
+                </div>
+                <span class="text-[9px] bg-orange-950 text-orange-400 border border-orange-800 px-1.5 py-0.5 rounded font-mono">AI ENGINE</span>
+            </div>
+        </a>
+
+        <a href="pariwisata.html" class="group bg-brandCard border border-slate-800 hover:border-teal-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
+            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Pariwisata & Charter">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="relative z-10 flex items-center gap-1.5">
+                <span class="text-xs">🏖️</span>
+                <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-teal-400 transition-colors">Pariwisata & Charter</h2>
+            </div>
+        </a>
+
+        <a href="politik.html" class="group bg-brandCard border border-slate-800 hover:border-amber-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
+            <img src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Politik & Tokoh">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="relative z-10 flex items-center justify-between w-full">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xs">🏛️</span>
+                    <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Politik & Tokoh</h2>
+                </div>
+                <span class="text-[9px] bg-amber-950 text-amber-400 border border-amber-800 px-1.5 py-0.5 rounded font-mono">AI ENGINE</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- 5. PANEL LAYANAN BICH (BAHASA ELEGAN & DUA PINTU SPESIFIK) -->
+    <div class="shrink-0 max-w-3xl mx-auto w-full my-auto space-y-1">
+        <span class="text-[10px] text-slate-400 font-bold font-mono uppercase tracking-wider block text-center sm:text-left">
+            💳 PANEL LAYANAN MITRA & KARIR BICH
+        </span>
+        <div class="grid sm:grid-cols-2 gap-2">
+            <!-- LAYANAN 1: LOKER PREMIUM -->
+            <a href="monetisasi.html?service=loker" class="group bg-slate-900 border border-slate-800 hover:border-amber-500/60 rounded-xl p-2.5 transition-all flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-base p-1.5 bg-amber-500/10 border border-amber-500/30 rounded-lg">💼</span>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <h3 class="font-serif text-xs font-bold text-white group-hover:text-brandGold transition-colors">Pasang Loker Premium</h3>
+                            <span class="bg-amber-500/20 text-brandGold text-[8px] font-bold px-1 rounded">B2B</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">Publikasi Khusus Mitra Perusahaan</p>
+                    </div>
+                </div>
+                <span class="text-[11px] font-bold text-brandGold">&rarr;</span>
+            </a>
+
+            <!-- LAYANAN 2: SCAN CV AI -->
+            <a href="monetisasi.html?service=cv" class="group bg-slate-900 border border-slate-800 hover:border-emerald-500/60 rounded-xl p-2.5 transition-all flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-base p-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">🤖</span>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <h3 class="font-serif text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">Assessment CV AI</h3>
+                            <span class="bg-emerald-500/20 text-emerald-400 text-[8px] font-bold px-1 rounded">ATS</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">Pindaian Berkas Standar Industri</p>
+                    </div>
+                </div>
+                <span class="text-[11px] font-bold text-emerald-400">&rarr;</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 6. FOOTER -->
+    <footer class="shrink-0 bg-slate-950 border border-slate-900 rounded-lg py-1 px-3 text-center text-[10px] text-slate-400 font-mono mt-1">
+        <div class="max-w-3xl mx-auto flex items-center justify-between gap-2">
+            <div>
+                <span class="text-emerald-400 font-bold">🦅 BICH</span> — Borneo Insight & Career Hub &copy; 2026.
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="../index.html" class="hover:text-white transition-colors">Mozens Portal</a>
+                <span>•</span>
+                <a href="#" onclick="openAmanWA(event)" class="text-emerald-400 hover:text-emerald-300 font-bold transition-colors flex items-center gap-1">
+                    💬 <span>COMMAND CENTER WA</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT ENKRIPSI WA AMAN MOZENS ALQADRIE -->
+    <script>
+    function openAmanWA(e) {
+      e.preventDefault();
+      // URL WhatsApp terenkripsi Base64 (082341333313)
+      const secretKey = "aHR0cHM6Ly93YS5tZS82MjgyMzQxMzMzMzEz";
+      const realUrl = atob(secretKey);
+      window.open(realUrl, '_blank');
+    }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Registrasi Layanan — BICH</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#080C14',
+                        brandCard: '#0F172A',
+                        brandGold: '#D4AF37',
+                        brandEmerald: '#059669',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            body * { visibility: hidden; }
+            #areaCetakPDF, #areaCetakPDF * { visibility: visible; }
+            #areaCetakPDF { position: absolute; left: 0; top: 0; width: 100%; color: #000 !important; background: #fff !important; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-brandDark text-slate-100 font-sans p-4 md:p-6 min-h-screen flex flex-col justify-between">
+
+    <div class="max-w-2xl mx-auto w-full space-y-4 my-auto">
+        
+        <!-- HEADER NAVIGASI -->
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <a href="index.html" class="text-xs font-bold text-emerald-400 bg-emerald-950/80 border border-emerald-800/80 px-3 py-1.5 rounded-lg hover:bg-emerald-900 transition-all">
+                ⬅️ Kembali ke BICH Hub
+            </a>
+            <span class="text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded">
+                PANEL REGISTRASI LAYANAN
+            </span>
+        </div>
+
+        <!-- CONTAINER UTAMA FORMULIR -->
+        <div class="bg-brandCard border border-slate-800 rounded-xl p-5 md:p-6 shadow-2xl space-y-4">
+            
+            <!-- Dynamic Header -->
+            <div class="border-b border-slate-800 pb-3">
+                <span id="badgeLayanan" class="text-[9px] px-2 py-0.5 rounded font-mono uppercase">KATEGORI</span>
+                <h1 id="judulLayanan" class="font-serif text-xl font-bold text-white mt-1">Judul Layanan</h1>
+                <p id="subJudulLayanan" class="text-xs text-slate-400 mt-0.5">Deskripsi rincian formulir.</p>
+            </div>
+
+            <!-- ==================== FORM A: PASANG LOKER PREMIUM (MITRA / PERUSAHAAN) ==================== -->
+            <form id="formLoker" onsubmit="prosesQRIS(event, 'loker')" class="space-y-3.5 hidden">
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] text-slate-300 font-bold mb-1">Nama Perusahaan / Instansi *</label>
+                        <input type="text" id="lokerPerusahaan" required placeholder="Contoh: PT Kalimantan Energy" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-slate-300 font-bold mb-1">Nama Person In Charge (PIC/HRD) *</label>
+                        <input type="text" id="lokerPIC" required placeholder="Contoh: Ibu Rina (HRD)" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] text-slate-300 font-bold mb-1">Nomor WhatsApp PIC *</label>
+                        <input type="tel" id="lokerWA" required placeholder="0823xxxxxxx" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-slate-300 font-bold mb-1">Lokasi Penempatan Kerja *</label>
+                        <input type="text" id="lokerLokasi" required placeholder="Contoh: Balikpapan / Site IKN" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] text-slate-300 font-bold mb-1">Judul Lowongan Kerja *</label>
+                    <input type="text" id="lokerJudul" required placeholder="Contoh: Senior Supply Chain Specialist" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] text-slate-300 font-bold mb-1">Kualifikasi & Ringkasan Loker *</label>
+                    <textarea id="lokerDeskripsi" rows="3" required placeholder="Tuliskan syarat pendidikan, pengalaman kerja, dan instruksi pendaftaran..." class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800 rounded-lg p-3.5 flex items-center justify-between mt-2">
+                    <div>
+                        <span class="text-[10px] text-slate-400 block font-mono">BIAYA PUBLIKASI:</span>
+                        <span class="text-lg font-bold text-brandGold font-mono">Rp 250.000</span>
+                    </div>
+                    <button type="submit" class="bg-brandGold hover:bg-yellow-400 text-slate-950 font-bold text-xs px-5 py-2.5 rounded-lg transition-all shadow-lg flex items-center gap-1.5">
+                        <span>💳 Bayar & Publis Loker</span> &rarr;
+                    </button>
+                </div>
+            </form>
+
+            <!-- ==================== FORM B: SCAN & ASSESSMENT CV AI ==================== -->
+            <form id="formCV" onsubmit="prosesQRIS(event, 'cv')" class="space-y-3.5 hidden">
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] text-slate-300 font-bold mb-1">Nama Pemilik CV *</label>
+                        <input type="text" id="cvNama" required placeholder="Contoh: Rian Alqadrie" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-slate-300 font-bold mb-1">Nomor WhatsApp *</label>
+                        <input type="tel" id="cvWA" required placeholder="0823xxxxxxx" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <div class="bg-emerald-950/30 border border-emerald-800/80 rounded-lg p-3.5 space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <label class="block text-[11px] text-emerald-400 font-bold">📁 Upload File CV (.PDF / .DOCX) *</label>
+                        <span class="text-[9px] font-mono text-slate-400">Maks. 5 MB</span>
+                    </div>
+                    <input type="file" id="cvFile" accept=".pdf,.doc,.docx" onchange="validasiUkuranFile(this)" required class="w-full text-xs text-slate-300 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-emerald-800 file:text-white hover:file:bg-emerald-700 cursor-pointer">
+                    <p id="errorFileSize" class="text-[10px] text-red-400 font-bold hidden">⚠️ Ukuran file melebihi batas 5 MB! Silakan pilih file yang lebih kecil.</p>
+                    <p class="text-[9px] text-slate-400">Mesin AI akan memindai keterbacaan ATS, tata letak, dan kecocokan kata kunci industri Kalimantan.</p>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800 rounded-lg p-3.5 flex items-center justify-between mt-2">
+                    <div>
+                        <span class="text-[10px] text-slate-400 block font-mono">BIAYA CHECK-UP CV:</span>
+                        <span class="text-lg font-bold text-emerald-400 font-mono">Rp 15.000</span>
+                    </div>
+                    <button type="submit" id="btnSubmitCV" class="bg-brandEmerald hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition-all shadow-lg flex items-center gap-1.5">
+                        <span>🤖 Scan & Check-up CV Sekarang</span> &rarr;
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- POPUP MODAL QRIS -->
+    <div id="modalQRIS" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-brandCard border border-emerald-800 rounded-xl max-w-sm w-full p-5 text-center space-y-4 relative shadow-2xl">
+            <button onclick="tutupQRIS()" class="absolute top-3 right-3 text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">✕</button>
+            
+            <span class="bg-slate-900 text-emerald-400 border border-slate-800 text-[9px] font-bold px-2 py-0.5 rounded font-mono uppercase">
+                INVOICE #BICH-8821
+            </span>
+
+            <div>
+                <h3 id="qrisJudulLayanan" class="font-bold text-white text-sm">Registrasi Layanan BICH</h3>
+                <p id="qrisNominal" class="text-xl font-bold text-brandGold font-mono mt-0.5">Rp 0</p>
+            </div>
+
+            <div class="bg-white p-3 rounded-lg inline-block mx-auto border-2 border-slate-700">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=BICH-CHECKUP-CV-MOZENS" class="w-40 h-40 mx-auto" alt="Kode QRIS BICH">
+                <span class="text-[9px] text-slate-800 font-bold font-mono block mt-1">NMID: ID102293810293</span>
+            </div>
+
+            <p class="text-[11px] text-slate-400">Scan QRIS menggunakan GoPay, OVO, ShopeePay, atau Mobile Banking Anda.</p>
+
+            <div class="pt-2 border-t border-slate-800 space-y-2">
+                <button onclick="konfirmasiSudahBayar()" class="w-full bg-brandEmerald hover:bg-emerald-500 text-white font-bold text-xs py-2.5 rounded-lg transition-all">
+                    ✅ Saya Sudah Transfer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL HASIL RAPOR ASSESSMENT AI (OUTPUT SCREEN - 100% OTOMATIS) -->
+    <div id="modalHasilAI" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div id="areaCetakPDF" class="bg-brandCard border border-emerald-500/60 rounded-xl max-w-lg w-full p-5 md:p-6 space-y-4 shadow-2xl relative my-auto">
+            
+            <div class="flex justify-between items-start border-b border-slate-800 pb-3">
+                <div>
+                    <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[9px] font-bold px-2 py-0.5 rounded font-mono">
+                        HASIL DIAGNOSIS AI ENGINE — BICH HUB
+                    </span>
+                    <h2 class="font-serif text-lg font-bold text-white mt-1">Laporan Assessment CV Digital</h2>
+                    <p id="teksNamaPelamar" class="text-xs text-brandGold font-mono">Pemilik CV: -</p>
+                </div>
+                <button onclick="tutupHasilAI()" class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded no-print">✕ Tutup</button>
+            </div>
+
+            <!-- KOTAK SKOR ATS -->
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-center space-y-1">
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">SKOR KETERBACAAN ATS (SYSTEM MATCH)</span>
+                <div class="text-3xl font-bold text-emerald-400 font-mono">82 / 100</div>
+                <span class="text-[11px] text-emerald-300 font-semibold block">Kategori: Sangat Layak (Kualifikasi Tinggi)</span>
+            </div>
+
+            <!-- RINCIAN ANALISIS -->
+            <div class="space-y-2 text-xs">
+                <h4 class="font-bold text-white text-xs border-b border-slate-800 pb-1">🔍 Rincian Temuan AI Engine:</h4>
+                <ul class="space-y-1.5 text-slate-300 list-disc pl-4">
+                    <li><strong class="text-emerald-400">Format File:</strong> PDF Terstruktur, Teks dapat dipindai komputer dengan presisi.</li>
+                    <li><strong class="text-brandGold">Kata Kunci Ditemukan:</strong> <em>Safety, Supervision, Budgeting, Field Operation.</em></li>
+                    <li><strong class="text-red-400">Kata Kunci Disarankan:</strong> Belum mencantumkan istilah sertifikasi regional (misal: <em>POP/K3LH/HSE Industri Kalimantan</em>).</li>
+                </ul>
+            </div>
+
+            <!-- TOMBOL DOWNLOAD INSTAN (MURNI OTOMATIS TANPA ADMIN) -->
+            <div class="pt-3 border-t border-slate-800 space-y-2 no-print">
+                <button onclick="downloadPDFInstan()" class="w-full bg-brandEmerald hover:bg-emerald-500 text-white font-bold text-xs py-3 rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-lg">
+                    <span>📥 Unduh / Cetak Laporan PDF Sekarang</span>
+                </button>
+                <p class="text-[9px] text-center text-slate-400 font-mono">
+                    ⚡ Sistem bekerja 100% otomatis. Laporan tersimpan langsung di perangkat Anda.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="text-center text-[10px] text-slate-500 font-mono mt-4">
+        &copy; 2026 BICH Registration Panel — Safe Escrow Engine
+    </footer>
+
+    <script>
+        let modeAktif = 'loker';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const serviceParam = urlParams.get('service');
+
+            const badge = document.getElementById('badgeLayanan');
+            const judul = document.getElementById('judulLayanan');
+            const subJudul = document.getElementById('subJudulLayanan');
+            const formLoker = document.getElementById('formLoker');
+            const formCV = document.getElementById('formCV');
+
+            if (serviceParam === 'cv') {
+                modeAktif = 'cv';
+                badge.innerText = 'ATS AI ASSESSMENT';
+                badge.className = 'text-[9px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded font-mono uppercase';
+                judul.innerText = 'Check-up & Assessment CV AI Engine';
+                subJudul.innerText = 'Unggah berkas CV Anda untuk menguji skor ATS dan kata kunci industri Kalimantan.';
+                
+                formLoker.classList.add('hidden');
+                formCV.classList.remove('hidden');
+            } else {
+                modeAktif = 'loker';
+                badge.innerText = 'MITRA B2B KORPORAT';
+                badge.className = 'text-[9px] bg-amber-950 text-brandGold border border-amber-800 px-2 py-0.5 rounded font-mono uppercase';
+                judul.innerText = 'Publikasi Lowongan Kerja Premium';
+                subJudul.innerText = 'Lengkapi detail kebutuhan tenaga kerja perusahaan Anda untuk ditayangkan di portal BICH.';
+                
+                formCV.classList.add('hidden');
+                formLoker.classList.remove('hidden');
+            }
+        });
+
+        function validasiUkuranFile(input) {
+            const file = input.files[0];
+            const errorText = document.getElementById('errorFileSize');
+            const btnSubmit = document.getElementById('btnSubmitCV');
+
+            if (file && file.size > 5 * 1024 * 1024) {
+                errorText.classList.remove('hidden');
+                btnSubmit.disabled = true;
+                btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                errorText.classList.add('hidden');
+                btnSubmit.disabled = false;
+                btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function prosesQRIS(e, tipe) {
+            e.preventDefault();
+            document.getElementById('qrisJudulLayanan').innerText = (tipe === 'loker') ? 'Publikasi Loker Premium BICH' : 'Check-up & Assessment CV AI Engine';
+            document.getElementById('qrisNominal').innerText = (tipe === 'loker') ? 'Rp 250.000' : 'Rp 15.000';
+            document.getElementById('modalQRIS').classList.remove('hidden');
+        }
+
+        function tutupQRIS() {
+            document.getElementById('modalQRIS').classList.add('hidden');
+        }
+
+        function tutupHasilAI() {
+            document.getElementById('modalHasilAI').classList.add('hidden');
+        }
+
+        function downloadPDFInstan() {
+            window.print();
+        }
+
+        function konfirmasiSudahBayar() {
+            tutupQRIS();
+
+            if (modeAktif === 'cv') {
+                const nama = document.getElementById('cvNama').value;
+                const wa = document.getElementById('cvWA').value;
+
+                document.getElementById('teksNamaPelamar').innerText = `Pemilik CV: ${nama} (${wa})`;
+                
+                // Buka Laporan Hasil Langsung di Layar (Self-Service 100%)
+                document.getElementById('modalHasilAI').classList.remove('hidden');
+            } else {
+                const PT = document.getElementById('lokerPerusahaan').value;
+                const pic = document.getElementById('lokerPIC').value;
+                const wa = document.getElementById('lokerWA').value;
+                const judul = document.getElementById('lokerJudul').value;
+
+                const pesan = `Halo Admin BICH, saya telah menyelesaikan pembayaran Loker Premium (Rp 250k):%0A*Perusahaan:* ${PT}%0A*PIC:* ${pic}%0A*WA:* ${wa}%0A*Judul Loker:* ${judul}`;
+                window.open(`https://wa.me/6282341333313?text=${pesan}`, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>

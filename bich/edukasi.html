@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edukasi & Podcast Hub — BICH | Mozens Inc.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-emerald-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+                <span>&larr;</span> Portal Utama BICH
+            </a>
+            <span class="text-[11px] font-mono text-emerald-400/80 border border-emerald-500/20 px-3 py-1 rounded-full bg-emerald-500/5">
+                MOZENS INC. • EDUCATION & PODCAST DESK
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-10">
+
+        <!-- Hero Title Section with Motto BICH -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+            <!-- Official Motto Badge -->
+            <div class="inline-flex items-center gap-2 border border-emerald-500/40 bg-emerald-950/60 px-4 py-1.5 rounded-full text-xs font-mono text-emerald-400 font-bold shadow-lg shadow-emerald-950/50">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>🛡️ MOTTO BICH: "DATA AKURAT, BUDAYA KORUPSI MINGGAT"</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white">
+                EDUKASI & <span class="gold-gradient">PODCAST BANUA</span>
+            </h1>
+
+            <p class="text-xs sm:text-sm text-slate-300 font-mono max-w-2xl mx-auto leading-relaxed">
+                Akademi Industri BICH & Bincang Eksklusif: Penguasaan Manajemen Proyek, Literasi Keuangan Pasar Modal, dan Best Practice K3 Lapangan.
+            </p>
+        </div>
+
+        <!-- Room Switcher Tabs -->
+        <div class="flex justify-center border-b border-slate-800">
+            <button id="tab-podcast-btn" onclick="switchEduRoom('podcast')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2">
+                <span>🎙️</span> BICH PODCAST & TALK
+            </button>
+            <button id="tab-akademi-btn" onclick="switchEduRoom('akademi')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2">
+                <span>📖</span> AKADEMI & MODUL PELATIHAN
+            </button>
+        </div>
+
+        <!-- ==================== ROOM 1: BICH PODCAST ==================== -->
+        <div id="sec-podcast" class="space-y-6">
+            
+            <!-- Featured Episode Card -->
+            <div class="bg-[#080c14] border border-amber-500/30 rounded-2xl p-6 sm:p-8 relative overflow-hidden space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-900 pb-3">
+                    <span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded uppercase">
+                        🔥 EPISODE UNGGULAN #14
+                    </span>
+                    <span class="text-[11px] font-mono text-slate-400">Durasi: 42 Menit • BICH Audio Intel</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
+                    <div class="sm:col-span-2 space-y-3">
+                        <h2 class="text-xl sm:text-2xl font-serif font-bold text-white">
+                            Strategi Subkon Lokal Menembus Megaproyek IKN Tanpa Perantara
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                            Membahas aspek legalitas, pemenuhan kualifikasi K3LH, dan cara memanfaatkan platform data BICH untuk transparansi verifikasi dokumen perusahaan agar dapat bermitra secara bersih.
+                        </p>
+                        <div class="pt-2 flex items-center gap-4">
+                            <button class="bg-emerald-500 hover:bg-emerald-400 text-black font-mono font-bold text-xs px-5 py-2.5 rounded-lg transition flex items-center gap-2">
+                                <span>▶</span> Putar Podcast
+                            </button>
+                            <span class="text-xs font-mono text-slate-500">Narasumber: Praktisi Legal & Audit Proyek</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl text-center space-y-2">
+                        <span class="text-4xl">🎙️</span>
+                        <h4 class="text-xs font-mono font-bold text-amber-400">PODCAST BICH</h4>
+                        <p class="text-[10px] text-slate-500 font-mono">Dengarkan di Spotify, Apple Podcast, & Web BICH</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Episodes Grid -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">● EPISODE TERBARU</h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Ep 13 -->
+                    <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/40 p-4 rounded-xl flex gap-4 items-center transition">
+                        <div class="bg-emerald-950/60 border border-emerald-500/20 text-emerald-400 text-lg font-mono font-bold w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0">
+                            13
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-mono text-slate-500">38 Menit • Pasar Modal & Komoditas</span>
+                            <h4 class="text-xs font-serif font-bold text-white">Membaca Flow Modal Asing di Saham Perbankan & Tambang Banua</h4>
+                            <a href="#" class="text-[11px] font-mono text-emerald-400 hover:underline inline-block mt-1">Dengar Episode &rarr;</a>
+                        </div>
+                    </div>
+
+                    <!-- Ep 12 -->
+                    <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/40 p-4 rounded-xl flex gap-4 items-center transition">
+                        <div class="bg-emerald-950/60 border border-emerald-500/20 text-emerald-400 text-lg font-mono font-bold w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0">
+                            12
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-[10px] font-mono text-slate-500">45 Menit • Keselamatan Kerja</span>
+                            <h4 class="text-xs font-serif font-bold text-white">Standar Keselamatan Kerja (K3) Industri Smelter Berisiko Tinggi</h4>
+                            <a href="#" class="text-[11px] font-mono text-emerald-400 hover:underline inline-block mt-1">Dengar Episode &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== ROOM 2: AKADEMI & MODUL ==================== -->
+        <div id="sec-akademi" class="space-y-6 hidden">
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">● KATALOG MODUL & SILABUS PELATIHAN</h3>
+                    <span class="text-[10px] font-mono text-emerald-400">Akses Gratis & Sertifikasi Premium</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    
+                    <!-- Modul 1 -->
+                    <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 space-y-4 transition flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">LEGAL & TENDER</span>
+                            <h4 class="text-sm font-serif font-bold text-white">Manajemen Tender B2B & Kontrak Legal Proyek Konstruksi</h4>
+                            <p class="text-xs text-slate-400">
+                                Panduan menyusun dokumen penawaran harga, analisa HPS, dan pasal perlindungan hukum subkon.
+                            </p>
+                        </div>
+                        <a href="monetisasi.html?course=tender" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-mono py-2 rounded text-center block transition">
+                            Pelajari Modul &rarr;
+                        </a>
+                    </div>
+
+                    <!-- Modul 2 -->
+                    <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 space-y-4 transition flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">FINANCE & TRADING</span>
+                            <h4 class="text-sm font-serif font-bold text-white">Valuasi Saham Sektor Komoditas & Perbankan Indonesia</h4>
+                            <p class="text-xs text-slate-400">
+                                Teknik analisis laporan keuangan, arus kas IPO, serta strategi transaksi blok & ARA saham komoditas.
+                            </p>
+                        </div>
+                        <a href="monetisasi.html?course=finance" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-mono py-2 rounded text-center block transition">
+                            Pelajari Modul &rarr;
+                        </a>
+                    </div>
+
+                    <!-- Modul 3 -->
+                    <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 space-y-4 transition flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <span class="bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">OPERATIONAL & HSE</span>
+                            <h4 class="text-sm font-serif font-bold text-white">Standard Audit K3LH Lapangan Alat Berat & Smelter</h4>
+                            <p class="text-xs text-slate-400">
+                                Langkah-langkah inspeksi keselamatan kerja, mitigasi risiko hazard, dan pengelolaan limbah industri.
+                            </p>
+                        </div>
+                        <a href="monetisasi.html?course=hse" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-mono py-2 rounded text-center block transition">
+                            Pelajari Modul &rarr;
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==================== TELEGRAM COMMUNITY VIP BANNER ==================== -->
+        <div class="bg-gradient-to-r from-sky-950/60 via-[#080c14] to-[#080c14] border border-sky-500/30 rounded-2xl p-6 sm:p-8 relative overflow-hidden space-y-4 shadow-xl">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="space-y-2 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 border border-sky-500/40 bg-sky-950/60 px-3 py-1 rounded-full text-[10px] font-mono text-sky-400 font-bold">
+                        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+                        <span>TELEGRAM VIP COMMUNITY • BICH HQ</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-serif font-bold text-white">
+                        Siap Melangkah Lebih Jauh? Gabung Channel Telegram BICH
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-300 font-mono leading-relaxed">
+                        Dapatkan notifikasi A1 proyek Kalimantan, bocoran tender subkon, analisis komoditas harian, serta info loker premium langsung di HP Anda.
+                    </p>
+                </div>
+                
+                <!-- CTA Button -->
+                <a href="https://t.me/BorneoInsightCareerHub" target="_blank" rel="noopener noreferrer" class="bg-sky-500 hover:bg-sky-400 text-black font-mono font-bold text-xs px-6 py-3.5 rounded-xl transition flex items-center gap-2 flex-shrink-0 shadow-lg shadow-sky-500/20">
+                    <span>🚀</span> Join Channel t.me/BorneoInsightCareerHub &rarr;
+                </a>
+            </div>
+
+            <!-- Quick Benefit Highlights -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-4 border-t border-slate-800/80 text-[11px] font-mono text-slate-400">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sky-400">✓</span> Intel Tender A1
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sky-400">✓</span> Signal & Radar Pasar
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sky-400">✓</span> Early Loker VIP
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-sky-400">✓</span> Modul PDF Gratis
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
+        © 2026 BICH Education & Podcast Desk • Mozens Inc. All Rights Reserved.
+    </footer>
+
+    <!-- Tab Switcher Engine -->
+    <script>
+        function switchEduRoom(room) {
+            const secPodcast = document.getElementById('sec-podcast');
+            const secAkademi = document.getElementById('sec-akademi');
+            const btnPodcast = document.getElementById('tab-podcast-btn');
+            const btnAkademi = document.getElementById('tab-akademi-btn');
+
+            if (room === 'podcast') {
+                secPodcast.classList.remove('hidden');
+                secAkademi.classList.add('hidden');
+                btnPodcast.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2';
+                btnAkademi.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2';
+            } else if (room === 'akademi') {
+                secAkademi.classList.remove('hidden');
+                secPodcast.classList.add('hidden');
+                btnAkademi.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2';
+                btnPodcast.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2';
+            }
+        }
+    </script>
+</body>
+</html>

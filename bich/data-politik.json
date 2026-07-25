@@ -1,0 +1,45 @@
+{
+    "edisi": "Edisi Bi-Weekly: July 2026",
+    "wilayah": [
+        {
+            "id": "kaltim",
+            "nama": "KALTIM & IKN HUB",
+            "kategori": "ZONA UTAMA",
+            "judul": "Akselerasi Infrastruktur & Pergeseran Demografi Politik",
+            "ringkasan": "Analisis benturan kepentingan antara masyarakat adat, investasi nasional, dan peta kekuatan ring-1 kekuasaan baru di sekitar kawasan IKN.",
+            "link": "#"
+        },
+        {
+            "id": "kalbar",
+            "nama": "KALIMANTAN BARAT",
+            "kategori": "BORDER & PLANTED",
+            "judul": "Dinamika Sawit, Perbatasan, & Pluralitas Kultural",
+            "ringkasan": "Pemetaan ketegangan sektoral agribisnis, pengaruh koalisi lintas etnis, dan stabilitas geopolitik wilayah perbatasan darat.",
+            "link": "#"
+        },
+        {
+            "id": "kalsel",
+            "nama": "KALIMANTAN SELATAN",
+            "kategori": "COMMODITY & RELIGION",
+            "judul": "Oligarki Batubara & Pengaruh Jaringan Simpul Agama",
+            "ringkasan": "Membaca konstelasi kekuasaan pengusaha energi fosil lokal terhadap struktur perizinan dan jaringan kultural keagamaan banua.",
+            "link": "#"
+        },
+        {
+            "id": "kalteng",
+            "nama": "KALIMANTAN TENGAH",
+            "kategori": "LAND & FOOD ESTATE",
+            "judul": "Konflik Agraria & Proyek Strategis Nasional (PSN)",
+            "ringkasan": "Audit sentimen publik terkait alih fungsi lahan skala besar, eksistensi masyarakat adat Dayak, dan peta dukungan figur lokal.",
+            "link": "#"
+        },
+        {
+            "id": "kaltara",
+            "nama": "KALIMANTAN UTARA",
+            "kategori": "STRATEGIC OUTPOST",
+            "judul": "Kawasan Industri Hijau & Geopolitik Perbatasan Utara",
+            "ringkasan": "Analisis arus investasi transnasional (KIPI Tanah Kuning), konektifitas ekonomi perbatasan, dan pertahanan pengaruh regional.",
+            "link": "#"
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+  "last_updated": "Jumat, 24 Juli 2026 - 16:30 WITA",
+  "komoditas": [
+    {"nama": "CPO PALM OIL", "harga": "Rp 14.250 /kg", "change": "▲ +1.2%", "status": "up"},
+    {"nama": "BATUBARA (ICI4)", "harga": "$62.5 /Ton", "change": "▲ +0.5%", "status": "up"},
+    {"nama": "NIKEL (LME)", "harga": "$16.400 /Ton", "change": "▼ -0.8%", "status": "down"},
+    {"nama": "EMAS DUNIA", "harga": "$2.350 /oz", "change": "▲ +2.1%", "status": "up"}
+  ],
+  "ruang_makro": {
+    "judul": "Proyeksi Rantai Pasok Kalimantan Pasca-Penyesuaian Tarif Logistik",
+    "ringkasan": "Stabilitas harga CPO dan penguatan permintaan ekspor batubara ICI4 menjadi penyokong utama penerimaan daerah Kalsel dan Kaltim. Penataan kembali koridor transportasi sungai menjadi kunci utama efisiensi biaya logistik hingga akhir kuartal.",
+    "poin_kritis": [
+      "Pergerakan positif ekspor batubara ICI4 menopang arus kas korporasi tambang regional.",
+      "Kenaikan bertahap CPO memperkuat margin sektor perkebunan di Kalbar dan Kalteng.",
+      "Penyesuaian tarif angkut logistik sungai membutuhkan antisipasi pada margin operasional."
+    ]
+  },
+  "ruang_pasar_modal": {
+    "capital_flow": "+Rp 2.3 Triliun (Net Inflow)",
+    "pintu_ipo": "3 Calon Emiten Sektor Energi Siap Melantai Q4 2026",
+    "watchlist": ["TINS", "TLKM", "BRIS", "ADRO"],
+    "judul_briefing": "Peta Akumulasi Bandarmology & Pintu Transaksi Blok",
+    "ringkasan": "Pergerakan modal asing terkonsentrasi pada emiten tambang & infrastruktur dengan rasio dividen tinggi. Bedah struktur teknikal menunjukkan area akumulasi ketat menjelang aksi korporasi kuartal mendatang.",
+    "fokus_pintu": {
+      "pintu_ipo": "Eksplorasi emiten energi lokal yang masuk pipeline penawaran umum.",
+      "pintu_ara": "Tracking volatilitas saham penggerak sektor pertambangan & perbankan syariah.",
+      "pintu_blok": "Pemantauan transaksi crossing jumbo di pasar negosiasi untuk mendeteksi pergeseran pemegang saham utama."
+    }
+  }
+}

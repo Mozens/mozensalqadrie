@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamar Ekonomi Strategis — BICH Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+
+    <!-- LAYER 1: HEADLESS BROWSER & BOT SHIELD (Tereksekusi sebelum render body) -->
+    <script>
+        (function() {
+            // Deteksi lingkungan automated / headless browser
+            const isHeadless = 
+                navigator.webdriver ||
+                Boolean(window.document.documentElement.getAttribute("webdriver")) ||
+                window.callPhantom || 
+                window._phantom || 
+                window.__nightmare ||
+                window.navigator.userAgent.includes("HeadlessChrome") ||
+                window.navigator.userAgent.includes("Puppeteer") ||
+                window.navigator.userAgent.includes("Playwright") ||
+                window.navigator.userAgent.includes("Selenium");
+
+            if (isHeadless) {
+                window.stop();
+                document.documentElement.innerHTML = `
+                    <body style="background-color:#05070a; color:#ef4444; font-family:monospace; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
+                        <div style="text-align:center; border:1px solid #ef4444; padding:2rem; border-radius:0.5rem; background:#080c14;">
+                            <h1 style="font-size:1.5rem; margin-bottom:0.5rem;">[ACCESS DENIED]</h1>
+                            <p style="color:#94a3b8; font-size:0.875rem;">Automated client or headless environment detected by BICH Security Console.</p>
+                        </div>
+                    </body>`;
+                throw new Error("Automated scraper execution terminated.");
+            }
+        })();
+    </script>
+</head>
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+
+    <!-- LAYER 2: HONEYPOT TRAP (Jebakan khusus untuk parser bot scraper) -->
+    <div style="display:none !important; visibility:hidden !important;" aria-hidden="true" class="sr-only">
+        <a href="https://wa.me/6280000000000?text=SCRAPER_HONEYPOT_TRIGGERED" onclick="triggerHoneypotTrap(event)" rel="nofollow" tabIndex="-1">
+            <span>Contact Admin Support</span>
+            <span id="fake-email">admin-desk@mozens-inc-intelligence.com</span>
+        </a>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="border-b border-amber-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 transition flex items-center gap-2">
+                <span>&larr;</span> Portal Utama BICH
+            </a>
+            <span class="text-[11px] font-mono text-amber-400/80 border border-amber-500/20 px-3 py-1 rounded-full bg-amber-500/5">
+                MOZENS INC. • ECONOMIC DESK
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-10">
+
+        <!-- Hero Title -->
+        <div class="text-center space-y-3 max-w-3xl mx-auto">
+            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white">
+                KAMAR EKONOMI <span class="gold-gradient">STRATEGIS</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400 font-mono">
+                Pusat Intelijen Komoditas, Makroekonomi & Capital Flow Pasar Modal Kalimantan
+            </p>
+        </div>
+
+        <!-- Tab Selector Button -->
+        <div class="flex justify-center border-b border-slate-800">
+            <button id="tab-makro-btn" onclick="switchTab('makro')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition">
+                1. RUANG EKONOMI MAKRO
+            </button>
+            <button id="tab-pasar-btn" onclick="switchTab('pasar')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+                2. ANALISA PASAR MODAL
+            </button>
+        </div>
+
+        <!-- Section 1: Ruang Ekonomi Makro -->
+        <div id="ruang-makro" class="space-y-6">
+            <!-- Ticker Board Komoditas -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-4 text-center">
+                    <span class="text-[10px] font-mono text-slate-500 uppercase block">CPO PALM OIL</span>
+                    <span class="text-base font-mono font-bold text-amber-400">Rp 14.250 /kg</span>
+                    <span class="text-[10px] text-emerald-400 block mt-1">▲ +1.2%</span>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-4 text-center">
+                    <span class="text-[10px] font-mono text-slate-500 uppercase block">BATUBARA (ICI4)</span>
+                    <span class="text-base font-mono font-bold text-amber-400">$62.5 /Ton</span>
+                    <span class="text-[10px] text-emerald-400 block mt-1">▲ +0.5%</span>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-4 text-center">
+                    <span class="text-[10px] font-mono text-slate-500 uppercase block">NIKEL (LME)</span>
+                    <span class="text-base font-mono font-bold text-amber-400">$16.400 /Ton</span>
+                    <span class="text-[10px] text-rose-400 block mt-1">▼ -0.8%</span>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-4 text-center">
+                    <span class="text-[10px] font-mono text-slate-500 uppercase block">EMAS DUNIA</span>
+                    <span class="text-base font-mono font-bold text-amber-400">$2.350 /oz</span>
+                    <span class="text-[10px] text-emerald-400 block mt-1">▲ +2.1%</span>
+                </div>
+            </div>
+
+            <!-- Detailed Briefing Card -->
+            <div class="bg-[#080c14] border border-amber-500/20 rounded-xl p-6 sm:p-8 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <span class="text-xs font-mono text-amber-400 font-bold">LOKOMOTIF KOMODITAS & REGIONAL GDP</span>
+                    <span class="text-[10px] font-mono text-slate-500">Update: Jumat Sore</span>
+                </div>
+                <h3 class="text-lg sm:text-xl font-serif font-bold text-white">
+                    Proyeksi Rantai Pasok Kalimantan Pasca-Penyesuaian Tarif Logistik
+                </h3>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                    Stabilitas harga CPO dan penguatan permintaan ekspor batubara ICI4 menjadi penyokong utama penerimaan daerah Kalsel dan Kaltim. Penataan kembali koridor transportasi sungai menjadi kunci utama efisiensi biaya logistik hingga akhir kuartal.
+                </p>
+                <div class="pt-4 flex justify-between items-center">
+                    <span class="text-[11px] font-mono text-slate-400">Akses Laporan Lengkap Khusus Corporate Subscription</span>
+                    <button onclick="executeDispatch('MAKRO')" 
+                       class="bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono font-bold px-4 py-2 rounded transition cursor-pointer">
+                        Hubungi Advisory &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Ruang Analisa Pasar Modal -->
+        <div id="ruang-pasar" class="space-y-6 hidden">
+            <!-- Market Stats Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <span class="text-xs font-mono text-amber-400 font-bold block">1. CAPITAL FLOW TRACKING</span>
+                    <p class="text-xs text-slate-300">Net Foreign Inflow Saham Energi & Tambang:</p>
+                    <span class="text-lg font-mono font-bold text-emerald-400 block">+Rp 2.3 Triliun</span>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <span class="text-xs font-mono text-amber-400 font-bold block">2. PINTU IPO & BLOK</span>
+                    <p class="text-xs text-slate-300">Calon Emiten Sektor Energi Siap IPO:</p>
+                    <span class="text-lg font-mono font-bold text-white block">3 Emiten (Q4)</span>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <span class="text-xs font-mono text-amber-400 font-bold block">3. WATCHLIST SAHAM</span>
+                    <p class="text-xs text-slate-300">Focus Tickers Kalimantan:</p>
+                    <span class="text-sm font-mono font-bold text-amber-300 block">TINS • TLKM • BRIS • ADRO</span>
+                </div>
+            </div>
+
+            <!-- Friday Executive Briefing Card -->
+            <div class="bg-[#080c14] border border-amber-500/20 rounded-xl p-6 sm:p-8 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <span class="text-xs font-mono text-amber-400 font-bold">ANALISA PASAR MINGGUAN (ACUAN AMUNISI SENIN)</span>
+                    <span class="text-[10px] font-mono text-slate-500">Setiap Jumat Sore</span>
+                </div>
+                <h3 class="text-lg sm:text-xl font-serif font-bold text-white">
+                    Peta Akumulasi Bandarmology & Pintu Transaksi Blok
+                </h3>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                    Pergerakan modal asing terkonsentrasi pada emiten tambang dengan rasio dividen tinggi. Bedah struktur teknikal menunjukkan area akumulasi ketat menjelang aksi korporasi kuartal mendatang.
+                </p>
+                <div class="pt-4 flex justify-between items-center">
+                    <span class="text-[11px] font-mono text-slate-400">VIP Membership Analyst Group</span>
+                    <button onclick="executeDispatch('PASAR')" 
+                       class="bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono font-bold px-4 py-2 rounded transition cursor-pointer">
+                        Join Membership &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
+        © 2026 BICH Economic & Capital Market Desk • Mozens Inc.
+    </footer>
+
+    <!-- LAYER 3 & 4: DYNAMIC OBFUSCATION & INTERACTION ENGINE -->
+    <script>
+        // Data tersimpan secara acak/terenkripsi (Base64)
+        const SEC_PAYLOAD = "NjI4MjM0MTMzMzEzMw==";
+
+        function switchTab(tab) {
+            const makroDiv = document.getElementById('ruang-makro');
+            const pasarDiv = document.getElementById('ruang-pasar');
+            const makroBtn = document.getElementById('tab-makro-btn');
+            const pasarBtn = document.getElementById('tab-pasar-btn');
+
+            if (tab === 'makro') {
+                makroDiv.classList.remove('hidden');
+                pasarDiv.classList.add('hidden');
+                makroBtn.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition';
+                pasarBtn.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition';
+            } else {
+                pasarDiv.classList.remove('hidden');
+                makroDiv.classList.add('hidden');
+                pasarBtn.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition';
+                makroBtn.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition';
+            }
+        }
+
+        // Dekode runtime khusus saat dipanggil user
+        function resolveEndpoint() {
+            try {
+                return atob(SEC_PAYLOAD);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function executeDispatch(type) {
+            const raw = resolveEndpoint();
+            
+            if (!raw || raw === "6282341333313") {
+                alert("Sistem Keamanan: Nomor tujuan masih menggunakan konfigurasi dummy. Silakan perbarui nilai SEC_PAYLOAD di skrip dengan Base64 nomor asli.");
+                return;
+            }
+
+            let msg = "";
+            if (type === 'MAKRO') {
+                msg = "Yth. Mozens Inc Advisory,\nSaya tertarik dengan Langganan Laporan Makro Ekonomi.";
+            } else if (type === 'PASAR') {
+                msg = "Yth. Mozens Inc Advisory,\nSaya ingin join Membership Analisis Pasar Modal.";
+            }
+
+            const target = `https://wa.me/${raw}?text=${encodeURIComponent(msg)}`;
+            
+            // Pengamanan reverse tabnabbing
+            const win = window.open(target, '_blank', 'noopener,noreferrer');
+            if (win) win.opener = null;
+        }
+
+        // Handler jika bot mengeklik Honeypot Trap
+        function triggerHoneypotTrap(event) {
+            event.preventDefault();
+            console.warn("Honeypot triggered. Blacklisting client session...");
+            document.body.innerHTML = `
+                <div style="background:#05070a; color:#ef4444; height:100vh; display:flex; justify-content:center; align-items:center; font-family:monospace;">
+                    <h2>[SESSION TERMINATED] Invalid interaction protocol detected.</h2>
+                </div>`;
+        }
+    </script>
+
+</body>
+</html>

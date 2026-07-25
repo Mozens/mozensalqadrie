@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyek & Loker Hub — BICH | Mozens Inc.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-emerald-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+                <span>&larr;</span> Portal Utama BICH
+            </a>
+            <span class="text-[11px] font-mono text-emerald-400/80 border border-emerald-500/20 px-3 py-1 rounded-full bg-emerald-500/5">
+                MOZENS INC. • PROJECT & CAREER DESK
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-8">
+
+        <!-- Hero Title Section with Motto BICH -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+            <!-- Official Motto Badge -->
+            <div class="inline-flex items-center gap-2 border border-emerald-500/40 bg-emerald-950/60 px-4 py-1.5 rounded-full text-xs font-mono text-emerald-400 font-bold shadow-lg shadow-emerald-950/50">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>🛡️ MOTTO BICH: "DATA AKURAT, BUDAYA KORUPSI MINGGAT"</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white">
+                PROYEK & <span class="gold-gradient">BURSA LOKER</span>
+            </h1>
+
+            <p class="text-xs sm:text-sm text-slate-300 font-mono max-w-2xl mx-auto leading-relaxed">
+                Pusat Validasi Proyek 5 Provinsi Kalimantan: Transparansi Progress Lapangan, Penyerapan Subkon Lokal, dan Bursa Talenta Terverifikasi.
+            </p>
+        </div>
+
+        <!-- Room Switcher Tabs -->
+        <div class="flex justify-center border-b border-slate-800">
+            <button id="tab-proyek-btn" onclick="switchRoom('proyek')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2">
+                <span>🏗️</span> ROOM 1: MONITOR PROYEK (AKAN & SEDANG BERJALAN)
+            </button>
+            <button id="tab-loker-btn" onclick="switchRoom('loker')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2">
+                <span>💼</span> ROOM 2: BURSA LOKER & TALENTA
+            </button>
+        </div>
+
+        <!-- ==================== ROOM 1: MONITOR PROYEK ==================== -->
+        <div id="sec-proyek" class="space-y-6">
+            
+            <!-- Quick Metrics / Stats -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div class="bg-[#080c14] border border-slate-800 p-3.5 rounded-xl">
+                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Total Proyek Aktif</span>
+                    <span class="text-xl font-mono font-bold text-emerald-400">42 Proyek</span>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 p-3.5 rounded-xl">
+                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Estimasi Nilai Kontrak</span>
+                    <span class="text-xl font-mono font-bold text-amber-400">Rp 84,2 T</span>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 p-3.5 rounded-xl">
+                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Fase Akan Datang (Q4)</span>
+                    <span class="text-xl font-mono font-bold text-blue-400">11 Proyek</span>
+                </div>
+                <div class="bg-[#080c14] border border-slate-800 p-3.5 rounded-xl">
+                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Penyerapan Tenaga Kerja</span>
+                    <span class="text-xl font-mono font-bold text-purple-400">18.500+ Org</span>
+                </div>
+            </div>
+
+            <!-- List Card Proyek -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">● LIVE PROJECT PIPELINE & PROGRESS TRACKER (5 PROVINSI)</h3>
+                    <span class="text-[10px] font-mono text-emerald-400">Diperbarui: Real-time BICH Intel</span>
+                </div>
+
+                <!-- Proyek Card 1: Sedang Berjalan (IKN / Kaltim) -->
+                <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 space-y-4 transition">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">SEDANG BERJALAN</span>
+                                <span class="text-slate-500 text-[10px] font-mono">IKN / Kaltim • Sektor Infrastruktur</span>
+                            </div>
+                            <h2 class="text-base font-serif font-bold text-white">Pembangunan Jalan Tol Akses IKN Seksi 3B & Istana Negara</h2>
+                        </div>
+                        <div class="text-right sm:text-right">
+                            <span class="text-xs font-mono text-amber-400 block font-bold">Valuasi: Rp 3,4 Triliun</span>
+                            <span class="text-[10px] text-slate-500 font-mono">Main Contractor: BUMN Konsorsium</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Progress Fisik Lapangan</span>
+                            <span class="text-emerald-400 font-bold">78.5% (On Schedule)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                            <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 78.5%"></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-900 flex justify-between items-center text-[11px] font-mono text-slate-400">
+                        <span>Peluang Subkon & Material: <strong class="text-slate-200">Terbuka (Paving & Landscaping)</strong></span>
+                        <a href="https://wa.me/6282341333313?text=Halo%20Admin%20BICH%2C%20saya%20tertarik%20info%20kemitraan%20Proyek%20Tol%20IKN." target="_blank" class="text-emerald-400 hover:underline">Info Kemitraan B2B &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Proyek Card 2: Akan Berjalan (Kaltara) -->
+                <div class="bg-[#080c14] border border-slate-800 hover:border-blue-500/50 rounded-xl p-5 space-y-4 transition">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">AKAN BERJALAN (Q4)</span>
+                                <span class="text-slate-500 text-[10px] font-mono">KIPI Tanah Kuning, Kaltara • Sektor Industri Hijau</span>
+                            </div>
+                            <h2 class="text-base font-serif font-bold text-white">Konstruksi Smelter Alumina & Megawatt Hydroplant Sub-station</h2>
+                        </div>
+                        <div class="text-right sm:text-right">
+                            <span class="text-xs font-mono text-amber-400 block font-bold">Valuasi: Rp 12,8 Triliun</span>
+                            <span class="text-[10px] text-slate-500 font-mono">PMA & Private Consortium</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Progress Tahap Pembebasan Lahan & Amdal</span>
+                            <span class="text-blue-400 font-bold">25.0% (Pre-Construction)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                            <div class="bg-blue-500 h-2.5 rounded-full" style="width: 25%"></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-900 flex justify-between items-center text-[11px] font-mono text-slate-400">
+                        <span>Peluang Subkon & Material: <strong class="text-slate-200">Penyediaan Alat Berat & Catering Camp</strong></span>
+                        <a href="https://wa.me/6282341333313?text=Halo%20Admin%20BICH%2C%20saya%20tertarik%20info%20Smelter%20KIPI." target="_blank" class="text-blue-400 hover:underline">Info Kemitraan B2B &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Proyek Card 3: Sedang Berjalan (Kalsel / Kalteng) -->
+                <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 space-y-4 transition">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">SEDANG BERJALAN</span>
+                                <span class="text-slate-500 text-[10px] font-mono">Tabalong - Barito (Kalsel/Kalteng) • Sektor Logistik</span>
+                            </div>
+                            <h2 class="text-base font-serif font-bold text-white">Modernisasi Jalur Hauling & Pelabuhan Intermoda Sungai Barito</h2>
+                        </div>
+                        <div class="text-right sm:text-right">
+                            <span class="text-xs font-mono text-amber-400 block font-bold">Valuasi: Rp 850 Miliar</span>
+                            <span class="text-[10px] text-slate-500 font-mono">Mitra Swasta Nasional</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-400">Progress Pengerukan & Jetty Extension</span>
+                            <span class="text-emerald-400 font-bold">60.0% (Mid-Phase)</span>
+                        </div>
+                        <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                            <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 60%"></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-900 flex justify-between items-center text-[11px] font-mono text-slate-400">
+                        <span>Peluang Subkon & Material: <strong class="text-slate-200">Tongkang & Fleet Tugboat</strong></span>
+                        <a href="https://wa.me/6282341333313?text=Halo%20Admin%20BICH%2C%20saya%20tertarik%20info%20Pelabuhan%20Barito." target="_blank" class="text-emerald-400 hover:underline">Info Kemitraan B2B &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== ROOM 2: BURSA LOKER ==================== -->
+        <div id="sec-loker" class="space-y-6 hidden">
+            
+            <!-- Banner Monetisasi B2B / Jobseeker -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="monetisasi.html?service=loker" class="bg-gradient-to-r from-amber-950/40 to-[#080c14] border border-amber-500/30 p-4 rounded-xl flex items-center justify-between hover:border-amber-400 transition">
+                    <div>
+                        <span class="text-[9px] font-mono bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded font-bold uppercase">Layanan Perusahaan / B2B</span>
+                        <h4 class="text-xs font-serif font-bold text-white mt-1">Pasang Loker Premium BICH</h4>
+                        <p class="text-[10px] text-slate-400">Jangkau ribuan talenta lokal & profesional Kalimantan.</p>
+                    </div>
+                    <span class="text-xs font-mono text-amber-400 font-bold">&rarr;</span>
+                </a>
+
+                <a href="monetisasi.html?service=cv" class="bg-gradient-to-r from-emerald-950/40 to-[#080c14] border border-emerald-500/30 p-4 rounded-xl flex items-center justify-between hover:border-emerald-400 transition">
+                    <div>
+                        <span class="text-[9px] font-mono bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-bold uppercase">Layanan Pencari Kerja / ATS</span>
+                        <h4 class="text-xs font-serif font-bold text-white mt-1">Assessment & Scan CV AI</h4>
+                        <p class="text-[10px] text-slate-400">Uji kelayakan CV Anda dengan sistem pindaian industri.</p>
+                    </div>
+                    <span class="text-xs font-mono text-emerald-400 font-bold">&rarr;</span>
+                </a>
+            </div>
+
+            <!-- List Vacancies -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">● LOWONGAN KERJA AKTIF (TERVERIFIKASI)</h3>
+                    <span class="text-[10px] font-mono text-slate-500">Filter: All Kalimantan</span>
+                </div>
+
+                <!-- Loker 1 -->
+                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/40 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-bold text-white font-serif">Site HSE Manager (Proyek Konstruksi IKN)</h4>
+                            <span class="bg-red-500/10 border border-red-500/30 text-red-400 text-[9px] font-mono px-1.5 py-0.2 rounded">URGENT</span>
+                        </div>
+                        <p class="text-xs text-slate-400">PT Utama Karya Konstruksi • Sepaku / IKN Nusantara</p>
+                        <div class="flex items-center gap-3 text-[10px] font-mono text-slate-500 pt-1">
+                            <span>💰 Rp 18.000.000 - Rp 25.000.000</span>
+                            <span>•</span>
+                            <span>⏱️ Pengalaman 5+ Tahun</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/6282341333313?text=Lamar%20Posisi%3A%20Site%20HSE%20Manager%20IKN" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold px-4 py-2 rounded-lg text-center transition">
+                        Lamar Sekarang &rarr;
+                    </a>
+                </div>
+
+                <!-- Loker 2 -->
+                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/40 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-bold text-white font-serif">Senior Mining Engineer & Planner</h4>
+                            <span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-mono px-1.5 py-0.2 rounded">FULL TIME</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Barito Energy Resources • Muara Teweh / Banjarmasin Office</p>
+                        <div class="flex items-center gap-3 text-[10px] font-mono text-slate-500 pt-1">
+                            <span>💰 Rp 15.000.000 - Rp 22.000.000</span>
+                            <span>•</span>
+                            <span>⏱️ Pengalaman 3+ Tahun</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/6282341333313?text=Lamar%20Posisi%3A%20Senior%20Mining%20Engineer" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold px-4 py-2 rounded-lg text-center transition">
+                        Lamar Sekarang &rarr;
+                    </a>
+                </div>
+
+                <!-- Loker 3 -->
+                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/40 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <h4 class="text-sm font-bold text-white font-serif">Kapten Tugboat & Logistics Supervisor</h4>
+                            <span class="bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[9px] font-mono px-1.5 py-0.2 rounded">KONTRAK</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Mitra Samarinda Trans Maritime • Samarinda / Mahakam Route</p>
+                        <div class="flex items-center gap-3 text-[10px] font-mono text-slate-500 pt-1">
+                            <span>💰 Rp 10.000.000 - Rp 14.000.000</span>
+                            <span>•</span>
+                            <span>⏱️ Sertifikasi ANT-III / SIB</span>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/6282341333313?text=Lamar%20Posisi%3A%20Kapten%20Tugboat" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold px-4 py-2 rounded-lg text-center transition">
+                        Lamar Sekarang &rarr;
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
+        © 2026 BICH Project & Career Desk • Mozens Inc. All Rights Reserved.
+    </footer>
+
+    <!-- Tab Switcher Engine -->
+    <script>
+        function switchRoom(room) {
+            const secProyek = document.getElementById('sec-proyek');
+            const secLoker = document.getElementById('sec-loker');
+            const btnProyek = document.getElementById('tab-proyek-btn');
+            const btnLoker = document.getElementById('tab-loker-btn');
+
+            if (room === 'proyek') {
+                secProyek.classList.remove('hidden');
+                secLoker.classList.add('hidden');
+                btnProyek.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2';
+                btnLoker.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2';
+            } else if (room === 'loker') {
+                secLoker.classList.remove('hidden');
+                secProyek.classList.add('hidden');
+                btnLoker.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2';
+                btnProyek.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2';
+            }
+        }
+    </script>
+</body>
+</html>
