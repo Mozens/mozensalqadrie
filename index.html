@@ -3,81 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mozens Alqadrie — Sovereign Strategic Advisory & Capital Gatekeeper</title>
+    <meta name="robots" content="noindex, nofollow">
+    <title>Mozens Alqadrie | Sovereign Strategic Advisory</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-base: #05070a;
-            --bg-surface: #0b0f17;
-            --bg-card: #111827;
-            --bg-card-hover: #1f293d;
-            --border-color: rgba(212, 175, 55, 0.15);
-            --border-glow: rgba(56, 189, 248, 0.3);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --text-gold: #d4af37;
+            --bg-dark: #0b0f17;
+            --bg-card: rgba(15, 23, 42, 0.6);
+            --gold-accent: #d4af37;
             --gold-light: #f3e5ab;
-            --cyan-accent: #38bdf8;
-            --indigo-accent: #6366f1;
+            --cyan-tech: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-gold: rgba(212, 175, 55, 0.25);
+            --font-serif: 'Playfair Display', Georgia, serif;
             --font-sans: 'Plus Jakarta Sans', sans-serif;
-            --font-serif: 'Cinzel', serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            font-family: var(--font-sans);
-            line-height: 1.6;
         }
 
         body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
             overflow-x: hidden;
-            background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 40%, rgba(99, 102, 241, 0.03) 0%, transparent 40%),
-                        var(--bg-base);
-        }
-
-        /* Ambient Noise Overlay */
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: 1;
         }
 
         .container {
-            max-width: 1240px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
-            position: relative;
-            z-index: 2;
         }
 
-        /* Header Navigation */
+        /* --- HEADER / NAVBAR --- */
         header {
-            padding: 28px 0;
+            padding: 24px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(5, 7, 10, 0.85);
         }
 
         .nav-wrapper {
@@ -86,812 +58,597 @@
             align-items: center;
         }
 
-        .brand-logo {
+        .logo {
             font-family: var(--font-serif);
-            font-size: 1.35rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--gold-accent);
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            letter-spacing: 1px;
         }
 
-        .brand-logo span {
-            color: var(--text-gold);
-        }
-
-        /* PINTU BICH 1: LINK INTERAKTIF HEADER */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+        .nav-status {
             font-family: var(--font-mono);
             font-size: 0.75rem;
-            color: var(--cyan-accent);
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.25);
+            color: var(--cyan-tech);
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             padding: 6px 14px;
-            border-radius: 100px;
-            letter-spacing: 1px;
-            text-decoration: none;
-            transition: all 0.3s ease;
+            border-radius: 20px;
         }
 
-        .status-badge:hover {
-            border-color: var(--text-gold);
-            color: var(--text-gold);
-            background: rgba(212, 175, 55, 0.1);
-        }
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            background-color: var(--cyan-accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--cyan-accent);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.85); }
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, var(--text-gold) 0%, #b89228 100%);
-            color: #000;
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            padding: 12px 26px;
-            border-radius: 4px;
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
-            border: none;
-            cursor: pointer;
-            display: inline-block;
-        }
-
-        .btn-gold:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 28px rgba(212, 175, 55, 0.35);
-            background: linear-gradient(135deg, #e5c158 0%, var(--text-gold) 100%);
-        }
-
-        .btn-wa-safe {
-            background: rgba(37, 211, 102, 0.15);
-            color: #25D366;
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            padding: 12px 26px;
-            border-radius: 4px;
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(37, 211, 102, 0.4);
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .btn-wa-safe:hover {
-            background: #25D366;
-            color: #000;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            padding: 12px 26px;
-            border-radius: 4px;
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: inline-block;
-        }
-
-        .btn-outline:hover {
-            border-color: var(--cyan-accent);
-            color: var(--cyan-accent);
-            background: rgba(56, 189, 248, 0.05);
-        }
-
-        /* Hero Section Styling */
+        /* --- HERO SECTION --- */
         .hero {
-            padding: 90px 0 80px;
+            padding: 60px 0 40px;
             text-align: center;
-            position: relative;
         }
 
-        .hero-tag {
+        .hero-subhead {
             font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-gold);
-            letter-spacing: 3px;
+            font-size: 0.85rem;
+            color: var(--gold-accent);
+            letter-spacing: 2.5px;
             text-transform: uppercase;
-            margin-bottom: 24px;
-            display: block;
+            margin-bottom: 32px;
+            font-weight: 600;
         }
 
-        /* Frame Foto Profil Eksekutif */
         .hero-portrait-frame {
-            width: 160px;
-            height: 160px;
-            margin: 0 auto 28px;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 32px;
             border-radius: 50%;
-            border: 2px solid var(--text-gold);
+            border: 3px solid var(--gold-accent);
             padding: 5px;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.4), rgba(56, 189, 248, 0.15));
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
-            overflow: hidden;
-            position: relative;
+            background: rgba(212, 175, 55, 0.08);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.35);
         }
 
-        .hero-portrait-frame img {
+        .hero-portrait-img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
             border-radius: 50%;
+            object-fit: cover;
             display: block;
         }
 
-        .hero-title-architect {
+        .hero-name {
             font-family: var(--font-serif);
-            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            font-size: 3.2rem;
             font-weight: 900;
             line-height: 1.1;
-            color: #ffffff;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .hero-motto-box {
-            margin: 24px auto 36px;
-            padding: 16px 28px;
-            display: inline-block;
-            background: rgba(17, 24, 39, 0.6);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
-
-        .hero-motto {
-            font-family: var(--font-serif);
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            font-style: italic;
-            background: linear-gradient(180deg, #ffffff 0%, var(--gold-light) 60%, var(--text-gold) 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1.5px;
-        }
-
-        .hero-divider {
-            width: 80px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--text-gold), transparent);
-            margin: 16px auto;
-        }
-
-        .hero-subtitle {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            max-width: 840px;
-            margin: 0 auto 40px;
-            font-weight: 400;
-            line-height: 1.8;
-        }
-
-        .hero-cta-group {
-            display: flex;
-            gap: 18px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        /* Asymmetry Section (Metrics & Philosophy) */
-        .asymmetry-section {
-            padding: 80px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(11, 15, 23, 0.5);
-        }
-
-        .section-title-wrapper {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-subtitle {
-            font-family: var(--font-mono);
-            color: var(--cyan-accent);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .section-title {
-            font-family: var(--font-serif);
-            font-size: 2.2rem;
             color: #ffffff;
-            letter-spacing: 1px;
-        }
-
-        .asymmetry-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 32px;
-        }
-
-        .asymmetry-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 40px 32px;
-            border-radius: 8px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .asymmetry-card:hover {
-            border-color: var(--border-glow);
-            transform: translateY(-4px);
-            background: var(--bg-card-hover);
-        }
-
-        .card-icon {
-            font-family: var(--font-mono);
-            font-size: 1.8rem;
-            color: var(--text-gold);
             margin-bottom: 20px;
-            display: block;
         }
 
-        .asymmetry-card h3 {
+        .gold-line {
+            width: 70px;
+            height: 3px;
+            background: var(--gold-accent);
+            margin: 0 auto 28px;
+            border-radius: 2px;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+        }
+
+        .quote-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 12px;
+            padding: 20px 32px;
+            max-width: 520px;
+            margin: 0 auto 32px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .quote-card p {
             font-family: var(--font-serif);
-            font-size: 1.35rem;
-            color: #ffffff;
-            margin-bottom: 14px;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            letter-spacing: 2px;
+            margin: 0;
         }
 
-        .asymmetry-card p {
+        .hero-desc {
+            max-width: 650px;
+            margin: 0 auto 36px;
             color: var(--text-muted);
-            font-size: 0.98rem;
+            font-size: 1.1rem;
             line-height: 1.7;
         }
 
-        /* Pillars of Strategic Advisory (The 3 Doors) */
-        .pillars-section {
-            padding: 110px 0;
+        .cta-wrapper {
+            margin-bottom: 60px;
         }
 
-        .pillars-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 32px;
-            margin-top: 50px;
+        .btn-cta {
+            display: inline-block;
+            padding: 16px 36px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gold-accent);
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid var(--gold-accent);
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .pillar-card {
-            background: linear-gradient(180deg, rgba(17, 24, 39, 0.8) 0%, rgba(11, 15, 23, 0.9) 100%);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 12px;
-            padding: 44px 36px;
+        .btn-cta:hover {
+            background: var(--gold-accent);
+            color: var(--bg-dark);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+        }
+
+        /* --- MAP CANVAS SECTION (TERPISAH DIBAWAH HERO) --- */
+        .map-section {
+            margin-bottom: 80px;
+        }
+
+        .hero-visual-side {
             position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: flex-direction;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .pillar-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--text-gold), var(--cyan-accent));
+            max-width: 950px;
+            height: 400px;
+            margin: 0 auto;
+            background: rgba(11, 15, 23, 0.8);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(56, 189, 248, 0.05);
         }
 
-        .pillar-number {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--text-gold);
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            display: block;
-            text-transform: uppercase;
-        }
-
-        .pillar-card h3 {
-            font-family: var(--font-serif);
-            font-size: 1.5rem;
-            color: #ffffff;
-            margin-bottom: 18px;
-            line-height: 1.3;
-        }
-
-        .pillar-card ul {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-
-        .pillar-card ul li {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 12px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .pillar-card ul li::before {
-            content: '◆';
+        .geo-badge {
             position: absolute;
-            left: 0;
-            color: var(--cyan-accent);
-            font-size: 0.65rem;
-            top: 4px;
-        }
-
-        .pillar-badge {
-            align-self: flex-start;
+            top: 16px;
+            left: 16px;
             font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--gold-light);
-            background: rgba(212, 175, 55, 0.1);
+            font-size: 0.7rem;
+            color: var(--gold-accent);
+            background: rgba(5, 7, 10, 0.85);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 4px;
-            text-transform: uppercase;
+            letter-spacing: 1px;
+            pointer-events: none;
+            z-index: 5;
         }
 
-        /* AI Shadow Engine Banner */
-        .ai-engine-section {
-            padding: 90px 0;
-            background: linear-gradient(180deg, #05070a 0%, #0c121e 50%, #05070a 100%);
-            border-top: 1px solid rgba(56, 189, 248, 0.15);
-            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
-            position: relative;
-        }
-
-        .engine-box {
-            background: rgba(17, 24, 39, 0.6);
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 50px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 0 50px rgba(56, 189, 248, 0.05);
-        }
-
-        .engine-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .engine-title {
-            font-family: var(--font-serif);
-            font-size: 1.6rem;
-            color: #ffffff;
-        }
-
-        .engine-status {
+        .geo-status {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
             font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--cyan-accent);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 0.7rem;
+            color: var(--cyan-tech);
+            background: rgba(5, 7, 10, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 6px 12px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            pointer-events: none;
+            z-index: 5;
         }
 
-        .engine-metrics {
+        #geoCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* --- 3 DOORS SECTION --- */
+        .doors-section {
+            padding: 64px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--gold-light);
+            margin-bottom: 48px;
+        }
+
+        .doors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
 
-        .metric-item {
-            background: rgba(5, 7, 10, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 24px;
+        .door-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
             border-radius: 8px;
+            padding: 32px 24px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        .metric-value {
+        .door-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-accent);
+        }
+
+        .door-number {
             font-family: var(--font-mono);
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--cyan-accent);
-            margin-bottom: 6px;
+            font-size: 0.8rem;
+            color: var(--gold-accent);
+            margin-bottom: 12px;
         }
 
-        .metric-label {
-            font-size: 0.85rem;
+        .door-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .door-card p {
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        /* Protocol / Booking Form Section */
-        .booking-section {
-            padding: 110px 0;
-            position: relative;
+        /* --- VIP BRIEFING FORM --- */
+        .briefing-section {
+            padding: 64px 0 96px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .booking-card {
-            max-width: 800px;
+        .form-box {
+            max-width: 600px;
             margin: 0 auto;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 50px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 40px;
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             font-family: var(--font-mono);
             font-size: 0.8rem;
-            color: var(--text-gold);
+            color: var(--gold-accent);
+            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
         }
 
-        .form-control {
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 16px 20px;
-            background: var(--bg-base);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 16px;
+            background: rgba(11, 15, 23, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 6px;
             color: #ffffff;
             font-family: var(--font-sans);
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            font-size: 0.95rem;
         }
 
-        .form-control:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
-            border-color: var(--text-gold);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-accent);
         }
 
-        select.form-control option {
-            background: var(--bg-base);
-            color: #fff;
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--bg-dark);
+            background: var(--gold-accent);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
         }
 
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
+        .btn-submit:hover {
+            background: var(--gold-light);
         }
 
-        .form-footer {
-            text-align: center;
-            margin-top: 36px;
-        }
-
-        /* Footer */
         footer {
-            padding: 60px 0 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
             text-align: center;
-            font-size: 0.85rem;
+            padding: 32px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
             color: var(--text-muted);
         }
 
-        .footer-brand {
-            font-family: var(--font-serif);
-            font-size: 1.2rem;
-            color: #ffffff;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
-        }
-
-        .footer-note {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.4);
-            margin-top: 20px;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .hero { padding: 70px 0 50px; }
-            .booking-card { padding: 30px 20px; }
-            .engine-box { padding: 30px 20px; }
-            .pillar-card { padding: 30px 24px; }
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 992px) {
+            .hero-name {
+                font-size: 2.3rem;
+            }
+            .hero-portrait-frame {
+                width: 150px;
+                height: 150px;
+            }
+            .hero-visual-side {
+                height: 320px;
+            }
+            .doors-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="grid-overlay"></div>
-
-    <!-- Header Navigation -->
+    <!-- NAVBAR -->
     <header>
         <div class="container nav-wrapper">
-            <a href="#" class="brand-logo">
-                MOZENS <span>ALQADRIE</span>
-            </a>
-
-            <!-- PINTU BICH 1: LINK INTERAKTIF HEADER -->
-            <a href="bich/index.html" class="status-badge" title="Klik untuk masuk ke Portal BICH">
-                <div class="status-dot"></div>
-                SHADOW ARMY ACTIVE // BICH PORTAL &rarr;
-            </a>
-
-            <a href="#protocol" class="btn-gold">Private Access</a>
+            <a href="#" class="logo">MOZENS ALQADRIE</a>
+            <div class="nav-status">&#9679; SOVEREIGN NODE ACTIVE</div>
         </div>
     </header>
 
-    <!-- Main Hero -->
-    <section class="hero">
-        <div class="container">
+    <div class="container">
+        <!-- HERO SECTION (PROFIL TERPISAH) -->
+        <section class="hero">
+            <p class="hero-subhead">SOVEREIGN STRATEGIC ADVISORY &bull; SOVEREIGN ARCHITECT</p>
             
-            <!-- Strategic Title Badge -->
-            <span class="hero-tag">Sovereign Strategic Advisory • Sovereign Architect</span>
-
-            <!-- FOTO PROFIL EKSEKUTIF -->
             <div class="hero-portrait-frame">
-                <img src="profile.jpg" alt="Mozens Alqadrie">
+                <img src="profile.jpg" alt="Mozens Alqadrie" class="hero-portrait-img">
             </div>
 
-            <!-- Main Title & Name -->
-            <h1 class="hero-title-architect">
-                MOZENS ALQADRIE
-            </h1>
+            <h1 class="hero-name">MOZENS<br>ALQADRIE</h1>
+            <div class="gold-line"></div>
 
-            <div class="hero-divider"></div>
-
-            <!-- Official Motto Box -->
-            <div class="hero-motto-box">
-                <p class="hero-motto">&ldquo;Perhatikan. Analisa. Eksekusi.&rdquo;</p>
+            <div class="quote-card">
+                <p>“PERHATIKAN. ANALISA. EKSEKUSI.”</p>
             </div>
 
-            <!-- Hero Subtitle -->
-            <p class="hero-subtitle">
-                Navigasi realitas lapangan Kalimantan, transaksi blok pasar modal, dan penataan transaksi B2B tingkat tinggi. Dieksekusi dengan kecepatan mesin tanpa kompromi, ditajamkan oleh intuisi tunggal.
+            <p class="hero-desc">
+                Navigasi realitas lapangan Kalimantan, transaksi blok pasar modal, dan penataan transaksi B2B tingkat tinggi. Dieksekusi dengan presisi dan konfidensial.
             </p>
 
-            <!-- Call to Action Group -->
-            <div class="hero-cta-group">
-                <a href="#protocol" class="btn-gold">Initiate Private Briefing</a>
-                
-                <!-- TOMBOL WA AMAN ANTI-SCRAPER -->
-                <a href="#" onclick="openAmanWA(event)" class="btn-wa-safe">💬 Direct WhatsApp</a>
-
-                <a href="#pillars" class="btn-outline">Explore Strategic Doors</a>
-                <a href="bich/index.html" class="btn-outline" style="border-color: var(--text-gold); color: var(--gold-light);">🦅 Masuk Portal BICH</a>
+            <div class="cta-wrapper">
+                <a href="#vipBriefingForm" class="btn-cta">
+                    INITIATE PRIVATE BRIEFING &rarr;
+                </a>
             </div>
+        </section>
 
-        </div>
-    </section>
-
-    <!-- Asymmetry Philosophy -->
-    <section class="asymmetry-section">
-        <div class="container">
-            <div class="section-title-wrapper">
-                <span class="section-subtitle">Asimetri Informasi & Eksekusi</span>
-                <h2 class="section-title">Mengapa Korporasi & Capitalist Membutuhkan Pintu Ini</h2>
+        <!-- MAP CANVAS SECTION (PETA TERKONEKSI DIBAWAH) -->
+        <section class="map-section">
+            <div class="hero-visual-side">
+                <div class="geo-badge">GLOBAL CAPITAL CORRIDOR // NODE 01</div>
+                <canvas id="geoCanvas"></canvas>
+                <div class="geo-status">&#9679; KALIMANTAN HUB ONLINE</div>
             </div>
-            <div class="asymmetry-grid">
-                <div class="asymmetry-card">
-                    <span class="card-icon">01</span>
-                    <h3>Ground Truth vs Bloomberg</h3>
-                    <p>
-                        Analis Jakarta punya data terminal $24k/tahun. Kami punya realitas pergerakan tanah, dinamika penguasa modal lokal, dan jalur eksekusi riil di Kalimantan yang tak pernah masuk laporan resmi.
-                    </p>
+        </section>
+
+        <!-- 3 DOORS SECTION -->
+        <section class="doors-section">
+            <h2 class="section-title">Tiga Pintu Eksekusi Modal</h2>
+            <div class="doors-grid">
+                <div class="door-card">
+                    <div class="door-number">PINTU 01 // IPO</div>
+                    <h3>Capital Market IPO</h3>
+                    <p>Penataan struktur modal, kesiapan regulasi, dan akselerasi aksi korporasi penawaran umum perdana secara presisi.</p>
                 </div>
-                <div class="asymmetry-card">
-                    <span class="card-icon">02</span>
-                    <h3>Tanpa Birokrasi Konsultan</h3>
-                    <p>
-                        Tim riset korporat besar bekerja lambat dan dipenuhi <i>corporate bias</i>. Mozens Alqadrie bekerja sebagai <i>Single Fighter</i> yang menggerakkan puluhan pasukan tak terlihat untuk pengujian skenario secara instant.
-                    </p>
+                <div class="door-card">
+                    <div class="door-number">PINTU 02 // ARA</div>
+                    <h3>Auto Rejection Upper Strategy</h3>
+                    <p>Pemanfaatan likuiditas pasar, analisis capital flow harian, serta mitigasi batas atas penetapan harga saham.</p>
                 </div>
-                <div class="asymmetry-card">
-                    <span class="card-icon">03</span>
-                    <h3>Perlindungan Modal Asli</h3>
-                    <p>
-                        Mencegah modal luar tersangkut kuncian lokal, sekaligus memandu konglomerasi lokal melakukan restrukturisasi ke instrumen pasar modal sebelum tergerus era baru.
-                    </p>
+                <div class="door-card">
+                    <div class="door-number">PINTU 03 // BLOK</div>
+                    <h3>Block Transaction Advisory</h3>
+                    <p>Fasilitasi dan pengamanan transaksi saham skala besar di pasar negosiasi secara terukur dan konfidensial.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- The 3 Strategic Doors -->
-    <section class="pillars-section" id="pillars">
-        <div class="container">
-            <div class="section-title-wrapper">
-                <span class="section-subtitle">Arsitektur Layanan High-Ticket</span>
-                <h2 class="section-title">3 Pintu Strategis Mozens Alqadrie</h2>
-            </div>
-            <div class="pillars-grid">
-                
-                <!-- Door 1 -->
-                <div class="pillar-card">
-                    <div>
-                        <span class="pillar-number">Door 01 // Gatekeeping</span>
-                        <h3>Regional Ground-Truth & Execution Bridge</h3>
-                        <ul>
-                            <li>Navigasi pintu masuk investor/konsorsium ke ekosistem IKN & Kalimantan.</li>
-                            <li>Bypass kuncian modal mentah lokal tanpa konfrontasi merusak.</li>
-                            <li>Pemetaan konstelasi penguasa lahan & izin lokal secara presisi.</li>
-                        </ul>
-                    </div>
-                    <span class="pillar-badge">Executive Retainer</span>
-                </div>
-
-                <!-- Door 2 -->
-                <div class="pillar-card">
-                    <div>
-                        <span class="pillar-number">Door 02 // Capital Structuring</span>
-                        <h3>Block Transaction & IPO Protection Desk</h3>
-                        <ul>
-                            <li>Arsitektur penataan modal untuk pemilik aset fisik lokal yang terancam.</li>
-                            <li>Fasilitasi penjajakan Transaksi Blok & kesiapan pintu IPO.</li>
-                            <li>Transformasi illiquid physical resources menjadi scalable capital market tools.</li>
-                        </ul>
-                    </div>
-                    <span class="pillar-badge">Success Fee + Retainer</span>
-                </div>
-
-                <!-- Door 3 -->
-                <div class="pillar-card">
-                    <div>
-                        <span class="pillar-number">Door 03 // Blind-Spot Audit</span>
-                        <h3>C-Suite Stress Test & Second Opinion</h3>
-                        <ul>
-                            <li>Pengujian independen atas riset/rencana investasi tim internal Anda.</li>
-                            <li>Bongkar asumsi tersembunyi sebelum komitmen modal ratusan miliar.</li>
-                            <li>Devil’s Advocate terpercaya langsung di hadapan Board of Directors.</li>
-                        </ul>
-                    </div>
-                    <span class="pillar-badge">Per Session / On-Demand</span>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- AI Shadow Engine Stats -->
-    <section class="ai-engine-section">
-        <div class="container">
-            <div class="engine-box">
-                <div class="engine-header">
-                    <div>
-                        <h3 class="engine-title">A Shadow Army Compute Architecture</h3>
-                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Infrastruktur riset, sintesis data, & pemodelan skenario otomatis 24/7</p>
-                    </div>
-                    <div class="engine-status">
-                        <div class="status-dot"></div> SYSTEM CAPACITY: 100% OPERATIONAL
-                    </div>
-                </div>
-                <div class="engine-metrics">
-                    <div class="metric-item">
-                        <div class="metric-value">∞</div>
-                        <div class="metric-label">Research Endurance</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">&lt; 30 Mins</div>
-                        <div class="metric-label">Complex Deal Structuring</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">0%</div>
-                        <div class="metric-label">Corporate Fatigue / Bias</div>
-                    </div>
-                    <div class="metric-item">
-                        <div class="metric-value">100%</div>
-                        <div class="metric-label">Single Sovereign Focus</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Access Protocol Form -->
-    <section class="booking-section" id="protocol">
-        <div class="container">
-            <div class="section-title-wrapper">
-                <span class="section-subtitle">Gated Engagement Protocol</span>
-                <h2 class="section-title">Inisiasi Diskusi Strategis</h2>
-            </div>
-            <div class="booking-card">
-                <form onsubmit="event.preventDefault(); alert('Protokol terkirim. Asisten verifikasi akan meninjau profil bisnis Anda sebelum penjadwalan VIP.');">
+        <!-- VIP BRIEFING FORM SECTION -->
+        <section id="vipBriefingForm" class="briefing-section">
+            <h2 class="section-title">Schedule Private Briefing</h2>
+            <div class="form-box">
+                <form id="paymentForm">
                     <div class="form-group">
-                        <label for="fullName">Nama Lengkap & Jabatan</label>
-                        <input type="text" id="fullName" class="form-control" placeholder="Contoh: Mozens / Managing Director" required>
+                        <label for="clientName">Nama Lengkap / Instansi</label>
+                        <input type="text" id="clientName" required placeholder="Contoh: Boss Mozens / PT Capital Group">
                     </div>
-
                     <div class="form-group">
-                        <label for="entity">Entitas Bisnis / Investment Vehicle</label>
-                        <input type="text" id="entity" class="form-control" placeholder="Nama PT / Holding / Family Office" required>
+                        <label for="clientEmail">Email Konfidensial</label>
+                        <input type="email" id="clientEmail" required placeholder="boss@domain.com">
                     </div>
-
                     <div class="form-group">
-                        <label for="door">Pintu Advisory yang Dituju</label>
-                        <select id="door" class="form-control" required>
-                            <option value="">-- Pilih Pintu Strategis --</option>
-                            <option value="1">Door 01: Regional Ground-Truth & Execution (IKN/Kalimantan)</option>
-                            <option value="2">Door 02: Block Transaction & Capital Market Protection (IPO)</option>
-                            <option value="3">Door 03: C-Suite Blind-Spot Audit / Second Opinion</option>
+                        <label for="briefingType">Jenis Layanan Advisory</label>
+                        <select id="briefingType">
+                            <option value="5000000">Private Advisory Session (Rp 5.000.000)</option>
+                            <option value="15000000">Sovereign Block Transaction (Rp 15.000.000)</option>
                         </select>
                     </div>
-
-                    <div class="form-group">
-                        <label for="brief">Ringkasan Kebutuhan / Tipe Transaksi</label>
-                        <textarea id="brief" class="form-control" placeholder="Tuliskan secara singkat konteks bisnis, horizon waktu, dan nilai strategis yang ingin dicapai..." required></textarea>
-                    </div>
-
-                    <div class="form-footer">
-                        <button type="submit" class="btn-gold" style="width: 100%; padding: 18px;">Submit Strategic Brief</button>
-                        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 14px; font-family: var(--font-mono);">
-                            🔒 All submissions are protected under strict Non-Disclosure Protocol.
-                        </p>
-                    </div>
+                    <button type="submit" class="btn-submit" id="btnSubmit">
+                        GENERATE INVOICE & PROCEED &rarr;
+                    </button>
                 </form>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer>
-        <div class="container">
-            <div class="footer-brand">MOZENS ALQADRIE</div>
-            <p>Sovereign Strategic Advisory • Capital Gatekeeper • IKN / Kalimantan Operational Axis</p>
-            
-            <div style="margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                <a href="bich/index.html" style="color: var(--text-gold); text-decoration: none; font-size: 0.8rem; font-family: var(--font-mono); font-weight: 600;">
-                    🦅 [ Akses Publik: BICH Portal &rarr; ]
-                </a>
-                <a href="#" onclick="openAmanWA(event)" style="color: #25D366; text-decoration: none; font-size: 0.8rem; font-family: var(--font-mono); font-weight: 600;">
-                    💬 [ Contact VIP WhatsApp &rarr; ]
-                </a>
-            </div>
-
-            <div class="footer-note">
-                © 2026 Mozens Alqadrie. Powered by Autonomous Intelligence Engine. All Rights Reserved.
-            </div>
-        </div>
+        <p>&copy; 2026 Mozens Alqadrie Advisory. All rights reserved.</p>
     </footer>
 
-    <!-- SCRIPT ENKRIPSI BASE64 ANTI-SCRAPER -->
+    <!-- JS 1: CANVAS ANIMATION (PETA KALIMANTAN GLOBAL CORRIDOR) -->
     <script>
-    function openAmanWA(e) {
-      e.preventDefault();
-      // Nomor 082341333313 terenkripsi Base64
-      const secretKey = "aHR0cHM6Ly93YS5tZS82MjgyMzQxMzMzMzEz";
-      const realUrl = atob(secretKey);
-      window.open(realUrl, '_blank');
-    }
+        (function initGeoCanvas() {
+            const canvas = document.getElementById('geoCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width * window.devicePixelRatio;
+                canvas.height = rect.height * window.devicePixelRatio;
+                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            const hub = { xRel: 0.52, yRel: 0.58, label: 'KALIMANTAN (IKN)' };
+            const nodes = [
+                { xRel: 0.18, yRel: 0.32, label: 'LONDON' },
+                { xRel: 0.34, yRel: 0.46, label: 'DUBAI' },
+                { xRel: 0.46, yRel: 0.62, label: 'SINGAPORE' },
+                { xRel: 0.82, yRel: 0.38, label: 'TOKYO' },
+                { xRel: 0.86, yRel: 0.80, label: 'SYDNEY' },
+                { xRel: 0.08, yRel: 0.38, label: 'NEW YORK' }
+            ];
+
+            const particles = nodes.map((_, idx) => ({
+                nodeIdx: idx,
+                progress: Math.random(),
+                speed: 0.003 + Math.random() * 0.004,
+                direction: Math.random() > 0.3 ? 1 : -1
+            }));
+
+            let pulseRadius = 0;
+
+            function draw() {
+                const w = canvas.width / window.devicePixelRatio;
+                const h = canvas.height / window.devicePixelRatio;
+
+                ctx.clearRect(0, 0, w, h);
+
+                // Grid Background
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+                ctx.lineWidth = 1;
+                const gridSize = 30;
+                for (let x = 0; x < w; x += gridSize) {
+                    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+                }
+                for (let y = 0; y < h; y += gridSize) {
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+                }
+
+                const hX = hub.xRel * w;
+                const hY = hub.yRel * h;
+
+                // Radar Pulse
+                pulseRadius = (pulseRadius + 0.6) % 120;
+                ctx.beginPath();
+                ctx.arc(hX, hY, pulseRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(212, 175, 55, ${1 - pulseRadius / 120})`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                // Connecting Arcs & Particles
+                nodes.forEach((node, idx) => {
+                    const nX = node.xRel * w;
+                    const nY = node.yRel * h;
+                    const cX = (hX + nX) / 2;
+                    const cY = Math.min(hY, nY) - 35;
+
+                    ctx.beginPath();
+                    ctx.moveTo(nX, nY);
+                    ctx.quadraticCurveTo(cX, cY, hX, hY);
+                    ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+
+                    const p = particles[idx];
+                    p.progress += p.speed * p.direction;
+                    if (p.progress > 1) p.progress = 0;
+                    if (p.progress < 0) p.progress = 1;
+
+                    const t = p.progress;
+                    const px = (1 - t) * (1 - t) * nX + 2 * (1 - t) * t * cX + t * t * hX;
+                    const py = (1 - t) * (1 - t) * nY + 2 * (1 - t) * t * cY + t * t * hY;
+
+                    ctx.beginPath();
+                    ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+                    ctx.fillStyle = '#38bdf8';
+                    ctx.shadowColor = '#38bdf8';
+                    ctx.shadowBlur = 10;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(nX, nY, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.fill();
+
+                    ctx.font = '9px monospace';
+                    ctx.fillStyle = 'rgba(148, 163, 184, 0.7)';
+                    ctx.fillText(node.label, nX + 8, nY + 3);
+                });
+
+                // Central Hub (Kalimantan)
+                ctx.beginPath();
+                ctx.arc(hX, hY, 7, 0, Math.PI * 2);
+                ctx.fillStyle = '#d4af37';
+                ctx.shadowColor = '#d4af37';
+                ctx.shadowBlur = 15;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.beginPath();
+                ctx.arc(hX, hY, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+
+                ctx.font = 'bold 11px monospace';
+                ctx.fillStyle = '#d4af37';
+                ctx.fillText(hub.label, hX - 45, hY + 22);
+
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+        })();
     </script>
 
+    <!-- JS 2: FORM SUBMISSION TO BACKEND API -->
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmit');
+            btn.disabled = true;
+            btn.innerText = 'PROCESSING INVOICE...';
+
+            const payload = {
+                client_name: document.getElementById('clientName').value,
+                client_email: document.getElementById('clientEmail').value,
+                amount: parseInt(document.getElementById('briefingType').value),
+                description: 'Private Briefing Fee - Mozens Advisory'
+            };
+
+            try {
+                const response = await fetch('/api/create-invoice.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                if (result.status && result.checkout_url) {
+                    window.location.href = result.checkout_url;
+                } else {
+                    alert('Gagal membuat invoice: ' + (result.message || 'Error server.'));
+                    btn.disabled = false;
+                    btn.innerText = 'GENERATE INVOICE & PROCEED \u2192';
+                }
+            } catch (err) {
+                alert('Gagal terhubung ke backend server API.');
+                btn.disabled = false;
+                btn.innerText = 'GENERATE INVOICE & PROCEED \u2192';
+            }
+        });
+    </script>
 </body>
 </html>
