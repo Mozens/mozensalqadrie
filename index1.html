@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow, noarchive">
-    
-    <!-- OPEN GRAPH / SOCIAL MEDIA META TAGS -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Mozens Alqadrie | Sovereign Strategic Advisory">
-    <meta property="og:description" content="Navigasi realitas lapangan Kalimantan, transaksi blok pasar modal, dan penataan B2B tingkat tinggi. Dieksekusi dengan presisi dan kerahasiaan sovereign.">
-    <meta property="og:image" content="profile.jpg">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-
     <title>Mozens Alqadrie | Sovereign Strategic Advisory</title>
     
     <!-- Google Fonts -->
@@ -369,180 +361,6 @@
             color: var(--emerald-light);
         }
 
-        /* --- FAQ SECTION --- */
-        .faq-section {
-            padding: 64px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .faq-accordion {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .faq-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .faq-item:hover {
-            border-color: var(--gold-accent);
-        }
-
-        .faq-question {
-            width: 100%;
-            padding: 22px 28px;
-            background: transparent;
-            border: none;
-            color: #ffffff;
-            font-family: var(--font-sans);
-            font-weight: 600;
-            font-size: 1.05rem;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            gap: 16px;
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 28px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.7;
-            transition: max-height 0.35s cubic-bezier(0, 1, 0, 1), padding 0.35s ease;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-            padding: 0 28px 24px 28px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding-top: 16px;
-        }
-
-        .faq-icon {
-            font-family: var(--font-mono);
-            color: var(--gold-accent);
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.active .faq-icon {
-            transform: rotate(45deg);
-        }
-
-        /* --- VIP BRIEFING FORM --- */
-        .briefing-section {
-            padding: 64px 0 96px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .form-box {
-            max-width: 650px;
-            margin: 0 auto;
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 12px;
-            padding: 40px;
-            transition: all 0.3s ease;
-        }
-
-        .form-group { margin-bottom: 22px; }
-
-        .form-group label {
-            display: block;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--gold-accent);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 14px 18px;
-            background: rgba(11, 15, 23, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 6px;
-            color: #ffffff;
-            font-family: var(--font-sans);
-            font-size: 0.95rem;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--gold-accent);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 16px;
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--bg-dark);
-            background: var(--gold-accent);
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-        }
-
-        .btn-submit:hover {
-            background: var(--gold-light);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-        }
-
-        /* Security Badges */
-        .security-badges {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 18px;
-            margin-top: 22px;
-            padding-top: 18px;
-            border-top: 1px dashed rgba(255, 255, 255, 0.08);
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            flex-wrap: wrap;
-        }
-
-        .security-badge-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .direct-concierge-note {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .direct-concierge-note a {
-            color: var(--gold-light);
-            text-decoration: underline;
-            font-family: var(--font-mono);
-        }
-
         /* --- MODAL WINDOW ("DALAMNYA PINTU") --- */
         .modal-overlay {
             position: fixed;
@@ -701,78 +519,73 @@
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
-        /* --- FLOATING VIP CONCIERGE WIDGET --- */
-        .concierge-float {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 99;
-            background: rgba(15, 23, 42, 0.92);
-            border: 1px solid var(--gold-accent);
-            padding: 12px 20px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--gold-light);
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
+        /* --- VIP BRIEFING FORM --- */
+        .briefing-section {
+            padding: 64px 0 96px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-box {
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 40px;
             transition: all 0.3s ease;
         }
 
-        .concierge-float:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
-            background: var(--gold-accent);
-            color: var(--bg-dark);
-        }
+        .form-group { margin-bottom: 22px; }
 
-        /* --- CLIENT HANDLING STATE / LOADING OVERLAY --- */
-        .loading-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(5, 8, 14, 0.94);
-            backdrop-filter: blur(12px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .loading-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .loading-spinner {
-            width: 54px;
-            height: 54px;
-            border: 3px solid rgba(212, 175, 55, 0.15);
-            border-top-color: var(--gold-accent);
-            border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-            margin-bottom: 24px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
+        .form-group label {
+            display: block;
             font-family: var(--font-mono);
-            font-size: 0.88rem;
-            color: var(--gold-light);
-            letter-spacing: 2px;
+            font-size: 0.8rem;
+            color: var(--gold-accent);
+            margin-bottom: 8px;
             text-transform: uppercase;
-            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(11, 15, 23, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 6px;
+            color: #ffffff;
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--bg-dark);
+            background: var(--gold-accent);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .btn-submit:hover {
+            background: var(--gold-light);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
         }
 
         footer {
@@ -789,7 +602,6 @@
             .hero-portrait-frame { width: 150px; height: 150px; }
             .doors-grid { grid-template-columns: 1fr; }
             .modal-box { padding: 28px 20px; }
-            .concierge-float { bottom: 16px; right: 16px; font-size: 0.72rem; padding: 10px 16px; }
         }
     </style>
 </head>
@@ -904,46 +716,6 @@
             </div>
         </section>
 
-        <!-- FAQ SECTION -->
-        <section class="faq-section">
-            <div class="section-header">
-                <h2 class="section-title">Protocol & Execution FAQ</h2>
-                <p class="section-subtitle">Pertanyaan teknis seputar mekanika transaksi dan kerahasiaan sovereign.</p>
-            </div>
-
-            <div class="faq-accordion">
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>Apa langkah pertama setelah pengajuan Private Briefing dilakukan?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Sistem akan menerbitkan invoice resmi dan mengunci slot waktu Anda. Setelah pengesahan retainer selesai, dokumen Non-Disclosure Agreement (NDA) serta encrypted meeting link dikirimkan secara konfidensial ke email terdaftar.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>Bagaimana protokol jaminan kerahasiaan entitas / identitas entitas?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Seluruh parameter transaksi diisolasi dalam Sovereign Non-Disclosure Protocol. Tidak ada publikasi, pendaftaran data terbuka, atau pengungkapan pihak ketiga tanpa persetujuan eksplisit tertulis.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>Bagaimana jika kebutuhan entitas mencakup kombinasi beberapa pintu eksekusi?</span>
-                        <span class="faq-icon">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Pilih Pintu Eksekusi dengan cakupan paling dominan pada form. Penyelarasan skema gabungan (misalnya: IPO Structuring sekaligus Block Transaction) akan difinalisasi pada sesi Private Briefing awal.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- VIP BRIEFING FORM SECTION -->
         <section id="vipBriefingForm" class="briefing-section">
             <div class="section-header">
@@ -977,31 +749,9 @@
                     <button type="submit" class="btn-submit" id="btnSubmit">
                         GENERATE INVOICE & PROCEED &rarr;
                     </button>
-
-                    <!-- Trust & Security Badges -->
-                    <div class="security-badges">
-                        <span class="security-badge-item">🔒 256-BIT ENCRYPTED</span>
-                        <span class="security-badge-item">🛡️ NON-DISCLOSURE PROTOCOL</span>
-                        <span class="security-badge-item">⚡ DIRECT SOVEREIGN CLEARING</span>
-                    </div>
                 </form>
-
-                <div class="direct-concierge-note">
-                    Butuh penanganan clearance langsung? <a href="https://t.me/mozensalqadrie" target="_blank">Hubungi VIP Direct Desk &rarr;</a>
-                </div>
             </div>
         </section>
-    </div>
-
-    <!-- FLOATING VIP CONCIERGE WIDGET -->
-    <a href="https://t.me/mozensalqadrie" target="_blank" class="concierge-float">
-        <span style="color:var(--cyan-tech)">⚡</span> VIP Direct Desk
-    </a>
-
-    <!-- LOADING OVERLAY / CLIENT HANDLING STATE -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingText">Securing Encrypted Channel...</div>
     </div>
 
     <!-- MODAL OVERLAY ("DALAMNYA PINTU 01 - 03") -->
@@ -1183,27 +933,12 @@
             }, 2000);
         }
 
-        // FAQ Toggle Function
-        function toggleFaq(buttonEl) {
-            const item = buttonEl.parentElement;
-            const isActive = item.classList.contains('active');
-            
-            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
-            
-            if (!isActive) {
-                item.classList.add('active');
-            }
-        }
-
-        // Form Submission Handler with Client Handling State
+        // Form Submission Handler
         document.getElementById('paymentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const loadingText = document.getElementById('loadingText');
-
             btn.disabled = true;
-            loadingOverlay.classList.add('active');
+            btn.innerText = 'PROCESSING REQUEST...';
 
             const rawValue = document.getElementById('briefingType').value.split('|');
             const doorCode = rawValue[0];
@@ -1219,10 +954,6 @@
                 redirect_url: returnUrl
             };
 
-            setTimeout(() => {
-                loadingText.innerText = "Generating Sovereign Invoice & Protocol...";
-            }, 800);
-
             try {
                 const response = await fetch('/api/create-invoice.php', {
                     method: 'POST',
@@ -1234,10 +965,10 @@
                 if (result.status && result.checkout_url) {
                     window.location.href = result.checkout_url;
                 } else {
-                    setTimeout(() => { window.location.href = returnUrl; }, 1200);
+                    setTimeout(() => { window.location.href = returnUrl; }, 800);
                 }
             } catch (err) {
-                setTimeout(() => { window.location.href = returnUrl; }, 1200);
+                setTimeout(() => { window.location.href = returnUrl; }, 800);
             }
         });
     </script>
