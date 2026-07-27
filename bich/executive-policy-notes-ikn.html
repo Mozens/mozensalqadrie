@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>Executive Policy Notes: Lanskap Politik & Risiko IKN | BICH Executive Briefing</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- MIDTRANS SNAP JS (Ganti YOUR_CLIENT_KEY dengan Client Key Midtrans Sandbox/Production milikmu) -->
+    <!-- <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="YOUR_CLIENT_KEY"></script> -->
+
+    <style>
+        :root {
+            --bg-dark: #0b0f17;
+            --bg-card: rgba(15, 23, 42, 0.85);
+            --emerald-bich: #059669;
+            --emerald-light: #34d399;
+            --gold-accent: #d4af37;
+            --gold-light: #f3e5ab;
+            --cyan-tech: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-emerald: rgba(5, 150, 105, 0.35);
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        /* --- FITUR KEAMANAN: DISABLE SELEKSI TEKS --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(11, 15, 23, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--emerald-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+
+        .bich-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--gold-accent);
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        /* --- ARTICLE HEADER --- */
+        .article-header {
+            padding: 48px 0 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge-paywall {
+            color: #f87171;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .article-title {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.25;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .article-lead {
+            font-size: 1.15rem;
+            color: var(--gold-light);
+            font-family: var(--font-serif);
+            font-style: italic;
+            line-height: 1.6;
+            border-left: 3px solid var(--emerald-light);
+            padding-left: 20px;
+        }
+
+        /* --- ARTICLE CONTENT --- */
+        .article-body {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            position: relative;
+        }
+
+        .article-body h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: #ffffff;
+            margin: 40px 0 16px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .article-body h3 {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            color: var(--emerald-light);
+            margin: 28px 0 12px;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+        }
+
+        .article-body ul {
+            margin: 0 0 24px 24px;
+            color: var(--text-muted);
+        }
+
+        .article-body li {
+            margin-bottom: 10px;
+        }
+
+        .callout-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-emerald);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin: 32px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .callout-title {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--emerald-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- PAYWALL BLUR & INTERCEPTION BOX --- */
+        .paywall-wrapper {
+            position: relative;
+            margin-top: -80px;
+            padding-top: 100px;
+        }
+
+        .paywall-blur-content {
+            filter: blur(7px);
+            opacity: 0.25;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .paywall-gate-card {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 680px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(11, 15, 23, 0.98) 100%);
+            border: 1px solid var(--gold-accent);
+            border-radius: 16px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.15);
+            z-index: 10;
+            backdrop-filter: blur(12px);
+        }
+
+        .paywall-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .paywall-title {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .paywall-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .paywall-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: #ffffff;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .paywall-btn:hover {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(5, 150, 105, 0.5);
+        }
+
+        .paywall-note {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--gold-accent);
+            margin-top: 16px;
+        }
+
+        /* --- MODAL PAYMENT GATEWAY UI --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #0f172a;
+            border: 1px solid var(--gold-accent);
+            border-radius: 16px;
+            max-width: 480px;
+            width: 100%;
+            padding: 32px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h3 {
+            font-family: var(--font-serif);
+            color: #ffffff;
+            font-size: 1.4rem;
+            margin-bottom: 6px;
+        }
+
+        .modal-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .payment-option:hover {
+            border-color: var(--emerald-light);
+            background: rgba(5, 150, 105, 0.15);
+        }
+
+        .payment-method-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .price-tag {
+            font-family: var(--font-mono);
+            color: var(--gold-accent);
+            font-weight: 700;
+        }
+
+        /* --- AUTHOR & FOOTER --- */
+        .briefing-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 0;
+            margin-top: 60px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-accent);
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            color: #ffffff;
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+        }
+
+        .author-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .article-title { font-size: 1.8rem; }
+            .article-lead { font-size: 1rem; }
+            .paywall-gate-card { padding: 28px 20px; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- NAVBAR -->
+    <header>
+        <div class="container nav-wrapper">
+            <!-- Jalur aman mengarah ke index.html di dalam folder bich -->
+            <a href="index.html" class="back-link">
+                &larr; Masuk ke Halaman Utama BICH
+            </a>
+            <span class="bich-tag">BORNEO INSIGHT & CAREER HUB</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- ARTICLE HEADER -->
+        <article>
+            <header class="article-header">
+                <div class="article-meta">
+                    <span>🔴 <a href="politik.html" style="color:inherit; text-decoration:none;">KAMAR POLITIK & POLICY</a></span>
+                    <span>&bull;</span>
+                    <span>27 Juli 2026</span>
+                    <span>&bull;</span>
+                    <span class="badge-paywall">PAYWALL-GRADE BRIEFING</span>
+                </div>
+
+                <h1 class="article-title">
+                    🏛️ Executive Policy Notes: Lanskap Politik & Risiko IKN
+                </h1>
+
+                <p class="article-lead">
+                    Anatomi konsolidasi kebijakan eksekutif pusat, eskalasi respons kritis civil society (YLBHI), serta penetapan arah hilirisasi kratom Kalimantan Timur dalam memperkuat ketahanan arus kas daerah.
+                </p>
+            </header>
+
+            <!-- ARTICLE BODY -->
+            <div class="article-body">
+                <!-- TEASER TEKS (GRATIS DIBACA) -->
+                <h2>1. Konsolidasi Kebijakan Pusat & Eskalasi Hukum IKN</h2>
+                <p>
+                    Dinamika politik makro kuartal ketiga tahun 2026 diwarnai oleh percepatan penataan hak atas tanah dan alokasi ruang di kawasan Ibu Kota Nusantara (IKN). Langkah eksekutif mendesentralisasikan sebagian kewenangan perizinan investasi secara langsung ke Otorita IKN telah memicu daya dorong baru bagi arus modal asing. Namun, kondisi ini secara paralel mengeskalasi gesekan dengan kelompok sipil.
+                </p>
+
+                <!-- AREA PAYWALL INTERCEPTION -->
+                <div class="paywall-wrapper">
+                    
+                    <!-- KARTU PENCEGATAN BERLANGGANAN -->
+                    <div class="paywall-gate-card">
+                        <span class="paywall-icon">🔒</span>
+                        <h3 class="paywall-title">Akses Khusus BICH Executive Briefing</h3>
+                        <p class="paywall-desc">
+                            Anda telah mencapai batas pratinjau gratis. Lanjutan analisis mendalam terkait <strong>Risiko Gugatan YLBHI Ring 1 & 2 IKN</strong>, <strong>Strategi Hilirisasi Kratom Pemprov Kaltim</strong>, serta <strong>Rekomendasi Navigasi Capital Flow</strong> khusus untuk Anggota Berlangganan / Executive Member.
+                        </p>
+                        
+                        <!-- TOMBOL TRIGGER PAYMENT GATEWAY -->
+                        <button class="paywall-btn" onclick="openPaymentGateway()">
+                            🔑 Buka Akses Analisis Penuh
+                        </button>
+
+                        <div class="paywall-note">
+                            Sovereign Intelligence Protocol &bull; Restricted Distribution
+                        </div>
+                    </div>
+
+                    <!-- ISU DI-BLUR SENSITIF (LOCKED CONTENT) -->
+                    <div class="paywall-blur-content">
+                        <p>
+                            <strong>Yayasan Lembaga Bantuan Hukum Indonesia (YLBHI)</strong> beserta konsorsium masyarakat adat menerbitkan nota keberatan resmi terkait akselerasi pengadaan tanah. Isu utama berpusat pada:
+                        </p>
+                        <ul>
+                            <li>Potensi tumpang tindih Hak Guna Bangunan (HGB) di atas tanah ulayat yang belum terselesaikan lewat dialog formal.</li>
+                            <li>Risiko gugatan Tata Usaha Negara (TUN) terhadap beberapa Surat Keputusan (SK) alokasi lahan utama di Ring 1 & 2.</li>
+                            <li>Tuntutan transparansi atas klausul kompensasi sosial dalam skema kerja sama pemerintah dan badan usaha (KPBU).</li>
+                        </ul>
+
+                        <div class="callout-box">
+                            <div class="callout-title">⚡ Sovereign Risk Note</div>
+                            <p style="margin:0; font-size: 0.95rem;">
+                                Entitas investor disarankan untuk memastikan klausul Clear and Clean (C&C) atas sertifikasi lahan tidak hanya bertumpu pada SK Otorita, tetapi juga memuat pengesahan batas adat lokal guna menghindari injunction order (penundaan pelaksanaan) pasca-eksekusi konstruksi.
+                            </p>
+                        </div>
+
+                        <h2>2. Kalimantan Timur: Hilirisasi Kratom & Arus Kas Daerah</h2>
+                        <p>
+                            Di tingkat regional, Pemerintah Provinsi Kalimantan Timur mengambil langkah terobosan untuk menjaga kestabilan Pendapatan Asli Daerah (PAD) di tengah penyesuaian dana bagi hasil sektor migas dan batubara. Pemprov Kaltim secara terbuka menegaskan komitmen penuh terhadap <strong>hilirisasi komoditas Kratom (Mitragyna Speciosa)</strong>.
+                        </p>
+                        
+                        <h3>Strategi Taktis Pemprov Kaltim:</h3>
+                        <p>
+                            Perubahan status regulasi kratom di tingkat nasional dimanfaatkan secara taktis oleh Kaltim untuk mengunci rantai pasok industri ekstraksi obat dan farmasi:
+                        </p>
+                        <ul>
+                            <li><strong>Standardisasi Mutu Ekspor:</strong> Pembentukan fasilitas pengujian kadar alkaloid mitra BUMD untuk memverifikasi standar bebas kontaminan sebelum masuk ke pelabuhan muat.</li>
+                            <li><strong>Skema Kemitraan B2B:</strong> Pembatasan pengiriman bahan mentah (rekaan/remodified leaf) out-of-province guna memaksa pembangunan pabrik pengolahan ekstrak di dalam kawasan industri lokal.</li>
+                            <li><strong>Proyeksi Kas Daerah:</strong> Pungutan retribusi daerah dan skema kemitraan desa dinilai berpotensi menyumbang arus kas segar hingga puluhan miliar rupiah per kuartal secara berkelanjutan.</li>
+                        </ul>
+
+                        <h2>3. Navigasi Capital Flow & Rekomendasi Taktis</h2>
+                        <p>
+                            Dari kacamata arsitektur transaksi modal, terdapat dua momentum presisi yang dapat dimanfaatkan oleh para pemegang kebijakan korporasi:
+                        </p>
+                        <p>
+                            <strong>Pertama (Sektor Properti & Infrastruktur IKN):</strong> Manfaatkan fase konsolidasi politik ini untuk mengamankan kesepakatan joint venture dengan struktur sertifikasi berjaminan ganda.
+                        </p>
+                        <p>
+                            <strong>Kedua (Komoditas & Agro-Industri Kaltim):</strong> Masuknya regulasi hilirisasi kratom muka bumi memberikan ruang masuk (entry point) ideal bagi modal ekuitas privat untuk mengakuisisi entitas pengolahan bersertifikat eksklusif di wilayah Kutai Kartanegara dan Kapuas Hulu.
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- AUTHOR BOX -->
+                <div class="author-box">
+                    <img src="../profile.jpg" alt="Mozens Alqadrie" class="author-avatar">
+                    <div class="author-info">
+                        <h4>Mozens Alqadrie</h4>
+                        <p>Sovereign Strategic Advisory &bull; BICH Lead Intel Desk</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- MODAL PAYMENT GATEWAY MIDTRANS / XENDIT -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closePaymentGateway()">&times;</button>
+            <div class="modal-header">
+                <h3>Gerbang Pembayaran Eksekutif</h3>
+                <p>Pilih metode pembayaran instan untuk membuka akses penuh BICH Intelligence</p>
+            </div>
+
+            <!-- Opsi Midtrans / Xendit Direct Link -->
+            <div class="payment-option" onclick="processPayment('QRIS')">
+                <div class="payment-method-info">
+                    <span>📱</span>
+                    <span>QRIS (Gopay, OVO, Dana, Shopee)</span>
+                </div>
+                <span class="price-tag">Rp 49.000</span>
+            </div>
+
+            <div class="payment-option" onclick="processPayment('VA')">
+                <div class="payment-method-info">
+                    <span>🏦</span>
+                    <span>Virtual Account (BCA, Mandiri, BRI, BNI)</span>
+                </div>
+                <span class="price-tag">Rp 49.000</span>
+            </div>
+
+            <div class="payment-option" onclick="processPayment('CC')">
+                <div class="payment-method-info">
+                    <span>💳</span>
+                    <span>Kartu Kredit / Debit Online</span>
+                </div>
+                <span class="price-tag">Rp 49.000</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="briefing-footer">
+        <div class="container">
+            <p>&copy; 2026 Borneo Insight & Career Hub (BICH). Sovereign Intelligence Protocol.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT LOGIK PAYMENT & SECURITY -->
+    <script>
+        // --- LOGIK PAYMENT GATEWAY ---
+        function openPaymentGateway() {
+            // JIKA MENGGUNAKAN MIDTRANS SNAP JS INTEGRATION:
+            /*
+            snap.pay('SNAP_TRANSACTION_TOKEN_FROM_BACKEND', {
+                onSuccess: function(result){ alert("Pembayaran Berhasil!"); location.reload(); },
+                onPending: function(result){ alert("Menunggu Pembayaran..."); },
+                onError: function(result){ alert("Pembayaran Gagal!"); }
+            });
+            */
+
+            // JIKA MENGGUNAKAN MODAL CUSTOM / PAYMENT LINK:
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function closePaymentGateway() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        function processPayment(method) {
+            // Contoh jika mengarahkan langsung ke Payment Link Xendit / Midtrans:
+            // window.location.href = "https://checkout.xendit.co/web/YOUR_INVOICE_LINK";
+            
+            alert("Mengarahkan ke Gerbang Pembayaran " + method + "... (Ganti URL Payment Link Midtrans/Xendit Kamu di Script)");
+        }
+
+        // --- DISABLE KLIK KANAN & SHORTCUT (KEAMANAN) ---
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
+                e.preventDefault();
+            }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) {
+                e.preventDefault();
+            }
+            if (e.key === 'F12') { e.preventDefault(); }
+        });
+        document.addEventListener('copy', function(e) { e.preventDefault(); });
+    </script>
+
+</body>
+</html>

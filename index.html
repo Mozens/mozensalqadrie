@@ -182,10 +182,131 @@
 
         .hero-desc {
             max-width: 650px;
-            margin: 0 auto 36px;
+            margin: 0 auto 32px;
             color: var(--text-muted);
             font-size: 1.1rem;
             line-height: 1.7;
+        }
+
+        /* --- BICH WIDGETS CONTAINER & CARDS --- */
+        .bich-widgets-wrapper {
+            max-width: 650px;
+            margin: 0 auto 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .bich-preview-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(5, 150, 105, 0.35);
+            border-radius: 12px;
+            padding: 24px 28px;
+            text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(5, 150, 105, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        .bich-preview-card.economy-theme {
+            border-color: rgba(56, 189, 248, 0.35);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .bich-preview-card:hover {
+            border-color: var(--emerald-light);
+        }
+
+        .bich-preview-card.economy-theme:hover {
+            border-color: var(--cyan-tech);
+        }
+
+        .bich-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .bich-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--emerald-light);
+            background: rgba(5, 150, 105, 0.15);
+            border: 1px solid rgba(5, 150, 105, 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bich-badge.cyan {
+            color: var(--cyan-tech);
+            background: rgba(56, 189, 248, 0.15);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .pulse-emerald {
+            width: 7px;
+            height: 7px;
+            background-color: var(--emerald-light);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--emerald-light);
+            animation: pulse 1.8s infinite;
+        }
+
+        .bich-date {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .bich-preview-title {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .bich-preview-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .bich-preview-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 14px;
+        }
+
+        .bich-class-tag {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--gold-accent);
+        }
+
+        .bich-preview-link {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--emerald-light);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .bich-preview-link.cyan-link {
+            color: var(--cyan-tech);
+        }
+
+        .bich-preview-link:hover {
+            color: #ffffff;
+            text-decoration: underline;
         }
 
         .cta-wrapper { margin-bottom: 60px; }
@@ -509,7 +630,6 @@
             box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
         }
 
-        /* Security Badges */
         .security-badges {
             display: flex;
             justify-content: center;
@@ -543,7 +663,7 @@
             font-family: var(--font-mono);
         }
 
-        /* --- MODAL WINDOW ("DALAMNYA PINTU") --- */
+        /* --- MODAL WINDOW --- */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -730,7 +850,7 @@
             color: var(--bg-dark);
         }
 
-        /* --- CLIENT HANDLING STATE / LOADING OVERLAY --- */
+        /* --- LOADING OVERLAY --- */
         .loading-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -825,6 +945,63 @@
             <p class="hero-desc">
                 Navigasi realitas lapangan Kalimantan, transaksi blok pasar modal, dan penataan transaksi B2B tingkat tinggi. Dieksekusi dengan presisi, kerahasiaan sovereign, dan kepastian skema.
             </p>
+
+            <!-- BICH DUAL EXECUTIVE BRIEFING WIDGETS CONTAINER -->
+            <div class="bich-widgets-wrapper">
+                
+                <!-- WIDGET 1: POLITIK & KEBIJAKAN -->
+                <div class="bich-preview-card">
+                    <div class="bich-preview-header">
+                        <span class="bich-badge">
+                            <span class="pulse-emerald"></span>
+                            BICH BRIEFING &bull; POLITIK & KEBIJAKAN
+                        </span>
+                        <span class="bich-date">27 Juli 2026</span>
+                    </div>
+
+                    <h3 class="bich-preview-title">
+                        🏛️ Executive Policy Notes: Lanskap Politik & Risiko IKN
+                    </h3>
+
+                    <p class="bich-preview-text">
+                        Dinamika politik makro diwarnai oleh konsolidasi kebijakan eksekutif serta respons YLBHI. Di Kalimantan Timur, Pemprov menegaskan dukungan hilirisasi kratom untuk memperkuat arus kas daerah...
+                    </p>
+
+                    <div class="bich-preview-footer">
+                        <span class="bich-class-tag">Klasifikasi: Paywall-Grade</span>
+                        <a href="bich/executive-policy-notes-ikn.html" class="bich-preview-link">
+                            Akses Analisis Politik &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- WIDGET 2: EKONOMI & PASAR MODAL -->
+                <div class="bich-preview-card economy-theme">
+                    <div class="bich-preview-header">
+                        <span class="bich-badge cyan">
+                            <span class="pulse-dot"></span>
+                            BICH BRIEFING &bull; EKONOMI & PASAR MODAL
+                        </span>
+                        <span class="bich-date">27 Juli 2026</span>
+                    </div>
+
+                    <h3 class="bich-preview-title">
+                        📊 Macro Economic Notes: Capital Flow & Komoditas Kalimantan
+                    </h3>
+
+                    <p class="bich-preview-text">
+                        Proyeksi arus modal pasar saham regional, rotasi sektor komoditas unggulan, serta peta transaksi blok pasar negosiasi pra-penutupan kuartal di koridor bisnis Kalimantan...
+                    </p>
+
+                    <div class="bich-preview-footer">
+                        <span class="bich-class-tag">Klasifikasi: Paywall-Grade</span>
+                        <a href="bich/executive-economic-notes.html" class="bich-preview-link cyan-link">
+                            Akses Analisis Ekonomi &rarr;
+                        </a>
+                    </div>
+                </div>
+
+            </div>
 
             <div class="cta-wrapper">
                 <a href="#vipBriefingForm" class="btn-cta">
@@ -964,10 +1141,9 @@
                     <div class="form-group">
                         <label for="briefingType">Pintu Eksekusi Utama</label>
                         <select id="briefingType">
-                            <option value="pintu-ipo|10000000">Pintu 01 // Capital Market IPO Structuring (Rp 10.000.000)</option>
+                            <option value="pintu-ipo|10000000" selected>Pintu 01 // Capital Market IPO Structuring (Rp 10.000.000)</option>
                             <option value="pintu-ara|5000000">Pintu 02 // ARA Strategy & Order Book Analytics (Rp 5.000.000)</option>
                             <option value="pintu-blok|15000000">Pintu 03 // Off-Market Block Transaction Advisory (Rp 15.000.000)</option>
-                            <option value="pintu-bich|25000000" selected>Pintu 04 // BICH Special Execution & Clearing (Rp 25.000.000)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1195,7 +1371,7 @@
             }
         }
 
-        // Form Submission Handler with Client Handling State
+        // Form Submission Handler
         document.getElementById('paymentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSubmit');
