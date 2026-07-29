@@ -3,288 +3,375 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regional Political Intelligence & Strategic Advisory — BICH Portal</title>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>Executive Policy Notes: Lanskap Politik & Risiko IKN | BICH Executive Briefing</title>
     
-    <!-- OPTIMASI FONT & PERFORMANCE -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
+        :root {
+            --bg-dark: #0b0f17;
+            --bg-card: rgba(15, 23, 42, 0.85);
+            --emerald-bich: #059669;
+            --emerald-light: #34d399;
+            --gold-accent: #d4af37;
+            --gold-light: #f3e5ab;
+            --cyan-tech: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-emerald: rgba(5, 150, 105, 0.35);
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
-        .gold-gradient {
-            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        /* --- FITUR KEAMANAN: DISABLE SELEKSI TEKS & COPAS --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
-        .bg-gold-card {
-            background: linear-gradient(180deg, rgba(212, 175, 55, 0.05) 0%, rgba(11, 15, 23, 0.95) 100%);
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(11, 15, 23, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--emerald-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+
+        .bich-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--gold-accent);
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        /* --- ARTICLE HEADER --- */
+        .article-header {
+            padding: 48px 0 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge-open-access {
+            color: var(--emerald-light);
+            background: rgba(5, 150, 105, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .article-title {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.25;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .article-lead {
+            font-size: 1.15rem;
+            color: var(--gold-light);
+            font-family: var(--font-serif);
+            font-style: italic;
+            line-height: 1.6;
+            border-left: 3px solid var(--emerald-light);
+            padding-left: 20px;
+        }
+
+        /* --- ARTICLE CONTENT --- */
+        .article-body {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            position: relative;
+        }
+
+        .article-body h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: #ffffff;
+            margin: 40px 0 16px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .article-body h3 {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            color: var(--emerald-light);
+            margin: 28px 0 12px;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .article-body ul {
+            margin: 0 0 24px 24px;
+            color: var(--text-muted);
+        }
+
+        .article-body li {
+            margin-bottom: 10px;
+        }
+
+        .callout-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-emerald);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin: 32px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .callout-title {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--emerald-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- AUTHOR & FOOTER --- */
+        .briefing-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 0;
+            margin-top: 60px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-accent);
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            color: #ffffff;
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+        }
+
+        .author-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .article-title { font-size: 1.8rem; }
+            .article-lead { font-size: 1rem; }
         }
     </style>
 </head>
-<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+<body oncontextmenu="return false;">
 
-    <!-- Header Navigation -->
-    <header class="border-b border-amber-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 transition flex items-center gap-2">
-                <span>&larr;</span> Kembali ke Portal BICH
+    <!-- NAVBAR -->
+    <header>
+        <div class="container nav-wrapper">
+            <a href="index.html" class="back-link">
+                &larr; Masuk ke Halaman Utama BICH
             </a>
-            <div class="flex items-center gap-3">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="text-[11px] font-mono text-slate-400 tracking-wider">ROOM 01 // REGIONAL POLITICAL INTEL</span>
-            </div>
+            <span class="bich-tag">Politik Dan Kebijakan Desk</span>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-6 py-10 flex-grow w-full space-y-12">
-        
-        <!-- Hero Section Room -->
-        <div class="text-center max-w-3xl mx-auto">
-            <p class="text-amber-400 tracking-[0.25em] text-xs font-mono uppercase mb-3">
-                Borneo Insight & Career Hub — Strategic Advisory Desk
-            </p>
-            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif text-white tracking-tight mb-4">
-                GEOPOLITICAL INTELLIGENCE <br><span class="gold-gradient">PULAU KALIMANTAN</span>
-            </h1>
-            <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
-                Analisis mendalam berbasis segmentasi wilayah. Karena dinamika politik Kaltim, Kalbar, Kalsel, Kalteng, dan Kaltara memiliki anatomi kekuasaan dan kerentanan yang unik satu sama lain.
-            </p>
-        </div>
-
-        <!-- BENTENG LEGAL / LEGAL GUARDRAIL BANNER -->
-        <div class="bg-[#0b0f19] border border-slate-800 rounded-lg p-4 max-w-5xl mx-auto text-xs text-slate-400 leading-relaxed flex items-start gap-3">
-            <span class="text-amber-400 text-base font-bold">🛡️</span>
-            <div>
-                <strong class="text-slate-200">Protokol Independensi & Kerahasiaan (NDA):</strong> 
-                Seluruh produk intelijen wilayah disusun secara objektif oleh sistem riset independen non-partisan. Mematuhi koridor hukum yang berlaku dan menjamin proteksi data penuh bagi entitas strategis.
-            </div>
-        </div>
-
-        <!-- BAGIAN 1: SEGMENTASI WILAYAH & WEEKLY BRIEFINGS -->
-        <div class="space-y-6 max-w-6xl mx-auto">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-2">
-                <h2 class="text-xl font-serif font-bold text-amber-200 flex items-center gap-2">
-                    <span class="text-amber-500 font-mono text-sm">01.</span> Segmentasi Briefing Per Wilayah (Bi-Weekly Edition)
-                </h2>
-                <span class="text-[10px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded">AUTO-UPDATED VIA SHADOW ARMY</span>
-            </div>
-
-            <p class="text-xs text-slate-400 leading-relaxed max-w-3xl">
-                Pilih atau pantau laporan berkala per provinsi untuk melihat pergeseran sentimen, konstelasi oligarki lokal, dan titik kritis regulasi daerah.
-            </p>
-
-            <!-- Grid 5 Provinsi Kalimantan -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <!-- Kaltim & IKN -->
-                <div class="bg-[#0b0f19] border border-amber-500/20 hover:border-amber-500/50 rounded-xl p-5 transition flex flex-col justify-between space-y-4 group">
-                    <div>
-                        <div class="flex justify-between items-center text-[10px] font-mono text-amber-400 mb-2">
-                            <span>KALTIM & IKN HUB</span>
-                            <span class="bg-amber-500/10 px-2 py-0.5 rounded">ZONA UTAMA</span>
-                        </div>
-                        <h3 class="text-base font-semibold text-white group-hover:text-amber-300 transition mb-2">
-                            Akselerasi Infrastruktur & Pergeseran Demografi Politik
-                        </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            Analisis benturan kepentingan antara masyarakat adat, investasi nasional, dan peta kekuatan ring-1 kekuasaan baru di sekitar kawasan IKN.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs font-mono">
-                        <span class="text-slate-500">Update: Edisi Juli</span>
-                        <a href="kaltim.html" class="text-amber-400 hover:underline">Baca Briefing &rarr;</a>
-                    </div>
+    <main class="container">
+        <!-- ARTICLE HEADER -->
+        <article>
+            <header class="article-header">
+                <div class="article-meta">
+                    <span>🔴 <a href="politik.html" style="color:inherit; text-decoration:none;">Buletin Analisis Politik </a></span>
+                    <span>&bull;</span>
+                    <span>Edisi 27 Juli 2026</span>
+                    <span>&bull;</span>
+                    <span class="badge-open-access">OPEN ACCESS EXECUTIVE BRIEFING</span>
                 </div>
 
-                <!-- Kalimantan Barat -->
-                <div class="bg-[#0b0f19] border border-slate-800 hover:border-amber-500/30 rounded-xl p-5 transition flex flex-col justify-between space-y-4 group">
-                    <div>
-                        <div class="flex justify-between items-center text-[10px] font-mono text-slate-400 mb-2">
-                            <span>KALIMANTAN BARAT</span>
-                            <span class="bg-slate-800 px-2 py-0.5 rounded">BORDER & PLANTED</span>
-                        </div>
-                        <h3 class="text-base font-semibold text-white group-hover:text-amber-300 transition mb-2">
-                            Dinamika Sawit, Perbatasan, & Pluralitas Kultural
-                        </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            Pemetaan ketegangan sektoral agribisnis, pengaruh koalisi lintas etnis, dan stabilitas geopolitik wilayah perbatasan darat.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs font-mono">
-                        <span class="text-slate-500">Update: Edisi Juli</span>
-                        <a href="kalbar.html" class="text-amber-400 hover:underline">Baca Briefing &rarr;</a>
-                    </div>
-                </div>
+                <h1 class="article-title">
+                    🏛️ Executive Policy Notes: Lanskap Politik & Risiko IKN
+                </h1>
 
-                <!-- Kalimantan Selatan -->
-                <div class="bg-[#0b0f19] border border-slate-800 hover:border-amber-500/30 rounded-xl p-5 transition flex flex-col justify-between space-y-4 group">
-                    <div>
-                        <div class="flex justify-between items-center text-[10px] font-mono text-slate-400 mb-2">
-                            <span>KALIMANTAN SELATAN</span>
-                            <span class="bg-slate-800 px-2 py-0.5 rounded">COMMODITY & RELIGION</span>
-                        </div>
-                        <h3 class="text-base font-semibold text-white group-hover:text-amber-300 transition mb-2">
-                            Oligarki Batubara & Pengaruh Jaringan Simpul Agama
-                        </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            Membaca konstelasi kekuasaan pengusaha energi fosil lokal terhadap struktur perizinan dan jaringan kultural keagamaan banua.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs font-mono">
-                        <span class="text-slate-500">Update: Edisi Juli</span>
-                        <a href="kalsel.html" class="text-amber-400 hover:underline">Baca Briefing &rarr;</a>
-                    </div>
-                </div>
+                <p class="article-lead">
+                    Anatomi konsolidasi kebijakan eksekutif pusat, eskalasi respons kritis civil society (YLBHI), serta penetapan arah hilirisasi kratom Kalimantan Timur dalam memperkuat ketahanan arus kas daerah.
+                </p>
+            </header>
 
-                <!-- Kalimantan Tengah -->
-                <div class="bg-[#0b0f19] border border-slate-800 hover:border-amber-500/30 rounded-xl p-5 transition flex flex-col justify-between space-y-4 group">
-                    <div>
-                        <div class="flex justify-between items-center text-[10px] font-mono text-slate-400 mb-2">
-                            <span>KALIMANTAN TENGAH</span>
-                            <span class="bg-slate-800 px-2 py-0.5 rounded">LAND & FOOD ESTATE</span>
-                        </div>
-                        <h3 class="text-base font-semibold text-white group-hover:text-amber-300 transition mb-2">
-                            Konflik Agraria & Proyek Strategis Nasional (PSN)
-                        </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            Audit sentimen publik terkait alih fungsi lahan skala besar, eksistensi masyarakat adat Dayak, dan peta dukungan figur lokal.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs font-mono">
-                        <span class="text-slate-500">Update: Edisi Juli</span>
-                        <a href="kalteng.html" class="text-amber-400 hover:underline">Baca Briefing &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Kalimantan Utara -->
-                <div class="bg-[#0b0f19] border border-slate-800 hover:border-amber-500/30 rounded-xl p-5 transition flex flex-col justify-between space-y-4 group md:col-span-2 lg:col-span-1">
-                    <div>
-                        <div class="flex justify-between items-center text-[10px] font-mono text-amber-400 mb-2">
-                            <span>KALIMANTAN UTARA</span>
-                            <span class="bg-amber-500/10 px-2 py-0.5 rounded">STRATEGIC OUTPOST</span>
-                        </div>
-                        <h3 class="text-base font-semibold text-white group-hover:text-amber-300 transition mb-2">
-                            Kawasan Industri Hijau & Geopolitik Perbatasan Utara
-                        </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            Analisis arus investasi transnasional (KIPI Tanah Kuning), konektifitas ekonomi perbatasan, dan pertahanan pengaruh regional.
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-xs font-mono">
-                        <span class="text-slate-500">Update: Edisi Juli</span>
-                        <a href="kaltara.html" class="text-amber-400 hover:underline">Baca Briefing &rarr;</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- BAGIAN 2: TOKOH POLITIK (HIGH-TICKET ADVISORY DESK) -->
-        <div class="max-w-4xl mx-auto pt-6">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-6">
-                <h2 class="text-lg font-serif font-bold text-amber-200 flex items-center gap-2">
-                    <span class="text-amber-500 font-mono text-sm">02.</span> Tokoh Politik & Executive Branding (High-Ticket Desk)
-                </h2>
-                <span class="text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded animate-pulse">VIP GATEWAY</span>
-            </div>
-
-            <!-- Card Penawaran VIP (High-Ticket Engine) -->
-            <div class="bg-gold-card border border-amber-500/30 rounded-xl p-6 sm:p-8 relative overflow-hidden shadow-2xl">
-                <div class="absolute -right-8 -top-8 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-                <div class="mb-4">
-                    <span class="text-[10px] font-mono text-amber-400 uppercase tracking-widest block mb-1">Confidential Advisory Service</span>
-                    <h3 class="text-xl sm:text-2xl font-bold font-serif text-white">Arsitektur Profil & Penataan Strategis Tokoh Berbasis Wilayah</h3>
-                </div>
-
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6">
-                    Pendampingan privat lintas provinsi di Kalimantan. Kami menyediakan audit kerentanan wilayah spesifik, pemetaan sentimen konstituen lokal, arsitektur citra eksekutif, serta pengelolaan strategi ruang krisis (*Crisis War Room*).
+            <!-- ARTICLE BODY (KONTEN TERBUKA PENUH) -->
+            <div class="article-body">
+                <h2>1. Konsolidasi Kebijakan Pusat & Eskalasi Hukum IKN</h2>
+                <p>
+                    Dinamika politik makro kuartal ketiga tahun 2026 diwarnai oleh percepatan penataan hak atas tanah dan alokasi ruang di kawasan Ibu Kota Nusantara (IKN). Langkah eksekutif mendesentralisasikan sebagian kewenangan perizinan investasi secara langsung ke Otorita IKN telah memicu daya dorong baru bagi arus modal asing. Namun, kondisi ini secara paralel mengeskalasi gesekan dengan kelompok sipil.
                 </p>
 
-                <!-- Core Services List -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                    <div class="flex items-start gap-2.5 text-xs text-slate-200">
-                        <span class="text-amber-400 font-bold">✓</span>
-                        <span><strong>Provincial Sentiment Mapping:</strong> Audit narasi spesifik per daerah pemilihan.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5 text-xs text-slate-200">
-                        <span class="text-amber-400 font-bold">✓</span>
-                        <span><strong>Executive Image Architecture:</strong> Penataan reputasi figur di tingkat lokal & nasional.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5 text-xs text-slate-200">
-                        <span class="text-amber-400 font-bold">✓</span>
-                        <span><strong>Crisis War Room:</strong> Penanganan cepat isu strategis lapangan.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5 text-xs text-slate-200">
-                        <span class="text-amber-400 font-bold">✓</span>
-                        <span><strong>Strict NDA Protocol:</strong> Kerahasiaan mutlak tanpa melibatkan pihak luar.</span>
-                    </div>
-                </div>
+                <p>
+                    <strong>Yayasan Lembaga Bantuan Hukum Indonesia (YLBHI)</strong> beserta konsorsium masyarakat adat menerbitkan nota keberatan resmi terkait akselerasi pengadaan tanah. Isu utama berpusat pada:
+                </p>
+                <ul>
+                    <li>Potensi tumpang tindih Hak Guna Bangunan (HGB) di atas tanah ulayat yang belum terselesaikan lewat dialog formal.</li>
+                    <li>Risiko gugatan Tata Usaha Negara (TUN) terhadap beberapa Surat Keputusan (SK) alokasi lahan utama di Ring 1 & 2.</li>
+                    <li>Tuntutan transparansi atas klausul kompensasi sosial dalam skema kerja sama pemerintah dan badan usaha (KPBU).</li>
+                </ul>
 
-                <!-- Kuota Limit Box -->
-                <div class="bg-[#05070a]/90 border border-amber-500/20 rounded-lg p-3 mb-6 text-center">
-                    <p class="text-[11px] font-mono text-amber-300">
-                        ⚠️ Pembatasan Kuota Eksklusivitas: Maksimal 2 Tokoh Utama per Provinsi di Kalimantan.
+                <div class="callout-box">
+                    <div class="callout-title">⚡ Sovereign Risk Note</div>
+                    <p style="margin:0; font-size: 0.95rem;">
+                        Entitas investor disarankan untuk memastikan klausul Clear and Clean (C&C) atas sertifikasi lahan tidak hanya bertumpu pada SK Otorita, tetapi juga memuat pengesahan batas adat lokal guna menghindari <em>injunction order</em> (penundaan pelaksanaan) pasca-eksekusi konstruksi.
                     </p>
                 </div>
 
-                <!-- Action Button (Tautan WA Dinamis dengan ID) -->
-                <a id="vipWaBtn" 
-                   href="#" 
-                   target="_blank" 
-                   class="block w-full py-4 px-4 text-center rounded-lg font-bold text-xs font-mono uppercase bg-gradient-to-r from-amber-500 to-amber-600 text-black hover:from-amber-400 hover:to-amber-500 transition shadow-lg shadow-amber-500/10">
-                    🔒 Ajukan Briefing VIP Lintas Wilayah (Jalur NDA)
-                </a>
-            </div>
-        </div>
+                <h2>2. Kalimantan Timur: Hilirisasi Kratom & Arus Kas Daerah</h2>
+                <p>
+                    Di tingkat regional, Pemerintah Provinsi Kalimantan Timur mengambil langkah terobosan untuk menjaga kestabilan Pendapatan Asli Daerah (PAD) di tengah penyesuaian dana bagi hasil sektor migas dan batubara. Pemprov Kaltim secara terbuka menegaskan komitmen penuh terhadap <strong>hilirisasi komoditas Kratom (Mitragyna Speciosa)</strong>.
+                </p>
+                
+                <h3>Strategi Taktis Pemprov Kaltim:</h3>
+                <p>
+                    Perubahan status regulasi kratom di tingkat nasional dimanfaatkan secara taktis oleh Kaltim untuk mengunci rantai pasok industri ekstraksi obat dan farmasi:
+                </p>
+                <ul>
+                    <li><strong>Standardisasi Mutu Ekspor:</strong> Pembentukan fasilitas pengujian kadar alkaloid mitra BUMD untuk memverifikasi standar bebas kontaminan sebelum masuk ke pelabuhan muat.</li>
+                    <li><strong>Skema Kemitraan B2B:</strong> Pembatasan pengiriman bahan mentah (rekaan/remodified leaf) <em>out-of-province</em> guna memaksa pembangunan pabrik pengolahan ekstrak di dalam kawasan industri lokal.</li>
+                    <li><strong>Proyeksi Kas Daerah:</strong> Pungutan retribusi daerah dan skema kemitraan desa dinilai berpotensi menyumbang arus kas segar hingga puluhan miliar rupiah per kuartal secara berkelanjutan.</li>
+                </ul>
 
+                <h2>3. Navigasi Capital Flow & Rekomendasi Taktis</h2>
+                <p>
+                    Dari kacamata arsitektur transaksi modal, terdapat dua momentum presisi yang dapat dimanfaatkan oleh para pemegang kebijakan korporasi:
+                </p>
+                <p>
+                    <strong>Pertama (Sektor Properti & Infrastruktur IKN):</strong> Manfaatkan fase konsolidasi politik ini untuk mengamankan kesepakatan <em>joint venture</em> dengan struktur sertifikasi berjaminan ganda.
+                </p>
+                <p>
+                    <strong>Kedua (Komoditas & Agro-Industri Kaltim):</strong> Masuknya regulasi hilirisasi kratom muka bumi memberikan ruang masuk (<em>entry point</em>) ideal bagi modal ekuitas privat untuk mengakuisisi entitas pengolahan bersertifikat eksklusif di wilayah Kutai Kartanegara dan Kapuas Hulu.
+                </p>
+
+                <!-- AUTHOR BOX -->
+                <div class="author-box">
+                    <img src="../profile.jpg" alt="Mozens Alqadrie" class="author-avatar">
+                    <div class="author-info">
+                        <h4>Mozens Alqadrie</h4>
+                        <p>Sovereign Strategic Advisory &bull; BICH Lead Intel Desk</p>
+                    </div>
+                </div>
+            </div>
+        </article>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
-        © 2026 BICH Regional Political Intelligence • Mozens Alqadrie Advisory Desk
+    <!-- FOOTER -->
+    <footer class="briefing-footer">
+        <div class="container">
+            <p>&copy; 2026 Borneo Insight & Career Hub (BICH). Sovereign Intelligence Protocol.</p>
+        </div>
     </footer>
 
-    <!-- SECURE ENGINE & BOT SHIELD -->
+    <!-- SCRIPT PROTEKSI KEAMANAN KONTEN (ANTI-COPAS & ANTI-INSPECT) -->
     <script>
-        // Payload Terenkripsi Nomor Boss Mozens
-        const SEC_PAYLOAD = "NjI4MjM0MTMzMzEzMw==";
+        // Disable Klik Kanan
+        document.addEventListener('contextmenu', function(e) { 
+            e.preventDefault(); 
+        });
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            // 1. LIGHTWEIGHT BOT SHIELD
-            const isHeadless = navigator.webdriver || Boolean(window.document.documentElement.getAttribute("webdriver")) || window.callPhantom || window._phantom || window.__nightmare;
-            if (isHeadless) {
-                document.body.innerHTML = '<div style="background:#05070a;color:#ef4444;height:100vh;display:flex;justify-content:center;align-items:center;font-family:monospace;">[ACCESS DENIED] Automated scraper detected.</div>';
-                return;
+        // Disable Shortcut Keyboard (Ctrl+C, Ctrl+U, Ctrl+S, F12, Ctrl+Shift+I/J)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
+                e.preventDefault();
             }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) {
+                e.preventDefault();
+            }
+            if (e.key === 'F12') { 
+                e.preventDefault(); 
+            }
+        });
 
-            // 2. DEKODE WA LINK SECARA DINAMIS (Anti-Scraper)
-            try {
-                const targetNum = atob(SEC_PAYLOAD);
-                const waBtn = document.getElementById("vipWaBtn");
-                if (waBtn) {
-                    const message = encodeURIComponent("Yth. Mozens Alqadrie Advisory Desk,\nSaya [Nama/Perwakilan] dari [Wilayah/Provinsi Kalimantan], ingin mengajukan Diskusi Awal & Sesi Briefing Kerahasiaan (Jalur NDA) terkait Penataan Strategis Tokoh Politik.");
-                    waBtn.href = `https://wa.me/${targetNum}?text=${message}`;
-                }
-            } catch (e) {
-                console.error("Gagal mendekode nomor tujuan.", e);
-            }
-
-            // 3. FETCH DATA LIVE
-            try {
-                let response = await fetch('data-politik.json');
-                let data = await response.json();
-                console.log("Memuat data intelijen edisi:", data.edisi);
-            } catch (error) {
-                console.error("Gagal memuat data live, menggunakan cache statis.", error);
-            }
+        // Block Event Copy Intercept
+        document.addEventListener('copy', function(e) { 
+            e.preventDefault(); 
         });
     </script>
 

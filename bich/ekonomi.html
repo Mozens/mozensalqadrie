@@ -3,254 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamar Ekonomi Strategis — BICH Intelligence</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>Macro Economic Briefing: Arbitrase Capital Flow & Likuiditas Kalimantan 2026 | BICH Executive Briefing</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        .gold-gradient {
-            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        :root {
+            --bg-dark: #0b0f17;
+            --bg-card: rgba(15, 23, 42, 0.85);
+            --emerald-bich: #059669;
+            --emerald-light: #34d399;
+            --gold-accent: #d4af37;
+            --gold-light: #f3e5ab;
+            --cyan-tech: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-emerald: rgba(5, 150, 105, 0.35);
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        /* --- PROTEKSI SELEKSI TEKS & COPAS --- */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(11, 15, 23, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--emerald-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+
+        .bich-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--gold-accent);
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        /* --- ARTICLE HEADER --- */
+        .article-header {
+            padding: 48px 0 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge-open-access {
+            color: var(--emerald-light);
+            background: rgba(5, 150, 105, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .article-title {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.25;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .article-lead {
+            font-size: 1.15rem;
+            color: var(--gold-light);
+            font-family: var(--font-serif);
+            font-style: italic;
+            line-height: 1.6;
+            border-left: 3px solid var(--emerald-light);
+            padding-left: 20px;
+        }
+
+        /* --- ARTICLE CONTENT --- */
+        .article-body {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            position: relative;
+        }
+
+        .article-body h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: #ffffff;
+            margin: 40px 0 16px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .article-body h3 {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            color: var(--emerald-light);
+            margin: 28px 0 12px;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .article-body ul {
+            margin: 0 0 24px 24px;
+            color: var(--text-muted);
+        }
+
+        .article-body li {
+            margin-bottom: 10px;
+        }
+
+        .callout-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-emerald);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin: 32px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .callout-title {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--emerald-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- AUTHOR & FOOTER --- */
+        .briefing-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 0;
+            margin-top: 60px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--gold-accent);
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            color: #ffffff;
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+        }
+
+        .author-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .article-title { font-size: 1.8rem; }
+            .article-lead { font-size: 1rem; }
         }
     </style>
-
-    <!-- LAYER 1: HEADLESS BROWSER & BOT SHIELD (Tereksekusi sebelum render body) -->
-    <script>
-        (function() {
-            // Deteksi lingkungan automated / headless browser
-            const isHeadless = 
-                navigator.webdriver ||
-                Boolean(window.document.documentElement.getAttribute("webdriver")) ||
-                window.callPhantom || 
-                window._phantom || 
-                window.__nightmare ||
-                window.navigator.userAgent.includes("HeadlessChrome") ||
-                window.navigator.userAgent.includes("Puppeteer") ||
-                window.navigator.userAgent.includes("Playwright") ||
-                window.navigator.userAgent.includes("Selenium");
-
-            if (isHeadless) {
-                window.stop();
-                document.documentElement.innerHTML = `
-                    <body style="background-color:#05070a; color:#ef4444; font-family:monospace; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
-                        <div style="text-align:center; border:1px solid #ef4444; padding:2rem; border-radius:0.5rem; background:#080c14;">
-                            <h1 style="font-size:1.5rem; margin-bottom:0.5rem;">[ACCESS DENIED]</h1>
-                            <p style="color:#94a3b8; font-size:0.875rem;">Automated client or headless environment detected by BICH Security Console.</p>
-                        </div>
-                    </body>`;
-                throw new Error("Automated scraper execution terminated.");
-            }
-        })();
-    </script>
 </head>
-<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+<body oncontextmenu="return false;">
 
-    <!-- LAYER 2: HONEYPOT TRAP (Jebakan khusus untuk parser bot scraper) -->
-    <div style="display:none !important; visibility:hidden !important;" aria-hidden="true" class="sr-only">
-        <a href="https://wa.me/6280000000000?text=SCRAPER_HONEYPOT_TRIGGERED" onclick="triggerHoneypotTrap(event)" rel="nofollow" tabIndex="-1">
-            <span>Contact Admin Support</span>
-            <span id="fake-email">admin-desk@mozens-inc-intelligence.com</span>
-        </a>
-    </div>
-
-    <!-- Header Navigation -->
-    <header class="border-b border-amber-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 transition flex items-center gap-2">
-                <span>&larr;</span> Portal Utama BICH
+    <!-- NAVBAR -->
+    <header>
+        <div class="container nav-wrapper">
+            <a href="index.html" class="back-link">
+                &larr; Masuk ke Borneo Insight & Career Hub  
             </a>
-            <span class="text-[11px] font-mono text-amber-400/80 border border-amber-500/20 px-3 py-1 rounded-full bg-amber-500/5">
-                MOZENS INC. • ECONOMIC DESK
-            </span>
+            <span class="bich-tag">Ekonomi Dan Keuangan Desk</span>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-10">
+    <main class="container">
+        <!-- ARTICLE HEADER -->
+        <article>
+            <header class="article-header">
+                <div class="article-meta">
+                    <span>🟢 <a href="ekonomi.html" style="color:inherit; text-decoration:none;">Buletin Analisis Ekonomi</a></span>
+                    <span>&bull;</span>
+                    <span>Edisi 27 Juli 2026</span>
+                    <span>&bull;</span>
+                    <span class="badge-open-access">OPEN ACCESS EXECUTIVE BRIEFING</span>
+                </div>
 
-        <!-- Hero Title -->
-        <div class="text-center space-y-3 max-w-3xl mx-auto">
-            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white">
-                KAMAR EKONOMI <span class="gold-gradient">STRATEGIS</span>
-            </h1>
-            <p class="text-xs sm:text-sm text-slate-400 font-mono">
-                Pusat Intelijen Komoditas, Makroekonomi & Capital Flow Pasar Modal Kalimantan
-            </p>
-        </div>
+                <h1 class="article-title">
+                    📈 Macro Economic Briefing: Arbitrase Capital Flow & Likuiditas Kalimantan 2026
+                </h1>
 
-        <!-- Tab Selector Button -->
-        <div class="flex justify-center border-b border-slate-800">
-            <button id="tab-makro-btn" onclick="switchTab('makro')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition">
-                1. RUANG EKONOMI MAKRO
-            </button>
-            <button id="tab-pasar-btn" onclick="switchTab('pasar')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
-                2. ANALISA PASAR MODAL
-            </button>
-        </div>
-
-        <!-- Section 1: Ruang Ekonomi Makro -->
-        <div id="ruang-makro" class="space-y-6">
-            <!-- Ticker Board Komoditas -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-4 text-center">
-                    <span class="text-[10px] font-mono text-slate-500 uppercase block">CPO PALM OIL</span>
-                    <span class="text-base font-mono font-bold text-amber-400">Rp 14.250 /kg</span>
-                    <span class="text-[10px] text-emerald-400 block mt-1">▲ +1.2%</span>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-4 text-center">
-                    <span class="text-[10px] font-mono text-slate-500 uppercase block">BATUBARA (ICI4)</span>
-                    <span class="text-base font-mono font-bold text-amber-400">$62.5 /Ton</span>
-                    <span class="text-[10px] text-emerald-400 block mt-1">▲ +0.5%</span>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-4 text-center">
-                    <span class="text-[10px] font-mono text-slate-500 uppercase block">NIKEL (LME)</span>
-                    <span class="text-base font-mono font-bold text-amber-400">$16.400 /Ton</span>
-                    <span class="text-[10px] text-rose-400 block mt-1">▼ -0.8%</span>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-4 text-center">
-                    <span class="text-[10px] font-mono text-slate-500 uppercase block">EMAS DUNIA</span>
-                    <span class="text-base font-mono font-bold text-amber-400">$2.350 /oz</span>
-                    <span class="text-[10px] text-emerald-400 block mt-1">▲ +2.1%</span>
-                </div>
-            </div>
-
-            <!-- Detailed Briefing Card -->
-            <div class="bg-[#080c14] border border-amber-500/20 rounded-xl p-6 sm:p-8 space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                    <span class="text-xs font-mono text-amber-400 font-bold">LOKOMOTIF KOMODITAS & REGIONAL GDP</span>
-                    <span class="text-[10px] font-mono text-slate-500">Update: Jumat Sore</span>
-                </div>
-                <h3 class="text-lg sm:text-xl font-serif font-bold text-white">
-                    Proyeksi Rantai Pasok Kalimantan Pasca-Penyesuaian Tarif Logistik
-                </h3>
-                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                    Stabilitas harga CPO dan penguatan permintaan ekspor batubara ICI4 menjadi penyokong utama penerimaan daerah Kalsel dan Kaltim. Penataan kembali koridor transportasi sungai menjadi kunci utama efisiensi biaya logistik hingga akhir kuartal.
+                <p class="article-lead">
+                    Peta transformasi PDRB Kalimantan Timur dari sektor ekstraktif mentah ke siklus manufaktur presisi, efektivitas insentif Tax Holiday KEK IKN, serta strategi arbitrase arus modal private equity di sektor agro-komoditas unggulan.
                 </p>
-                <div class="pt-4 flex justify-between items-center">
-                    <span class="text-[11px] font-mono text-slate-400">Akses Laporan Lengkap Khusus Corporate Subscription</span>
-                    <button onclick="executeDispatch('MAKRO')" 
-                       class="bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono font-bold px-4 py-2 rounded transition cursor-pointer">
-                        Hubungi Advisory &rarr;
-                    </button>
-                </div>
-            </div>
-        </div>
+            </header>
 
-        <!-- Section 2: Ruang Analisa Pasar Modal -->
-        <div id="ruang-pasar" class="space-y-6 hidden">
-            <!-- Market Stats Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
-                    <span class="text-xs font-mono text-amber-400 font-bold block">1. CAPITAL FLOW TRACKING</span>
-                    <p class="text-xs text-slate-300">Net Foreign Inflow Saham Energi & Tambang:</p>
-                    <span class="text-lg font-mono font-bold text-emerald-400 block">+Rp 2.3 Triliun</span>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
-                    <span class="text-xs font-mono text-amber-400 font-bold block">2. PINTU IPO & BLOK</span>
-                    <p class="text-xs text-slate-300">Calon Emiten Sektor Energi Siap IPO:</p>
-                    <span class="text-lg font-mono font-bold text-white block">3 Emiten (Q4)</span>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
-                    <span class="text-xs font-mono text-amber-400 font-bold block">3. WATCHLIST SAHAM</span>
-                    <p class="text-xs text-slate-300">Focus Tickers Kalimantan:</p>
-                    <span class="text-sm font-mono font-bold text-amber-300 block">TINS • TLKM • BRIS • ADRO</span>
-                </div>
-            </div>
-
-            <!-- Friday Executive Briefing Card -->
-            <div class="bg-[#080c14] border border-amber-500/20 rounded-xl p-6 sm:p-8 space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                    <span class="text-xs font-mono text-amber-400 font-bold">ANALISA PASAR MINGGUAN (ACUAN AMUNISI SENIN)</span>
-                    <span class="text-[10px] font-mono text-slate-500">Setiap Jumat Sore</span>
-                </div>
-                <h3 class="text-lg sm:text-xl font-serif font-bold text-white">
-                    Peta Akumulasi Bandarmology & Pintu Transaksi Blok
-                </h3>
-                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                    Pergerakan modal asing terkonsentrasi pada emiten tambang dengan rasio dividen tinggi. Bedah struktur teknikal menunjukkan area akumulasi ketat menjelang aksi korporasi kuartal mendatang.
+            <!-- ARTICLE BODY (KONTEN TERBUKA PENUH) -->
+            <div class="article-body">
+                <h2>1. Pergeseran Struktur PDRB & Realisasi Inflow Modal</h2>
+                <p>
+                    Kuartal ketiga tahun 2026 mencatatkan pergeseran struktural signifikan pada Produk Domestik Regional Bruto (PDRB) koridor Kalimantan Timur dan sekitarnya. Ketergantungan historis terhadap ekspor batu bara mentah mulai terkonsolidasi oleh percepatan pengoperasian kawasan pengolahan bernilai tambah tingkatan sekunder. Arus investasi asing (FDI) dan domestik (DDI) yang masuk lewat insentif khusus KEK IKN menciptakan tekanan likuiditas positif pada perbankan lokal.
                 </p>
-                <div class="pt-4 flex justify-between items-center">
-                    <span class="text-[11px] font-mono text-slate-400">VIP Membership Analyst Group</span>
-                    <button onclick="executeDispatch('PASAR')" 
-                       class="bg-amber-500 hover:bg-amber-400 text-black text-xs font-mono font-bold px-4 py-2 rounded transition cursor-pointer">
-                        Join Membership &rarr;
-                    </button>
+
+                <p>
+                    Meskipun <em>capital influx</em> meningkat sebesar 18.4% secara <em>year-on-year</em>, sebagian besar dana komersial tertahan pada skema <em>cash-collateralized loans</em> untuk konsorsium penyedia infrastruktur primer. Isu efisiensi transmisi moneter lokal meliputi:
+                </p>
+                <ul>
+                    <li><em>Yield Spread</em> pinjaman korporasi daerah yang masih mengalami deviasi dibanding suku bunga acuan pasca-revisi kebijakan likuiditas makroprudensial.</li>
+                    <li>Kekuatan penyerapan modal pada entitas menengah (<em>mid-cap</em>) industri pendukung rantai pasok hilir IKN.</li>
+                    <li>Akselerasi transaksi <em>block-trade</em> aset riil tanah komersial di sepanjang koridor penunjang Balikpapan-Samarinda.</li>
+                </ul>
+
+                <div class="callout-box">
+                    <div class="callout-title">⚡ Capital Allocation Note</div>
+                    <p style="margin:0; font-size: 0.95rem;">
+                        Pengelola dana korporasi disarankan mengalokasikan likuiditas jangka pendek pada instrumen <em>short-term sovereign paper</em> berdenominasi rupiah yang dijamin kas daerah, sembari mengunci posisi ekuitas pada entitas pemegang lisensi pengolahan komoditas ekspor.
+                    </p>
+                </div>
+
+                <h2>2. Arbitrase Sektor Agro-Komoditas & Efek Hilirisasi</h2>
+                <p>
+                    Penetapan regulasi nasional terkait kepastian rantai pasok agro-komoditas spesifik (termasuk kratom dan kelapa sawit olahan) membuka celah arbitrase harga bagi pemilik modal privat. Pemprov Kaltim memproyeksikan kontribusi retribusi rantai pasok agro-industri ini akan mengompensasi penyesuaian Dana Bagi Hasil (DBH) migas.
+                </p>
+                
+                <h3>Proyeksi Likuiditas & Imbal Hasil:</h3>
+                <p>
+                    Penataan batas kawasan industri berbasis ekstraksi farmasi dan oleokimia di Kutai Kartanegara memberikan proyeksi imbal hasil bersih (<em>internal rate of return</em>) rata-rata di atas 22% p.a. bagi entitas yang menguasai teknologi pengolahan dari hulu.
+                </p>
+                <ul>
+                    <li><strong>Efisiensi Rantai Logistik:</strong> Pemanfaatan jalur sungai strategis dan pelabuhan muat bebas bea memangkas <em>cost of goods sold</em> (COGS) hingga 12%.</li>
+                    <li><strong>Mitigasi Risiko Volatilitas Harga:</strong> Skema <em>forward contract</em> berbasis harga patokan regional melindungi pembeli utama dari lonjakan fluktuasi pasokan musiman.</li>
+                </ul>
+
+                <h2>3. Rekomendasi Taktis Rebalancing Portofolio</h2>
+                <p>
+                    Untuk memaksimalkan imbal hasil yang disesuaikan dengan risiko (<em>risk-adjusted return</em>) sepanjang H2 2026, manajer investasi dan pemegang kebijakan modal disarankan untuk:
+                </p>
+                <p>
+                    <strong>1. Long Position Sektor Pendukung Logistik IKN:</strong> Mengamankan porsi instrumen ekuitas private pada BUMD atau entitas penyedia armada angkut bahan baku & material presisi.
+                </p>
+                <p>
+                    <strong>2. Monetisasi Celah Arbitrase Agro-Industri Kaltim:</strong> Masuk melalui skema pinjaman terstruktur (<em>structured debt</em>) yang terikat langsung pada piutang dagang ekspor entitas pengolah ekstrak bersertifikat resmi.
+                </p>
+
+                <div class="callout-box" style="border-color: rgba(212,175,55,0.4);">
+                    <div class="callout-title" style="color: var(--gold-accent);">🔒 Ini Baru Cuplikan Mingguan Gratis</div>
+                    <p style="margin:0 0 16px; font-size: 0.95rem;">
+                        Briefing di atas adalah versi <em>open access</em>. Untuk data harga komoditas yang diperbarui harian dan briefing kebijakan/tender IKN lebih awal, BICH menyediakan dua jalur langganan:
+                    </p>
+                    <div style="display:flex; flex-wrap:wrap; gap:12px;">
+                        <a href="langganan.html?produk=sawit" style="flex:1; min-width:220px; text-decoration:none; background:rgba(5,150,105,0.12); border:1px solid var(--border-emerald); border-radius:8px; padding:14px 16px; display:block;">
+                            <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--emerald-light); font-weight:700; display:block;">🌴 ALERT HARGA SAWIT (WA)</span>
+                            <span style="font-size:0.82rem; color:var(--text-muted); display:block; margin-top:4px;">Harga TBS/CPO harian langsung ke WhatsApp. Mulai Rp 20rb/bulan.</span>
+                        </a>
+                        <a href="langganan.html?produk=ikn" style="flex:1; min-width:220px; text-decoration:none; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.35); border-radius:8px; padding:14px 16px; display:block;">
+                            <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--gold-accent); font-weight:700; display:block;">🏗️ BRIEFING IKN BISNIS (PDF)</span>
+                            <span style="font-size:0.82rem; color:var(--text-muted); display:block; margin-top:4px;">Ringkasan kebijakan & info tender lebih awal. Mulai Rp 300rb/bulan.</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- AUTHOR BOX -->
+                <div class="author-box">
+                    <img src="../profile.jpg" alt="Mozens Alqadrie" class="author-avatar">
+                    <div class="author-info">
+                        <h4>Mozens Alqadrie</h4>
+                        <p>Sovereign Strategic Advisory &bull; BICH Lead Intel Desk</p>
+                    </div>
                 </div>
             </div>
-        </div>
-
+        </article>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
-        © 2026 BICH Economic & Capital Market Desk • Mozens Inc.
+    <!-- FOOTER -->
+    <footer class="briefing-footer">
+        <div class="container">
+            <p>&copy; 2026 Borneo Insight & Career Hub (BICH). Sovereign Intelligence Protocol.</p>
+        </div>
     </footer>
 
-    <!-- LAYER 3 & 4: DYNAMIC OBFUSCATION & INTERACTION ENGINE -->
+    <!-- SCRIPT PROTEKSI KEAMANAN KONTEN (ANTI-COPAS & ANTI-INSPECT) -->
     <script>
-        // Data tersimpan secara acak/terenkripsi (Base64)
-        const SEC_PAYLOAD = "NjI4MjM0MTMzMzEzMw==";
+        // Disable Klik Kanan
+        document.addEventListener('contextmenu', function(e) { 
+            e.preventDefault(); 
+        });
 
-        function switchTab(tab) {
-            const makroDiv = document.getElementById('ruang-makro');
-            const pasarDiv = document.getElementById('ruang-pasar');
-            const makroBtn = document.getElementById('tab-makro-btn');
-            const pasarBtn = document.getElementById('tab-pasar-btn');
-
-            if (tab === 'makro') {
-                makroDiv.classList.remove('hidden');
-                pasarDiv.classList.add('hidden');
-                makroBtn.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition';
-                pasarBtn.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition';
-            } else {
-                pasarDiv.classList.remove('hidden');
-                makroDiv.classList.add('hidden');
-                pasarBtn.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition';
-                makroBtn.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition';
+        // Disable Shortcut Keyboard (Ctrl+C, Ctrl+U, Ctrl+S, F12, Ctrl+Shift+I/J)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
+                e.preventDefault();
             }
-        }
-
-        // Dekode runtime khusus saat dipanggil user
-        function resolveEndpoint() {
-            try {
-                return atob(SEC_PAYLOAD);
-            } catch (e) {
-                return null;
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) {
+                e.preventDefault();
             }
-        }
-
-        function executeDispatch(type) {
-            const raw = resolveEndpoint();
-            
-            if (!raw || raw === "6282341333313") {
-                alert("Sistem Keamanan: Nomor tujuan masih menggunakan konfigurasi dummy. Silakan perbarui nilai SEC_PAYLOAD di skrip dengan Base64 nomor asli.");
-                return;
+            if (e.key === 'F12') { 
+                e.preventDefault(); 
             }
+        });
 
-            let msg = "";
-            if (type === 'MAKRO') {
-                msg = "Yth. Mozens Inc Advisory,\nSaya tertarik dengan Langganan Laporan Makro Ekonomi.";
-            } else if (type === 'PASAR') {
-                msg = "Yth. Mozens Inc Advisory,\nSaya ingin join Membership Analisis Pasar Modal.";
-            }
-
-            const target = `https://wa.me/${raw}?text=${encodeURIComponent(msg)}`;
-            
-            // Pengamanan reverse tabnabbing
-            const win = window.open(target, '_blank', 'noopener,noreferrer');
-            if (win) win.opener = null;
-        }
-
-        // Handler jika bot mengeklik Honeypot Trap
-        function triggerHoneypotTrap(event) {
-            event.preventDefault();
-            console.warn("Honeypot triggered. Blacklisting client session...");
-            document.body.innerHTML = `
-                <div style="background:#05070a; color:#ef4444; height:100vh; display:flex; justify-content:center; align-items:center; font-family:monospace;">
-                    <h2>[SESSION TERMINATED] Invalid interaction protocol detected.</h2>
-                </div>`;
-        }
+        // Block Event Copy Intercept
+        document.addEventListener('copy', function(e) { 
+            e.preventDefault(); 
+        });
     </script>
 
 </body>

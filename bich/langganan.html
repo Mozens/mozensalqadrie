@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Langganan Intelijen Bisnis — BICH | Mozens Inc.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hp-trap-field { opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1; overflow: hidden; }
+    </style>
+
+    <!--
+      INTEGRASI MIDTRANS UNTUK LANGGANAN BERULANG (RECURRING):
+      Snap.js (yang dipakai di pariwisata.html & monetisasi.html) HANYA untuk transaksi
+      sekali bayar. Untuk tagihan berulang tiap bulan, Midtrans mewajibkan kita
+      men-tokenisasi kartu kredit/debit lewat script "New 3DS" ini, lalu backend yang
+      membuat "Subscription" pakai token itu.
+
+      CATATAN JUJUR: metode auto-debit berulang Midtrans SAAT INI hanya mendukung kartu
+      kredit/debit (bukan e-wallet/QRIS/transfer bank untuk auto-charge bulanan). Kalau
+      target pasar Anda (petani/koperasi sawit) kebanyakan tidak punya kartu kredit,
+      pertimbangkan model alternatif: tagihan Snap manual tiap bulan + reminder WA
+      otomatis H-3 sebelum jatuh tempo (bukan auto-debit). Saya beri catatan TODO untuk
+      opsi ini juga di backend.
+
+      Ganti data-client-key dengan CLIENT KEY (bukan Server Key) dari dashboard Midtrans.
+    -->
+    <script src="https://api.sandbox.midtrans.com/v2/assets/js/midtrans-new-3ds.min.js"
+            data-environment="sandbox"
+            data-client-key="GANTI_DENGAN_CLIENT_KEY_SANDBOX_ANDA"></script>
+
+    <!-- Snap.js dipakai untuk jalur pembayaran MANUAL (QRIS/transfer/e-wallet) - metode
+         pembayaran yang lebih umum dipakai petani/koperasi dibanding kartu kredit. -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="GANTI_DENGAN_CLIENT_KEY_SANDBOX_ANDA"></script>
+</head>
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
+
+    <header class="border-b border-emerald-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <a href="loker.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+                <span>&larr;</span> Kembali ke Proyek & Loker Hub
+            </a>
+            <span class="text-[11px] font-mono text-emerald-400/80 border border-emerald-500/20 px-3 py-1 rounded-full bg-emerald-500/5">
+                MOZENS INC. • LANGGANAN INTELIJEN BISNIS
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-10 flex-grow w-full space-y-10">
+
+        <div class="text-center space-y-3 max-w-2xl mx-auto">
+            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white">
+                LANGGANAN <span class="gold-gradient">INTELIJEN BISNIS</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400 font-mono">
+                Info harga sawit & briefing IKN, langsung ke WhatsApp/email Anda. Tagihan otomatis tiap bulan.
+            </p>
+        </div>
+
+        <div class="flex justify-center border-b border-slate-800">
+            <button id="tab-sawit-btn" onclick="switchProduct('sawit')" class="px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition whitespace-nowrap">
+                🌴 ALERT HARGA SAWIT (WA)
+            </button>
+            <button id="tab-ikn-btn" onclick="switchProduct('ikn')" class="px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition whitespace-nowrap">
+                🏗️ BRIEFING IKN BISNIS (PDF)
+            </button>
+        </div>
+
+        <!-- ==================== SAWIT ALERT ==================== -->
+        <div id="sec-sawit" class="space-y-6 hidden">
+            <div class="bg-[#080c14] border border-emerald-500/20 rounded-2xl p-6 sm:p-8 space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <span class="text-xs font-mono text-emerald-400 font-bold block">PILIH PAKET ALERT SAWIT</span>
+                    <p class="text-xs text-slate-400 mt-1">Harga acuan TBS/CPO harian langsung ke WhatsApp Anda.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="sawit-plan-cards">
+                    <label class="plan-card cursor-pointer bg-[#05070a] border border-slate-800 rounded-xl p-4 space-y-2 block hover:border-emerald-400/50 transition">
+                        <input type="radio" name="sawit-plan" value="SAWIT_BASIC" class="hidden" checked>
+                        <span class="text-[10px] font-mono text-slate-400 uppercase block">Basic</span>
+                        <span class="text-lg font-mono font-bold text-white block">Rp 20rb <span class="text-xs text-slate-500">/bulan</span></span>
+                        <p class="text-[11px] text-slate-400">1x update harga TBS & CPO tiap pagi jam 08:00.</p>
+                    </label>
+                    <label class="plan-card cursor-pointer bg-[#05070a] border border-amber-500/40 rounded-xl p-4 space-y-2 block hover:border-amber-400 transition">
+                        <input type="radio" name="sawit-plan" value="SAWIT_PLUS" class="hidden">
+                        <span class="text-[10px] font-mono text-amber-400 uppercase block">⭐ Plus</span>
+                        <span class="text-lg font-mono font-bold text-white block">Rp 35rb <span class="text-xs text-slate-500">/bulan</span></span>
+                        <p class="text-[11px] text-slate-400">Update 2x/hari + notifikasi instan saat harga naik/turun tajam (&gt;3%).</p>
+                    </label>
+                </div>
+                <form id="sawit-form" onsubmit="handleSubscribe(event, 'sawit')" class="space-y-4 pt-2 relative">
+                    <div class="hp-trap-field" aria-hidden="true"><input type="text" id="sawit_hp_check" tabindex="-1" autocomplete="off"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input type="text" id="sawit-nama" placeholder="Nama Lengkap / Nama Koperasi" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                        <input type="tel" id="sawit-wa" placeholder="Nomor WhatsApp Aktif" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                        <input type="email" id="sawit-email" placeholder="Email (untuk bukti tagihan)" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none sm:col-span-2">
+                    </div>
+
+                    <!-- Pilihan metode pembayaran, khusus produk Sawit -->
+                    <div class="pt-2 border-t border-slate-800 space-y-2">
+                        <span class="text-[10px] font-mono text-slate-400 uppercase block">Metode Pembayaran</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="cursor-pointer bg-[#05070a] border border-slate-800 rounded-lg p-3 flex items-start gap-2 hover:border-emerald-400/50 transition">
+                                <input type="radio" name="sawit-billing-mode" value="manual" checked class="mt-0.5">
+                                <span>
+                                    <span class="text-xs font-mono text-slate-200 block font-bold">QRIS / Transfer / E-wallet</span>
+                                    <span class="text-[10px] text-slate-400 block">Bayar manual tiap bulan. Kami ingatkan via WhatsApp H-3 sebelum jatuh tempo. Tidak perlu kartu.</span>
+                                </span>
+                            </label>
+                            <label class="cursor-pointer bg-[#05070a] border border-slate-800 rounded-lg p-3 flex items-start gap-2 hover:border-emerald-400/50 transition">
+                                <input type="radio" name="sawit-billing-mode" value="card" class="mt-0.5">
+                                <span>
+                                    <span class="text-xs font-mono text-slate-200 block font-bold">Kartu Kredit/Debit</span>
+                                    <span class="text-[10px] text-slate-400 block">Auto-debit otomatis tiap bulan, tidak perlu bayar manual lagi.</span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="sawit-card-fields" class="hidden"></div>
+                    <div class="flex flex-col items-end gap-2 pt-2">
+                        <p id="sawit-status-msg" class="hidden text-[11px] font-mono max-w-md text-right"></p>
+                        <button type="submit" id="btn-sub-sawit" class="bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-black text-xs font-mono font-bold px-6 py-3 rounded-lg transition">
+                            Mulai Langganan &rarr;
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ==================== BRIEFING IKN ==================== -->
+        <div id="sec-ikn" class="space-y-6 hidden">
+            <div class="bg-[#080c14] border border-emerald-500/20 rounded-2xl p-6 sm:p-8 space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <span class="text-xs font-mono text-emerald-400 font-bold block">PILIH PAKET BRIEFING IKN BISNIS</span>
+                    <p class="text-xs text-slate-400 mt-1">Ringkasan kebijakan & peluang tender IKN, dikirim tiap minggu dalam format PDF.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="ikn-plan-cards">
+                    <label class="plan-card cursor-pointer bg-[#05070a] border border-slate-800 rounded-xl p-4 space-y-2 block hover:border-emerald-400/50 transition">
+                        <input type="radio" name="ikn-plan" value="IKN_BASIC" class="hidden" checked>
+                        <span class="text-[10px] font-mono text-slate-400 uppercase block">Basic</span>
+                        <span class="text-lg font-mono font-bold text-white block">Rp 300rb <span class="text-xs text-slate-500">/bulan</span></span>
+                        <p class="text-[11px] text-slate-400">PDF mingguan: ringkasan berita & kebijakan IKN terkurasi.</p>
+                    </label>
+                    <label class="plan-card cursor-pointer bg-[#05070a] border border-amber-500/40 rounded-xl p-4 space-y-2 block hover:border-amber-400 transition">
+                        <input type="radio" name="ikn-plan" value="IKN_PRIORITAS" class="hidden">
+                        <span class="text-[10px] font-mono text-amber-400 uppercase block">⭐ Prioritas</span>
+                        <span class="text-lg font-mono font-bold text-white block">Rp 500rb <span class="text-xs text-slate-500">/bulan</span></span>
+                        <p class="text-[11px] text-slate-400">PDF mingguan + info tender lebih awal (H-3) + hotline WA tanya-jawab.</p>
+                    </label>
+                </div>
+                <form id="ikn-form" onsubmit="handleSubscribe(event, 'ikn')" class="space-y-4 pt-2 relative">
+                    <div class="hp-trap-field" aria-hidden="true"><input type="text" id="ikn_hp_check" tabindex="-1" autocomplete="off"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input type="text" id="ikn-nama" placeholder="Nama Perusahaan / PIC" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                        <input type="tel" id="ikn-wa" placeholder="Nomor WhatsApp PIC" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                        <input type="email" id="ikn-email" placeholder="Email Perusahaan" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none sm:col-span-2">
+                    </div>
+                    <div id="ikn-card-fields"></div>
+                    <div class="flex flex-col items-end gap-2 pt-2">
+                        <p id="ikn-status-msg" class="hidden text-[11px] font-mono max-w-md text-right"></p>
+                        <button type="submit" id="btn-sub-ikn" class="bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-black text-xs font-mono font-bold px-6 py-3 rounded-lg transition">
+                            Mulai Langganan &rarr;
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <p class="text-center text-[11px] text-slate-500 font-mono max-w-lg mx-auto">
+            🔒 Nomor kartu Anda diproses langsung oleh sistem resmi Midtrans (tokenisasi), tidak pernah tersimpan atau melewati server BICH. Langganan bisa dibatalkan kapan saja lewat WhatsApp admin.
+        </p>
+    </main>
+
+    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
+        © 2026 BICH Monetisasi Desk • Mozens Inc.
+    </footer>
+
+    <script>
+        /*
+          ALUR LANGGANAN (RECURRING) YANG AMAN:
+          1. Pengguna isi data + kartu. Nomor kartu TIDAK PERNAH menyentuh server BICH -
+             langsung dikirim ke Midtrans lewat MidtransNew3ds.getCardToken() di browser,
+             dan yang kita terima balik hanya sebuah TOKEN (bukan nomor kartu asli).
+          2. Token itu (bukan harga) yang dikirim ke backend /api/create-subscription.
+          3. Backend mencocokkan planCode ke katalog resminya sendiri untuk menentukan
+             nominal & interval tagihan, lalu memanggil Midtrans Subscription API memakai
+             SERVER KEY (rahasia, hanya di server) untuk mendaftarkan langganan berulang.
+          4. Tiap kali siklus bulanan jatuh tempo, Midtrans OTOMATIS menagih kartu itu dan
+             mengirim notifikasi ke webhook backend - sama seperti transaksi Snap biasa.
+        */
+
+        function getInitialProduct() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('produk') === 'ikn' ? 'ikn' : 'sawit';
+        }
+
+        function switchProduct(product) {
+            const secSawit = document.getElementById('sec-sawit');
+            const secIkn = document.getElementById('sec-ikn');
+            const btnSawit = document.getElementById('tab-sawit-btn');
+            const btnIkn = document.getElementById('tab-ikn-btn');
+            const active = 'px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition whitespace-nowrap';
+            const inactive = 'px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition whitespace-nowrap';
+
+            [secSawit, secIkn].forEach(el => el.classList.add('hidden'));
+            btnSawit.className = inactive;
+            btnIkn.className = inactive;
+
+            if (product === 'sawit') { secSawit.classList.remove('hidden'); btnSawit.className = active; }
+            else { secIkn.classList.remove('hidden'); btnIkn.className = active; }
+        }
+
+        document.querySelectorAll('.plan-card input[type=radio]').forEach(input => {
+            input.addEventListener('change', () => {
+                document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => {
+                    r.closest('label').classList.toggle('ring-2', r.checked);
+                    r.closest('label').classList.toggle('ring-emerald-400', r.checked);
+                });
+            });
+        });
+
+        switchProduct(getInitialProduct());
+
+        // Render form kartu sederhana ke dalam kedua form (dipisah id agar tidak bentrok).
+        function cardFieldsHtml(prefix) {
+            return `
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-800 mt-2">
+                    <input type="text" id="${prefix}-card-number" placeholder="Nomor Kartu" inputmode="numeric" maxlength="19" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none sm:col-span-3">
+                    <input type="text" id="${prefix}-card-exp-month" placeholder="Bulan (MM)" inputmode="numeric" maxlength="2" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                    <input type="text" id="${prefix}-card-exp-year" placeholder="Tahun (YYYY)" inputmode="numeric" maxlength="4" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                    <input type="text" id="${prefix}-card-cvv" placeholder="CVV" inputmode="numeric" maxlength="4" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                </div>
+                <p class="text-[10px] text-slate-500 font-mono">* Kartu kredit/debit hanya untuk pendaftaran langganan otomatis. Data kartu langsung diproses oleh Midtrans, bukan disimpan di web ini.</p>
+            `;
+        }
+        document.getElementById('sawit-card-fields').innerHTML = cardFieldsHtml('sawit');
+        document.getElementById('ikn-card-fields').innerHTML = cardFieldsHtml('ikn');
+
+        // Sawit: tampilkan field kartu hanya jika metode "card" dipilih.
+        document.querySelectorAll('input[name="sawit-billing-mode"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                const cardFields = document.getElementById('sawit-card-fields');
+                cardFields.classList.toggle('hidden', radio.value !== 'card' || !radio.checked);
+                if (radio.checked) {
+                    document.querySelectorAll('input[name="sawit-billing-mode"]').forEach(r => {
+                        r.closest('label').classList.toggle('ring-2', r.checked);
+                        r.closest('label').classList.toggle('ring-emerald-400', r.checked);
+                    });
+                }
+            });
+        });
+
+        let isSubInProgress = false;
+
+        async function handleSubscribe(e, kind) {
+            e.preventDefault();
+            if (isSubInProgress) return;
+
+            const btn = document.getElementById(kind === 'sawit' ? 'btn-sub-sawit' : 'btn-sub-ikn');
+            const statusMsg = document.getElementById(kind === 'sawit' ? 'sawit-status-msg' : 'ikn-status-msg');
+            const hpValue = document.getElementById(kind === 'sawit' ? 'sawit_hp_check' : 'ikn_hp_check').value;
+            if (hpValue !== "") { console.warn('Spam bot terdeteksi via honeypot.'); return; }
+
+            const planCode = document.querySelector(`input[name="${kind}-plan"]:checked`).value;
+            const customer = {
+                nama: document.getElementById(`${kind}-nama`).value.trim(),
+                whatsapp: document.getElementById(`${kind}-wa`).value.trim(),
+                email: document.getElementById(`${kind}-email`).value.trim(),
+            };
+            if (!customer.nama || !customer.whatsapp || !customer.email) {
+                showStatus(statusMsg, 'red', 'Mohon lengkapi semua data.');
+                return;
+            }
+
+            // Produk 'sawit' punya 2 jalur: manual (Snap, tanpa kartu) atau kartu (auto-debit).
+            // Produk 'ikn' saat ini hanya jalur kartu.
+            const billingModeInput = document.querySelector('input[name="sawit-billing-mode"]:checked');
+            const billingMode = (kind === 'sawit' && billingModeInput) ? billingModeInput.value : 'card';
+
+            if (billingMode === 'manual') {
+                return handleManualCheckout({ btn, statusMsg, hpCheckId: `${kind}_hp_check`, kind, planCode, customer, formEl: e.target });
+            }
+
+            return handleCardSubscribe({ btn, statusMsg, kind, planCode, customer, formEl: e.target });
+        }
+
+        // ------------------------------------------------------------------
+        // JALUR MANUAL: bayar sekali per bulan lewat Snap (QRIS/transfer/e-wallet),
+        // tanpa kartu, tanpa auto-debit. Reminder pembayaran berikutnya dikirim via
+        // WhatsApp oleh backend (lihat server-bich-payment.js: checkRenewalReminders).
+        // ------------------------------------------------------------------
+        async function handleManualCheckout({ btn, statusMsg, kind, planCode, customer, formEl }) {
+            isSubInProgress = true;
+            btn.disabled = true;
+            btn.innerText = 'Memproses...';
+            showStatus(statusMsg, 'slate', 'Menghubungi server untuk membuat transaksi...');
+
+            try {
+                // Cek apakah ini perpanjangan dari langganan manual yang sudah ada
+                // (dikirim lewat query string ?renew=ID dari link reminder WhatsApp).
+                const params = new URLSearchParams(window.location.search);
+                const renewId = params.get('renew') || null;
+
+                const response = await fetch('/api/create-transaction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        service: kind,
+                        billingMode: 'manual',
+                        planCode,
+                        customer,
+                        manualSubId: renewId,
+                    }),
+                });
+
+                if (!response.ok) {
+                    const errBody = await response.json().catch(() => ({}));
+                    throw new Error(errBody.error || ('Gagal membuat transaksi, status ' + response.status));
+                }
+
+                const data = await response.json();
+                if (!data.token) throw new Error('Token pembayaran tidak diterima dari server.');
+
+                showStatus(statusMsg, 'slate', 'Membuka jendela pembayaran...');
+
+                window.snap.pay(data.token, {
+                    onSuccess: function(result) {
+                        showStatus(statusMsg, 'emerald', 'Pembayaran berhasil! Langganan aktif 30 hari ke depan. Order ID: ' + result.order_id);
+                        formEl.reset();
+                    },
+                    onPending: function() {
+                        showStatus(statusMsg, 'amber', 'Menunggu pembayaran Anda diselesaikan.');
+                    },
+                    onError: function() {
+                        showStatus(statusMsg, 'red', 'Pembayaran gagal. Silakan coba lagi.');
+                    },
+                    onClose: function() {
+                        showStatus(statusMsg, 'slate', 'Anda menutup jendela pembayaran sebelum selesai.');
+                    },
+                });
+
+            } catch (err) {
+                console.error(err);
+                showStatus(statusMsg, 'red', 'Gagal terhubung ke server pembayaran: ' + err.message);
+            } finally {
+                isSubInProgress = false;
+                btn.disabled = false;
+                btn.innerText = 'Mulai Langganan →';
+            }
+        }
+
+        // ------------------------------------------------------------------
+        // JALUR KARTU: tokenisasi kartu + daftar subscription auto-debit (kode lama).
+        // ------------------------------------------------------------------
+        async function handleCardSubscribe({ btn, statusMsg, kind, planCode, customer, formEl }) {
+
+            const cardNumber = document.getElementById(`${kind}-card-number`).value.replace(/\s/g, '');
+            const cardExpMonth = document.getElementById(`${kind}-card-exp-month`).value.trim();
+            const cardExpYear = document.getElementById(`${kind}-card-exp-year`).value.trim();
+            const cardCvv = document.getElementById(`${kind}-card-cvv`).value.trim();
+            if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
+                showStatus(statusMsg, 'red', 'Mohon lengkapi data kartu untuk langganan otomatis.');
+                return;
+            }
+
+            isSubInProgress = true;
+            btn.disabled = true;
+            btn.innerText = 'Memproses...';
+            showStatus(statusMsg, 'slate', 'Memverifikasi kartu dengan Midtrans...');
+
+            // Langkah 1: tokenisasi kartu LANGSUNG ke Midtrans, tidak lewat server kita.
+            MidtransNew3ds.getCardToken({
+                card_number: cardNumber,
+                card_exp_month: cardExpMonth,
+                card_exp_year: cardExpYear,
+                card_cvv: cardCvv,
+            }, {
+                onSuccess: async function(response) {
+                    try {
+                        showStatus(statusMsg, 'slate', 'Mendaftarkan langganan ke server...');
+
+                        // Langkah 2: kirim TOKEN (bukan nomor kartu) + pilihan paket ke backend.
+                        const res = await fetch('/api/create-subscription', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                service: kind,          // 'sawit' | 'ikn'
+                                planCode,
+                                customer,
+                                cardTokenId: response.token_id,
+                            }),
+                        });
+
+                        if (!res.ok) {
+                            const errBody = await res.json().catch(() => ({}));
+                            throw new Error(errBody.error || ('Gagal mendaftar, status ' + res.status));
+                        }
+
+                        const data = await res.json();
+                        showStatus(statusMsg, 'emerald', `Langganan aktif! ID: ${data.subscriptionId}. Tagihan pertama akan segera diproses.`);
+                        formEl.reset();
+
+                    } catch (err) {
+                        console.error(err);
+                        showStatus(statusMsg, 'red', 'Gagal mendaftarkan langganan: ' + err.message + ' (endpoint /api/create-subscription mungkin belum tersambung - lihat server-bich-payment.js).');
+                    } finally {
+                        isSubInProgress = false;
+                        btn.disabled = false;
+                        btn.innerText = 'Mulai Langganan →';
+                    }
+                },
+                onFailure: function(response) {
+                    console.error(response);
+                    showStatus(statusMsg, 'red', 'Data kartu tidak valid atau ditolak Midtrans. Periksa kembali nomor kartu/CVV/masa berlaku.');
+                    isSubInProgress = false;
+                    btn.disabled = false;
+                    btn.innerText = 'Mulai Langganan →';
+                },
+            });
+        }
+
+        function showStatus(el, color, text) {
+            const colorMap = { slate: 'text-slate-400', emerald: 'text-emerald-400', red: 'text-red-400', amber: 'text-amber-400' };
+            el.className = `text-[11px] font-mono max-w-md text-right ${colorMap[color]}`;
+            el.innerText = text;
+            el.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
