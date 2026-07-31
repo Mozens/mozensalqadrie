@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyek & Loker Hub — BICH | Mozens Inc.</title>
+    <title>Bursa Loker & Talenta — BICH | Mozens Inc.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -13,6 +13,16 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .skeleton {
+            background: linear-gradient(90deg, #0b0f17 25%, #131a26 37%, #0b0f17 63%);
+            background-size: 400% 100%;
+            animation: skeleton-loading 1.4s ease infinite;
+        }
+        @keyframes skeleton-loading {
+            0% { background-position: 100% 50%; }
+            100% { background-position: 0 50%; }
+        }
+        #loker-modal { backdrop-filter: blur(4px); }
     </style>
 </head>
 <body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
@@ -21,10 +31,10 @@
     <header class="border-b border-emerald-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <a href="index.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
-                <span>&larr;</span> Borneo Insight & Career hub
+                <span>&larr;</span> Borneo Insight & Career Hub
             </a>
             <span class="text-[11px] font-mono text-emerald-400/80 border border-emerald-500/20 px-3 py-1 rounded-full bg-emerald-500/5">
-                MOZENS Inc. • PROJECT & CAREER DESK
+                MOZENS Inc. • CAREER & TALENT DESK
             </span>
         </div>
     </header>
@@ -32,7 +42,7 @@
     <!-- Main Container -->
     <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-8">
 
-        <!-- Hero Title Section with Motto BICH -->
+        <!-- Hero Title Section -->
         <div class="text-center space-y-4 max-w-3xl mx-auto">
             <!-- Official Motto Badge -->
             <div class="inline-flex items-center gap-2 border border-emerald-500/40 bg-emerald-950/60 px-4 py-1.5 rounded-full text-xs font-mono text-emerald-400 font-bold shadow-lg shadow-emerald-950/50">
@@ -41,158 +51,17 @@
             </div>
 
             <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white">
-                PROYEK & <span class="gold-gradient">BURSA LOKER</span>
+                BURSA LOKER & <span class="gold-gradient">TALENTA KALIMANTAN</span>
             </h1>
 
             <p class="text-xs sm:text-sm text-slate-300 font-mono max-w-2xl mx-auto leading-relaxed">
-                Pusat Validasi Proyek 5 Provinsi Kalimantan: Transparansi Progress Lapangan, Penyerapan Subkon Lokal, dan Bursa Talenta Terverifikasi.
+                Pusat Lowongan Kerja Terverifikasi 5 Provinsi Kalimantan. Transparansi Informasi Karir, Rekrutmen Langsung Perusahaan, & Bebas Penipuan.
             </p>
         </div>
 
-        <!-- Room Switcher Tabs -->
-        <div class="flex justify-center border-b border-slate-800">
-            <button id="tab-proyek-btn" onclick="switchRoom('proyek')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2">
-                <span>🏗️</span> ROOM 1: MONITOR PROYEK (AKAN & SEDANG BERJALAN)
-            </button>
-            <button id="tab-loker-btn" onclick="switchRoom('loker')" class="px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2">
-                <span>💼</span> ROOM 2: BURSA LOKER & TALENTA
-            </button>
-        </div>
+        <!-- ==================== BURSA LOKER (LIVE DARI SUPABASE) ==================== -->
+        <div class="space-y-6">
 
-        <!-- ==================== ROOM 1: MONITOR PROYEK ==================== -->
-        <div id="sec-proyek" class="space-y-6">
-            
-            <!-- Quick Metrics / Stats -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                <div class="bg-[#080c14] border border-slate-800 p-3.5 rounded-xl">
-                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Total Proyek Aktif</span>
-                    <span class="text-xl font-mono font-bold text-emerald-400">42 Proyek</span>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 p-3.5 rounded-xl">
-                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Estimasi Nilai Kontrak</span>
-                    <span class="text-xl font-mono font-bold text-amber-400">Rp 84,2 T</span>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 p-3.5 rounded-xl">
-                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Fase Akan Datang (Q4)</span>
-                    <span class="text-xl font-mono font-bold text-blue-400">11 Proyek</span>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 p-3.5 rounded-xl">
-                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Penyerapan Tenaga Kerja</span>
-                    <span class="text-xl font-mono font-bold text-purple-400">18.500+ Org</span>
-                </div>
-            </div>
-
-            <!-- List Card Proyek -->
-            <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">● LIVE PROJECT PIPELINE & PROGRESS TRACKER (5 PROVINSI)</h3>
-                    <span class="text-[10px] font-mono text-emerald-400">Diperbarui: Real-time BICH Intel</span>
-                </div>
-
-                <!-- Proyek Card 1: Sedang Berjalan (IKN / Kaltim) -->
-                <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 space-y-4 transition">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">SEDANG BERJALAN</span>
-                                <span class="text-slate-500 text-[10px] font-mono">IKN / Kaltim • Sektor Infrastruktur</span>
-                            </div>
-                            <h2 class="text-base font-serif font-bold text-white">Pembangunan Jalan Tol Akses IKN Seksi 3B & Istana Negara</h2>
-                        </div>
-                        <div class="text-right sm:text-right">
-                            <span class="text-xs font-mono text-amber-400 block font-bold">Valuasi: Rp 3,4 Triliun</span>
-                            <span class="text-[10px] text-slate-500 font-mono">Main Contractor: BUMN Konsorsium</span>
-                        </div>
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div class="space-y-1.5">
-                        <div class="flex justify-between text-xs font-mono">
-                            <span class="text-slate-400">Progress Fisik Lapangan</span>
-                            <span class="text-emerald-400 font-bold">78.5% (On Schedule)</span>
-                        </div>
-                        <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
-                            <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 78.5%"></div>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-slate-900 flex justify-between items-center text-[11px] font-mono text-slate-400">
-                        <span>Peluang Subkon & Material: <strong class="text-slate-200">Terbuka (Paving & Landscaping)</strong></span>
-                        <a href="https://wa.me/6282341333313?text=Halo%20Admin%20BICH%2C%20saya%20tertarik%20info%20kemitraan%20Proyek%20Tol%20IKN." target="_blank" class="text-emerald-400 hover:underline">Info Kemitraan B2B &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Proyek Card 2: Akan Berjalan (Kaltara) -->
-                <div class="bg-[#080c14] border border-slate-800 hover:border-blue-500/50 rounded-xl p-5 space-y-4 transition">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">AKAN BERJALAN (Q4)</span>
-                                <span class="text-slate-500 text-[10px] font-mono">KIPI Tanah Kuning, Kaltara • Sektor Industri Hijau</span>
-                            </div>
-                            <h2 class="text-base font-serif font-bold text-white">Konstruksi Smelter Alumina & Megawatt Hydroplant Sub-station</h2>
-                        </div>
-                        <div class="text-right sm:text-right">
-                            <span class="text-xs font-mono text-amber-400 block font-bold">Valuasi: Rp 12,8 Triliun</span>
-                            <span class="text-[10px] text-slate-500 font-mono">PMA & Private Consortium</span>
-                        </div>
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div class="space-y-1.5">
-                        <div class="flex justify-between text-xs font-mono">
-                            <span class="text-slate-400">Progress Tahap Pembebasan Lahan & Amdal</span>
-                            <span class="text-blue-400 font-bold">25.0% (Pre-Construction)</span>
-                        </div>
-                        <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
-                            <div class="bg-blue-500 h-2.5 rounded-full" style="width: 25%"></div>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-slate-900 flex justify-between items-center text-[11px] font-mono text-slate-400">
-                        <span>Peluang Subkon & Material: <strong class="text-slate-200">Penyediaan Alat Berat & Catering Camp</strong></span>
-                        <a href="https://wa.me/6282341333313?text=Halo%20Admin%20BICH%2C%20saya%20tertarik%20info%20Smelter%20KIPI." target="_blank" class="text-blue-400 hover:underline">Info Kemitraan B2B &rarr;</a>
-                    </div>
-                </div>
-
-                <!-- Proyek Card 3: Sedang Berjalan (Kalsel / Kalteng) -->
-                <div class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/50 rounded-xl p-5 space-y-4 transition">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono font-bold px-2 py-0.5 rounded">SEDANG BERJALAN</span>
-                                <span class="text-slate-500 text-[10px] font-mono">Tabalong - Barito (Kalsel/Kalteng) • Sektor Logistik</span>
-                            </div>
-                            <h2 class="text-base font-serif font-bold text-white">Modernisasi Jalur Hauling & Pelabuhan Intermoda Sungai Barito</h2>
-                        </div>
-                        <div class="text-right sm:text-right">
-                            <span class="text-xs font-mono text-amber-400 block font-bold">Valuasi: Rp 850 Miliar</span>
-                            <span class="text-[10px] text-slate-500 font-mono">Mitra Swasta Nasional</span>
-                        </div>
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div class="space-y-1.5">
-                        <div class="flex justify-between text-xs font-mono">
-                            <span class="text-slate-400">Progress Pengerukan & Jetty Extension</span>
-                            <span class="text-emerald-400 font-bold">60.0% (Mid-Phase)</span>
-                        </div>
-                        <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
-                            <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 60%"></div>
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-slate-900 flex justify-between items-center text-[11px] font-mono text-slate-400">
-                        <span>Peluang Subkon & Material: <strong class="text-slate-200">Tongkang & Fleet Tugboat</strong></span>
-                        <a href="https://wa.me/6282341333313?text=Halo%20Admin%20BICH%2C%20saya%20tertarik%20info%20Pelabuhan%20Barito." target="_blank" class="text-emerald-400 hover:underline">Info Kemitraan B2B &rarr;</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================== ROOM 2: BURSA LOKER ==================== -->
-        <div id="sec-loker" class="space-y-6 hidden">
-            
             <!-- Banner Monetisasi B2B / Jobseeker -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <a href="monetisasi.html?service=loker" class="bg-gradient-to-r from-amber-950/40 to-[#080c14] border border-amber-500/30 p-4 rounded-xl flex items-center justify-between hover:border-amber-400 transition">
@@ -214,100 +83,307 @@
                 </a>
             </div>
 
+            <!-- Filter & Search -->
+            <div class="flex flex-col sm:flex-row gap-3">
+                <input type="text" id="loker-search" placeholder="Cari posisi, perusahaan, atau lokasi..." class="flex-grow bg-[#080c14] border border-slate-800 rounded-lg px-4 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none font-mono">
+                <button onclick="loadLokerData(true)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2 justify-center">
+                    <span>🔄</span> Muat Ulang
+                </button>
+            </div>
+
             <!-- List Vacancies -->
             <div class="space-y-3">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">● LOWONGAN KERJA AKTIF (TERVERIFIKASI)</h3>
-                    <span class="text-[10px] font-mono text-slate-500">Filter: All Kalimantan</span>
+                    <span id="loker-count-label" class="text-[10px] font-mono text-slate-500">Memuat...</span>
                 </div>
 
-                <!-- Loker 1 -->
-                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/40 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition">
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <h4 class="text-sm font-bold text-white font-serif">Site HSE Manager (Proyek Konstruksi IKN)</h4>
-                            <span class="bg-red-500/10 border border-red-500/30 text-red-400 text-[9px] font-mono px-1.5 py-0.2 rounded">URGENT</span>
-                        </div>
-                        <p class="text-xs text-slate-400">PT Utama Karya Konstruksi • Sepaku / IKN Nusantara</p>
-                        <div class="flex items-center gap-3 text-[10px] font-mono text-slate-500 pt-1">
-                            <span>💰 Rp 18.000.000 - Rp 25.000.000</span>
-                            <span>•</span>
-                            <span>⏱️ Pengalaman 5+ Tahun</span>
-                        </div>
-                    </div>
-                    <a href="https://wa.me/6282341333313?text=Lamar%20Posisi%3A%20Site%20HSE%20Manager%20IKN" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold px-4 py-2 rounded-lg text-center transition">
-                        Lamar Sekarang &rarr;
-                    </a>
+                <!-- Kontainer hasil - diisi lewat JS, TIDAK ADA data contoh/hardcode -->
+                <div id="loker-list-container" class="space-y-3"></div>
+
+                <!-- Skeleton loading state -->
+                <div id="loker-skeleton" class="space-y-3">
+                    <div class="skeleton h-24 rounded-xl border border-slate-800"></div>
+                    <div class="skeleton h-24 rounded-xl border border-slate-800"></div>
+                    <div class="skeleton h-24 rounded-xl border border-slate-800"></div>
                 </div>
 
-                <!-- Loker 2 -->
-                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/40 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition">
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <h4 class="text-sm font-bold text-white font-serif">Senior Mining Engineer & Planner</h4>
-                            <span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-mono px-1.5 py-0.2 rounded">FULL TIME</span>
-                        </div>
-                        <p class="text-xs text-slate-400">Barito Energy Resources • Muara Teweh / Banjarmasin Office</p>
-                        <div class="flex items-center gap-3 text-[10px] font-mono text-slate-500 pt-1">
-                            <span>💰 Rp 15.000.000 - Rp 22.000.000</span>
-                            <span>•</span>
-                            <span>⏱️ Pengalaman 3+ Tahun</span>
-                        </div>
-                    </div>
-                    <a href="https://wa.me/6282341333313?text=Lamar%20Posisi%3A%20Senior%20Mining%20Engineer" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold px-4 py-2 rounded-lg text-center transition">
-                        Lamar Sekarang &rarr;
-                    </a>
+                <!-- Empty state -->
+                <div id="loker-empty" class="hidden text-center py-12 border border-dashed border-slate-800 rounded-xl">
+                    <p class="text-sm text-slate-400 font-mono">Belum ada lowongan terverifikasi untuk saat ini.</p>
+                    <p class="text-xs text-slate-600 font-mono mt-1">Coba lagi beberapa saat lagi, atau pasang loker Anda di atas.</p>
                 </div>
 
-                <!-- Loker 3 -->
-                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/40 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition">
-                    <div class="space-y-1">
-                        <div class="flex items-center gap-2">
-                            <h4 class="text-sm font-bold text-white font-serif">Kapten Tugboat & Logistics Supervisor</h4>
-                            <span class="bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[9px] font-mono px-1.5 py-0.2 rounded">KONTRAK</span>
-                        </div>
-                        <p class="text-xs text-slate-400">Mitra Samarinda Trans Maritime • Samarinda / Mahakam Route</p>
-                        <div class="flex items-center gap-3 text-[10px] font-mono text-slate-500 pt-1">
-                            <span>💰 Rp 10.000.000 - Rp 14.000.000</span>
-                            <span>•</span>
-                            <span>⏱️ Sertifikasi ANT-III / SIB</span>
-                        </div>
-                    </div>
-                    <a href="https://wa.me/6282341333313?text=Lamar%20Posisi%3A%20Kapten%20Tugboat" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold px-4 py-2 rounded-lg text-center transition">
-                        Lamar Sekarang &rarr;
-                    </a>
+                <!-- Error state -->
+                <div id="loker-error" class="hidden text-center py-12 border border-red-500/30 bg-red-500/5 rounded-xl">
+                    <p class="text-sm text-red-400 font-mono">Gagal memuat data lowongan dari server.</p>
+                    <p id="loker-error-detail" class="text-xs text-slate-500 font-mono mt-1"></p>
+                    <button onclick="loadLokerData(true)" class="mt-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono px-4 py-2 rounded-lg hover:bg-red-500/20 transition">Coba Lagi</button>
+                </div>
+
+                <!-- Load more -->
+                <div id="loker-load-more-wrap" class="hidden text-center pt-2">
+                    <button id="loker-load-more-btn" onclick="loadLokerData(false)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 text-xs font-mono px-6 py-2.5 rounded-lg transition">
+                        Muat Lebih Banyak &darr;
+                    </button>
                 </div>
             </div>
-
         </div>
 
     </main>
 
+    <!-- ==================== MODAL DETAIL LOWONGAN ==================== -->
+    <div id="loker-modal" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4" onclick="if(event.target===this) closeLokerModal()">
+        <div class="bg-[#080c14] border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto">
+            <div class="sticky top-0 bg-[#080c14] border-b border-slate-800 p-5 flex justify-between items-start gap-4">
+                <div class="space-y-1.5">
+                    <div id="modal-badges" class="flex flex-wrap gap-1.5"></div>
+                    <h2 id="modal-title" class="text-lg font-serif font-bold text-white leading-snug"></h2>
+                    <p id="modal-company" class="text-xs text-slate-400 font-mono"></p>
+                </div>
+                <button onclick="closeLokerModal()" class="text-slate-500 hover:text-white text-xl leading-none flex-shrink-0">&times;</button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div id="modal-meta" class="flex flex-wrap gap-3 text-[11px] font-mono text-slate-400"></div>
+                <div id="modal-description" class="text-sm text-slate-300 leading-relaxed whitespace-pre-line"></div>
+                <p id="modal-source-note" class="text-[10px] text-slate-600 font-mono border-t border-slate-900 pt-3"></p>
+            </div>
+            <div class="sticky bottom-0 bg-[#080c14] border-t border-slate-800 p-5 flex gap-3">
+                <a id="modal-apply-btn" href="#" target="_blank" class="flex-grow bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-mono font-bold px-6 py-3 rounded-lg transition text-center">
+                    Lamar via WhatsApp &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
-        © 2026 BICH Project & Career Desk • Mozens Inc. All Rights Reserved.
+        © 2026 BICH Career & Talent Desk • Mozens Inc. All Rights Reserved.
     </footer>
 
-    <!-- Tab Switcher Engine -->
+    <!-- ==================== SINKRONISASI DATA LOKER DARI SUPABASE ==================== -->
     <script>
-        function switchRoom(room) {
-            const secProyek = document.getElementById('sec-proyek');
-            const secLoker = document.getElementById('sec-loker');
-            const btnProyek = document.getElementById('tab-proyek-btn');
-            const btnLoker = document.getElementById('tab-loker-btn');
+        const SUPABASE_URL = 'https://gehbuhuevfxfjyytmrht.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_yPGSsXXIoc_wfn_Kkq8xzA_lGi7zEEn';
 
-            if (room === 'proyek') {
-                secProyek.classList.remove('hidden');
-                secLoker.classList.add('hidden');
-                btnProyek.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2';
-                btnLoker.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2';
-            } else if (room === 'loker') {
-                secLoker.classList.remove('hidden');
-                secProyek.classList.add('hidden');
-                btnLoker.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-emerald-400 text-emerald-400 transition flex items-center gap-2';
-                btnProyek.className = 'px-6 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2';
+        const LOKER_KATEGORI_VALUE = 'Loker';
+        const PAGE_SIZE = 12;
+        const ADMIN_WA_NUMBER = '6282341333313';
+
+        let lokerOffset = 0;
+        let lokerAllItems = []; 
+        let lokerSearchDebounce = null;
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str == null ? '' : String(str);
+            return div.innerHTML;
+        }
+
+        function timeAgo(dateStr) {
+            if (!dateStr) return '';
+            const diffMs = Date.now() - new Date(dateStr).getTime();
+            const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            if (days <= 0) return 'Hari ini';
+            if (days === 1) return '1 hari lalu';
+            if (days < 30) return `${days} hari lalu`;
+            const months = Math.floor(days / 30);
+            return `${months} bulan lalu`;
+        }
+
+        async function fetchLokerFromSupabase(offset) {
+            const params = new URLSearchParams({
+                select: '*',
+                kategori: `eq.${LOKER_KATEGORI_VALUE}`,
+                status: 'eq.Ready',
+                order: 'created_at.desc',
+                limit: String(PAGE_SIZE),
+                offset: String(offset),
+            });
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/master_konten?${params.toString()}`, {
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                },
+            });
+            if (!res.ok) {
+                const errText = await res.text().catch(() => '');
+                throw new Error(`Status ${res.status}${errText ? ' - ' + errText.slice(0, 150) : ''}`);
+            }
+            return res.json();
+        }
+
+        async function loadLokerData(reset) {
+            const skeleton = document.getElementById('loker-skeleton');
+            const container = document.getElementById('loker-list-container');
+            const emptyState = document.getElementById('loker-empty');
+            const errorState = document.getElementById('loker-error');
+            const loadMoreWrap = document.getElementById('loker-load-more-wrap');
+            const countLabel = document.getElementById('loker-count-label');
+
+            if (reset) {
+                lokerOffset = 0;
+                lokerAllItems = [];
+                container.innerHTML = '';
+            }
+
+            errorState.classList.add('hidden');
+            emptyState.classList.add('hidden');
+            skeleton.classList.remove('hidden');
+            loadMoreWrap.classList.add('hidden');
+            countLabel.textContent = 'Memuat...';
+
+            try {
+                const data = await fetchLokerFromSupabase(lokerOffset);
+                skeleton.classList.add('hidden');
+
+                if (reset && data.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    countLabel.textContent = '0 lowongan';
+                    return;
+                }
+
+                lokerAllItems = lokerAllItems.concat(data);
+                lokerOffset += data.length;
+
+                data.forEach(item => container.appendChild(renderLokerCard(item)));
+
+                countLabel.textContent = `${lokerAllItems.length} lowongan dimuat`;
+
+                if (data.length === PAGE_SIZE) {
+                    loadMoreWrap.classList.remove('hidden');
+                }
+
+            } catch (err) {
+                console.error('Gagal memuat data loker:', err);
+                skeleton.classList.add('hidden');
+                errorState.classList.remove('hidden');
+                document.getElementById('loker-error-detail').textContent = err.message || 'Kesalahan tidak diketahui.';
+                countLabel.textContent = 'Gagal memuat';
             }
         }
+
+        function getDescription(item) {
+            return item.artikel_ai || item.info_tambahan || '';
+        }
+
+        function renderLokerCard(item) {
+            const isBelumVerifikasi = !item.status_verifikasi || item.status_verifikasi === 'MENTAH';
+
+            const wrapper = document.createElement('div');
+            wrapper.className = `bg-[#080c14] border border-slate-800 hover:border-amber-500/40 rounded-xl p-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 transition cursor-pointer`;
+            wrapper.onclick = () => openLokerModal(item);
+
+            const badges = [];
+            if (item.is_premium === true) {
+                badges.push('<span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-mono px-1.5 py-0.5 rounded">⭐ PREMIUM</span>');
+            }
+            badges.push(isBelumVerifikasi
+                ? '<span class="bg-slate-500/10 border border-slate-500/30 text-slate-400 text-[9px] font-mono px-1.5 py-0.5 rounded">⏳ PENINJAUAN</span>'
+                : `<span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono px-1.5 py-0.5 rounded">✅ ${escapeHtml(item.status_verifikasi)}</span>`);
+
+            const desc = getDescription(item);
+            const snippet = desc ? desc.slice(0, 90).trim() + (desc.length > 90 ? '…' : '') : '';
+
+            wrapper.innerHTML = `
+                <div class="space-y-1 flex-grow">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h4 class="text-sm font-bold text-white font-serif">${escapeHtml(item.judul || 'Tanpa Judul')}</h4>
+                        ${badges.join('')}
+                    </div>
+                    <p class="text-xs text-slate-400">${escapeHtml(item.penyelenggara_perusahaan || 'Tidak dicantumkan')}${item.lokasi ? ' • ' + escapeHtml(item.lokasi) : ''}</p>
+                    ${snippet ? `<p class="text-[11px] text-slate-500">${escapeHtml(snippet)}</p>` : ''}
+                    <div class="flex items-center gap-3 text-[10px] font-mono text-slate-500 pt-1 flex-wrap">
+                        <span>🗓️ ${timeAgo(item.created_at)}</span>
+                    </div>
+                </div>
+                <button class="bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold px-4 py-2 rounded-lg text-center transition flex-shrink-0">
+                    Lihat Detail &rarr;
+                </button>
+            `;
+            return wrapper;
+        }
+
+        function openLokerModal(item) {
+            const isBelumVerifikasi = !item.status_verifikasi || item.status_verifikasi === 'MENTAH';
+
+            const badgesEl = document.getElementById('modal-badges');
+            const badges = [];
+            if (item.is_premium === true) {
+                badges.push('<span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-mono px-1.5 py-0.5 rounded">⭐ PREMIUM</span>');
+            }
+            badges.push(isBelumVerifikasi
+                ? '<span class="bg-slate-500/10 border border-slate-500/30 text-slate-400 text-[9px] font-mono px-1.5 py-0.5 rounded">⏳ PENINJAUAN</span>'
+                : `<span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono px-1.5 py-0.5 rounded">✅ ${escapeHtml(item.status_verifikasi)}</span>`);
+            badgesEl.innerHTML = badges.join('');
+
+            document.getElementById('modal-title').textContent = item.judul || 'Tanpa Judul';
+            document.getElementById('modal-company').textContent = item.penyelenggara_perusahaan || 'Tidak dicantumkan';
+
+            const metaEl = document.getElementById('modal-meta');
+            const metaParts = [];
+            if (item.lokasi) metaParts.push(`📍 ${escapeHtml(item.lokasi)}`);
+            metaParts.push(`🗓️ Diposting ${timeAgo(item.created_at)}`);
+            metaEl.innerHTML = metaParts.map(p => `<span>${p}</span>`).join('<span>•</span>');
+
+            document.getElementById('modal-description').textContent =
+                getDescription(item) || 'Deskripsi lengkap belum tersedia untuk lowongan ini. Hubungi kami via WhatsApp untuk info lebih lanjut.';
+
+            const sourceNote = document.getElementById('modal-source-note');
+            const sourceUrl = item.link_sumber || item.link;
+            if (sourceUrl) {
+                sourceNote.innerHTML = `Sumber data: <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline">tautan asli</a> (dicatat untuk transparansi, ringkasan di atas disusun ulang oleh tim BICH).`;
+            } else {
+                sourceNote.textContent = 'Lowongan dipasang langsung oleh perusahaan melalui BICH.';
+            }
+
+            const applyBtn = document.getElementById('modal-apply-btn');
+            if (item.link_wa) {
+                applyBtn.href = item.link_wa;
+            } else {
+                const waText = encodeURIComponent(`Lamar Posisi: ${item.judul || ''} - ${item.penyelenggara_perusahaan || ''}`);
+                applyBtn.href = `https://wa.me/${ADMIN_WA_NUMBER}?text=${waText}`;
+            }
+
+            document.getElementById('loker-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLokerModal() {
+            document.getElementById('loker-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLokerModal();
+        });
+
+        // Search Filter
+        document.getElementById('loker-search').addEventListener('input', (e) => {
+            clearTimeout(lokerSearchDebounce);
+            const query = e.target.value.trim().toLowerCase();
+            lokerSearchDebounce = setTimeout(() => {
+                const container = document.getElementById('loker-list-container');
+                container.innerHTML = '';
+                const filtered = query
+                    ? lokerAllItems.filter(item => {
+                        const haystack = `${item.judul || ''} ${item.penyelenggara_perusahaan || ''} ${item.lokasi || ''}`.toLowerCase();
+                        return haystack.includes(query);
+                    })
+                    : lokerAllItems;
+
+                document.getElementById('loker-empty').classList.toggle('hidden', filtered.length > 0);
+                filtered.forEach(item => container.appendChild(renderLokerCard(item)));
+                document.getElementById('loker-count-label').textContent = query
+                    ? `${filtered.length} hasil untuk "${query}"`
+                    : `${lokerAllItems.length} lowongan dimuat`;
+            }, 250);
+        });
+
+        // Muat data langsung saat halaman dibuka
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLokerData(true);
+        });
     </script>
 </body>
 </html>

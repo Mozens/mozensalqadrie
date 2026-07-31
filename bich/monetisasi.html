@@ -35,7 +35,7 @@
                 <span>&larr;</span> Kembali ke Proyek & Loker Hub
             </a>
             <span class="text-[11px] font-mono text-emerald-400/80 border border-emerald-500/20 px-3 py-1 rounded-full bg-emerald-500/5">
-                MOZENS Inc. • MONETISASI DESK
+                MOZENS INC. • MONETISASI DESK
             </span>
         </div>
     </header>
@@ -101,8 +101,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <input type="text" id="loker-perusahaan" placeholder="Nama Perusahaan" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
                         <input type="text" id="loker-posisi" placeholder="Judul Posisi yang Dibuka" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                        <input type="text" id="loker-lokasi" placeholder="Lokasi Kerja (mis. Balikpapan / IKN)" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
                         <input type="email" id="loker-email" placeholder="Email PIC" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
-                        <input type="tel" id="loker-wa" placeholder="Nomor WhatsApp PIC" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
+                        <input type="tel" id="loker-wa" placeholder="Nomor WhatsApp PIC" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none sm:col-span-2">
+                        <textarea id="loker-deskripsi" placeholder="Deskripsi pekerjaan, kualifikasi, gaji (opsional dicantumkan), dll. Ini yang akan tampil di halaman loker." required rows="4" class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none sm:col-span-2"></textarea>
                     </div>
                     <div class="flex flex-col items-end gap-2 pt-2">
                         <p id="loker-status-msg" class="hidden text-[11px] font-mono max-w-md text-right"></p>
@@ -243,12 +245,14 @@
                 customer = {
                     perusahaan: document.getElementById('loker-perusahaan').value.trim(),
                     posisi: document.getElementById('loker-posisi').value.trim(),
+                    lokasi: document.getElementById('loker-lokasi').value.trim(),
+                    deskripsi: document.getElementById('loker-deskripsi').value.trim(),
                     email: document.getElementById('loker-email').value.trim(),
                     whatsapp: document.getElementById('loker-wa').value.trim(),
                 };
-                if (!customer.perusahaan || !customer.posisi || !customer.email || !customer.whatsapp) {
+                if (!customer.perusahaan || !customer.posisi || !customer.lokasi || !customer.deskripsi || !customer.email || !customer.whatsapp) {
                     statusMsg.className = 'text-[11px] font-mono max-w-md text-right text-red-400';
-                    statusMsg.innerText = 'Mohon lengkapi semua data perusahaan.';
+                    statusMsg.innerText = 'Mohon lengkapi semua data perusahaan, termasuk lokasi & deskripsi pekerjaan.';
                     statusMsg.classList.remove('hidden');
                     return;
                 }
