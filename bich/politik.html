@@ -146,7 +146,7 @@
                 <button onclick="resetAndLoad()" class="mt-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono px-5 py-2 rounded-lg hover:bg-red-500/20 transition">Coba Lagi</button>
             </div>
 
-            <!-- UI PAGINATION (Halaman 1, 2, 3) -->
+            <!-- UI PAGINATION -->
             <div id="berita-pagination" class="hidden flex items-center justify-between border-t border-slate-800/80 pt-6 mt-6">
                 <button id="btn-prev-page" onclick="changePage(-1)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-slate-800 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2">
                     &larr; Sebelumnya
@@ -181,7 +181,7 @@
             <!-- Modal Body -->
             <div class="p-6 space-y-6 overflow-y-auto custom-scrollbar">
                 <div id="modal-meta" class="flex flex-wrap gap-3 text-[11px] font-mono text-slate-400 border-b border-slate-900 pb-3"></div>
-                <div id="modal-content" class="text-sm text-slate-200 leading-relaxed space-y-4 font-sans italic-quotes"></div>
+                <div id="modal-content" class="text-sm text-slate-200 leading-relaxed space-y-4 font-sans"></div>
                 
                 <div class="bg-emerald-950/30 border border-emerald-500/30 p-5 rounded-xl space-y-2">
                     <h5 class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
@@ -248,17 +248,16 @@
                 select: '*',
                 kategori: `eq.${BERITA_KATEGORI_VALUE}`,
                 status: 'eq.Ready',
+                artikel_ai: 'not.is.null',
                 order: 'created_at.desc',
                 limit: String(PAGE_SIZE),
                 offset: String(offset),
             });
 
-            // Server-Side Filter Provinsi (Direct Supabase Query)
             if (selectedProvinsi && selectedProvinsi !== 'ALL') {
                 params.append('wilayah', `ilike.%${selectedProvinsi}%`);
             }
 
-            // Server-Side Search Query
             if (searchQuery) {
                 params.append('or', `(judul.ilike.%${searchQuery}%,lokasi.ilike.%${searchQuery}%,artikel_ai.ilike.%${searchQuery}%)`);
             }
@@ -269,6 +268,7 @@
                     Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
                 },
             });
+
             if (!res.ok) {
                 const errText = await res.text().catch(() => '');
                 throw new Error(`Status ${res.status}${errText ? ' - ' + errText.slice(0, 150) : ''}`);
@@ -300,21 +300,17 @@
                         emptyState.classList.remove('hidden');
                         countLabel.textContent = '0 Laporan Intelijen';
                     } else {
-                        // Jika halaman berikutnya kosong, kembalikan ke halaman sebelumnya
                         currentPage--;
                         loadBeritaData();
                     }
                     return;
                 }
 
-                // Render Kartu Berita
                 data.forEach(item => {
                     container.appendChild(renderBeritaCard(item));
                 });
 
                 countLabel.textContent = `Menampilkan ${data.length} Laporan (Halaman ${currentPage})`;
-
-                // Update UI Navigation Pagination
                 updatePaginationControls(data.length);
 
             } catch (err) {
@@ -335,10 +331,7 @@
             paginationUI.classList.remove('hidden');
             pageIndicator.textContent = `Halaman ${currentPage}`;
 
-            // Matikan tombol Sebelumnya jika ada di Halaman 1
             btnPrev.disabled = (currentPage === 1);
-
-            // Matikan tombol Selanjutnya jika data yang didapat kurang dari limit (berarti data habis)
             btnNext.disabled = (itemsFetched < PAGE_SIZE);
         }
 
@@ -348,14 +341,13 @@
 
             loadBeritaData();
 
-            // Scroll halus kembali ke bagian atas daftar berita
             const section = document.getElementById('berita-list-container');
             if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function filterByProvinsi(prov, btnElement) {
             selectedProvinsi = prov;
-            currentPage = 1; // Reset ke Halaman 1 setiap ubah filter
+            currentPage = 1;
             
             document.querySelectorAll('.prov-btn').forEach(btn => {
                 btn.className = 'prov-btn bg-[#080c14] hover:border-emerald-500 text-slate-300 border border-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-mono transition';
@@ -381,8 +373,10 @@
             wrapper.className = `bg-[#080c14] border border-slate-800 hover:border-emerald-500/60 rounded-xl p-5 space-y-4 transition flex flex-col justify-between cursor-pointer group shadow-lg hover:shadow-emerald-950/20`;
             wrapper.onclick = () => openBeritaModal(item);
 
-            const contentText = item.artikel_ai || item.info_tambahan || '';
-            const snippet = contentText ? contentText.slice(0, 120).trim() + (contentText.length > 120 ? '…' : '') : 'Klik untuk membaca laporan sintesis lengkap BICH...';
+            const contentText = item.artikel_ai ? (item.info_tambahan || item.artikel_ai) : '';
+            const snippet = contentText
+                ? (contentText.length > 140 ? contentText.slice(0, 140).trim() + '…' : contentText) 
+                : 'Klik untuk membaca laporan sintesis lengkap BICH...';
 
             wrapper.innerHTML = `
                 <div class="space-y-3">
@@ -426,16 +420,32 @@
                 <span>Motto: Perhatikan, Analisa. Eksekusi.</span>
             `;
 
-            const fullText = item.artikel_ai || item.info_tambahan || 'Isi laporan narasi belum tersedia.';
-            const paragraphs = fullText.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
+            // 1. Ambil artikel AI utuh
+            const fullText = item.artikel_ai || 'Isi laporan narasi sintesis BICH belum tersedia atau masih dalam proses verifikasi redaksi.';
+
+            // 2. Format Paragraf Rapi & Berjarak (Tailwind Spacing)
+            const paragraphs = fullText
+                .split(/\n\s*\n/)
+                .filter(p => p.trim() !== '')
+                .map(p => `<p class="mb-4 leading-relaxed text-slate-300">${escapeHtml(p.trim())}</p>`)
+                .join('');
+
             document.getElementById('modal-content').innerHTML = paragraphs;
 
+            // 3. Set Insight Ringkas Eksekutif
             const defaultInsight = "Pengembangan kawasan ini wajib mengedepankan asas keberlanjutan lingkungan (ESG) serta pelibatan aktif putra daerah agar menciptakan pertumbuhan ekonomi yang sehat tanpa mengorbankan paru-paru dunia.";
-            document.getElementById('modal-insight').textContent = item.info_tambahan && item.artikel_ai ? item.info_tambahan.slice(0, 200) : defaultInsight;
+            const hasValidInsight = item.info_tambahan && item.artikel_ai && item.info_tambahan.length > 20;
+            document.getElementById('modal-insight').textContent = hasValidInsight 
+                ? (item.info_tambahan.length > 200 ? item.info_tambahan.slice(0, 200).trim() + '…' : item.info_tambahan)
+                : defaultInsight;
 
+            // 4. Catatan Sumber / Legal Disclaimer BICH
             const sourceNote = document.getElementById('modal-source-note');
-            sourceNote.innerHTML = `🛡️ <strong>Sistem Intelijen BICH:</strong> Buletin ini disintesis secara mandiri dari arsip fakta kebijakan publik dan diolah ulang berdasarkan Kode Etik & Batasan Narasi BICH (SOP-BICH-NEWS-002). Bersifat analisis non-partisan dan BUKAN pendapat/nasihat hukum resmi. Dokumen ini disajikan penuh di portal resmi <strong>www.mozensalqadrie.com</strong>.`;
+            if (sourceNote) {
+                sourceNote.innerHTML = `🛡️ <strong>Sistem Intelijen BICH:</strong> Buletin ini disintesis secara mandiri dari arsip fakta kebijakan publik dan diolah ulang berdasarkan Kode Etik & Batasan Narasi BICH (SOP-BICH-NEWS-002). Bersifat analisis non-partisan dan BUKAN pendapat/nasihat hukum resmi. Dokumen ini disajikan penuh di portal resmi <strong>www.mozensalqadrie.com</strong>.`;
+            }
 
+            // 5. Tampilkan Modal & Kunci Scroll
             document.getElementById('berita-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -449,7 +459,6 @@
             if (e.key === 'Escape') closeBeritaModal();
         });
 
-        // Search Input Listener dengan Debounce
         document.getElementById('berita-search').addEventListener('input', (e) => {
             clearTimeout(beritaSearchDebounce);
             searchQuery = e.target.value.trim();
@@ -459,7 +468,6 @@
             }, 350);
         });
 
-        // Auto Load saat halaman siap
         document.addEventListener('DOMContentLoaded', () => {
             loadBeritaData();
         });
