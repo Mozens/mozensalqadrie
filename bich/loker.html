@@ -180,6 +180,12 @@
             return div.innerHTML;
         }
 
+        // CATATAN DIAGNOSTIK: kalau SEMUA kartu menampilkan "Hari ini" padahal lowongannya
+        // sudah lama, fungsi ini KEMUNGKINAN BESAR TIDAK bermasalah - cek dulu nilai kolom
+        // "created_at" langsung di Supabase Table Editor untuk beberapa baris lama. Kalau
+        // nilainya memang semua bertanggal hari ini, penyebabnya ada di SCRAPER (biasanya
+        // scraper meng-upsert ulang created_at=now() setiap kali re-sync baris yang sama,
+        // bukan cuma saat insert pertama kali). Perbaikannya ada di scraper, bukan di sini.
         function timeAgo(dateStr) {
             if (!dateStr) return '';
             const diffMs = Date.now() - new Date(dateStr).getTime();
@@ -326,13 +332,20 @@
             metaParts.push(`🗓️ Diposting ${timeAgo(item.created_at)}`);
             metaEl.innerHTML = metaParts.map(p => `<span>${p}</span>`).join('<span>•</span>');
 
-            document.getElementById('modal-description').textContent =
-                getDescription(item) || 'Deskripsi lengkap belum tersedia untuk lowongan ini. Hubungi kami via WhatsApp untuk info lebih lanjut.';
+            const descText = getDescription(item);
+            const descEl = document.getElementById('modal-description');
+            if (descText) {
+                descEl.textContent = descText;
+            } else {
+                // Deskripsi kosong berarti scraper belum menangkap isi lengkap lowongan ini -
+                // pesannya dibuat mengarahkan, bukan terkesan buntu.
+                descEl.innerHTML = `Ringkasan lengkap untuk lowongan ini belum tersedia di database kami. Klik <strong>"Baca di sumber asli"</strong> di bawah (akan terbuka di tab baru - halaman BICH ini tetap terbuka), atau hubungi kami langsung lewat tombol WhatsApp.`;
+            }
 
             const sourceNote = document.getElementById('modal-source-note');
             const sourceUrl = item.link_sumber || item.link;
             if (sourceUrl) {
-                sourceNote.innerHTML = `Sumber data: <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline">tautan asli</a> (dicatat untuk transparansi, ringkasan di atas disusun ulang oleh tim BICH).`;
+                sourceNote.innerHTML = `🔗 <a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline font-bold">Baca di sumber asli</a> <span class="text-slate-600">(tab baru - halaman ini tidak akan tertutup)</span>. Ringkasan di atas disusun ulang oleh tim BICH untuk transparansi.`;
             } else {
                 sourceNote.textContent = 'Lowongan dipasang langsung oleh perusahaan melalui BICH.';
             }

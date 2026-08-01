@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Pembayaran Berhasil — BICH | Mozens Inc.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-center items-center px-6">
+
+    <div class="max-w-md w-full text-center space-y-6">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/40 flex items-center justify-center mx-auto text-3xl">
+            ✅
+        </div>
+
+        <div class="space-y-2">
+            <h1 class="text-2xl font-serif font-bold text-white">Pembayaran Berhasil</h1>
+            <p id="status-desc" class="text-xs text-slate-400 font-mono">Terima kasih, transaksi Anda sudah kami terima.</p>
+        </div>
+
+        <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-3 text-left">
+            <div class="flex justify-between text-xs font-mono">
+                <span class="text-slate-500">Order ID</span>
+                <span id="order-id" class="text-slate-200">-</span>
+            </div>
+            <div class="flex justify-between text-xs font-mono">
+                <span class="text-slate-500">Layanan</span>
+                <span id="service-name" class="text-slate-200">-</span>
+            </div>
+            <div class="flex justify-between text-xs font-mono">
+                <span class="text-slate-500">Status</span>
+                <span id="status-badge" class="text-emerald-400 font-bold">Berhasil</span>
+            </div>
+        </div>
+
+        <div id="next-steps" class="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4 text-xs text-slate-300 font-mono text-left space-y-1.5">
+            <!-- Diisi lewat JS sesuai jenis layanan -->
+        </div>
+
+        <div class="flex flex-col gap-3 pt-2">
+            <a id="btn-primary" href="index.html" class="bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-mono font-bold px-6 py-3 rounded-lg transition">
+                Kembali ke Beranda BICH
+            </a>
+            <a id="btn-wa" href="#" target="_blank" rel="noopener noreferrer" class="border border-slate-800 hover:border-emerald-400 text-slate-300 text-xs font-mono px-6 py-3 rounded-lg transition">
+                Hubungi Admin via WhatsApp
+            </a>
+        </div>
+
+        <p class="text-[10px] text-slate-600 font-mono pt-2">
+            Simpan Order ID di atas sebagai bukti transaksi. Butuh bantuan? Sertakan Order ID saat menghubungi admin.
+        </p>
+    </div>
+
+    <script>
+        /*
+          Halaman ini dipakai BERSAMA oleh semua layanan (travel, loker, cv, sawit, ikn).
+          Parameter URL menentukan tampilan: ?order_id=...&service=loker&status=success
+          Dipanggil dari onSuccess/onPending Midtrans Snap di masing-masing halaman
+          pembayaran - lihat pariwisata.html, monetisasi.html, langganan.html.
+        */
+        const ADMIN_WA_NUMBER = '6282341333313';
+
+        const params = new URLSearchParams(window.location.search);
+        const orderId = params.get('order_id') || '-';
+        const service = params.get('service') || '';
+        const status = params.get('status') || 'success'; // success | pending
+
+        const SERVICE_INFO = {
+            travel: {
+                name: 'Layanan Travel/Shuttle BICH',
+                backLink: 'bich/pariwisata.html',
+                backLabel: 'Kembali ke Halaman Travel',
+                nextSteps: [
+                    'Tim kami akan mengonfirmasi jadwal keberangkatan Anda via WhatsApp dalam 1x24 jam.',
+                    'Siapkan Order ID di atas saat check-in.',
+                ],
+            },
+            loker: {
+                name: 'Pasang Loker Premium',
+                backLink: 'bich/loker.html',
+                backLabel: 'Lihat Lowongan di Bursa Loker',
+                nextSteps: [
+                    'Lowongan Anda akan tayang di Bursa Loker BICH dalam beberapa menit setelah pembayaran terkonfirmasi.',
+                    'Cek halaman Bursa Loker untuk memastikan lowongan sudah muncul.',
+                ],
+            },
+            cv: {
+                name: 'Assessment & Scan CV AI',
+                backLink: 'bich/loker.html',
+                backLabel: 'Kembali ke Bursa Loker',
+                nextSteps: [
+                    'Hasil scan CV Anda akan dikirim ke email/WhatsApp yang didaftarkan dalam 1x24 jam.',
+                ],
+            },
+            sawit: {
+                name: 'Alert Harga Sawit (WA)',
+                backLink: 'bich/langganan.html',
+                backLabel: 'Kembali ke Halaman Langganan',
+                nextSteps: [
+                    'Update harga TBS/CPO pertama akan dikirim ke WhatsApp Anda pada jadwal berikutnya.',
+                    'Kami akan mengingatkan H-3 sebelum masa langganan berakhir.',
+                ],
+            },
+            ikn: {
+                name: 'Briefing IKN Bisnis (PDF)',
+                backLink: 'bich/langganan.html',
+                backLabel: 'Kembali ke Halaman Langganan',
+                nextSteps: [
+                    'Briefing PDF mingguan pertama akan dikirim ke email Anda pada jadwal berikutnya.',
+                ],
+            },
+        };
+
+        const info = SERVICE_INFO[service] || {
+            name: 'Layanan BICH',
+            backLink: 'index.html',
+            backLabel: 'Kembali ke Beranda',
+            nextSteps: ['Tim kami akan menghubungi Anda segera terkait transaksi ini.'],
+        };
+
+        document.getElementById('order-id').textContent = orderId;
+        document.getElementById('service-name').textContent = info.name;
+
+        const btnPrimary = document.getElementById('btn-primary');
+        btnPrimary.href = info.backLink;
+        btnPrimary.textContent = info.backLabel;
+
+        const waText = encodeURIComponent(`Halo Admin BICH, saya ingin menanyakan transaksi dengan Order ID: ${orderId} (${info.name})`);
+        document.getElementById('btn-wa').href = `https://wa.me/${ADMIN_WA_NUMBER}?text=${waText}`;
+
+        const nextStepsEl = document.getElementById('next-steps');
+        nextStepsEl.innerHTML = '<p class="text-emerald-400 font-bold mb-1">Langkah selanjutnya:</p>' +
+            info.nextSteps.map(step => `<p>• ${step}</p>`).join('');
+
+        if (status === 'pending') {
+            document.getElementById('status-desc').textContent = 'Transaksi Anda tercatat dan sedang menunggu penyelesaian pembayaran.';
+            document.getElementById('status-badge').textContent = 'Menunggu Pembayaran';
+            document.getElementById('status-badge').className = 'text-amber-400 font-bold';
+            document.querySelector('.text-3xl').textContent = '⏳';
+        }
+    </script>
+</body>
+</html>

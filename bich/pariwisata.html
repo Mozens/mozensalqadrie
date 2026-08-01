@@ -590,14 +590,12 @@
                 // Buka popup resmi Midtrans Snap menggunakan token dari backend.
                 window.snap.pay(data.token, {
                     onSuccess: function(result) {
-                        statusMsg.className = "text-[11px] font-mono max-w-md text-right text-emerald-400";
-                        statusMsg.innerText = "Pembayaran berhasil. Order ID: " + result.order_id;
-                        statusMsg.classList.remove('hidden');
+                        // Redirect ke halaman konfirmasi bersama, bukan cuma ubah teks di
+                        // tempat - pengunjung butuh kepastian visual setelah bayar sungguhan.
+                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=travel&status=success`;
                     },
                     onPending: function(result) {
-                        statusMsg.className = "text-[11px] font-mono max-w-md text-right text-amber-400";
-                        statusMsg.innerText = "Menunggu pembayaran Anda diselesaikan.";
-                        statusMsg.classList.remove('hidden');
+                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=travel&status=pending`;
                     },
                     onError: function(result) {
                         statusMsg.className = "text-[11px] font-mono max-w-md text-right text-red-400";

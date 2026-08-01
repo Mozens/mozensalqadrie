@@ -330,11 +330,10 @@
 
                 window.snap.pay(data.token, {
                     onSuccess: function(result) {
-                        showStatus(statusMsg, 'emerald', 'Pembayaran berhasil! Langganan aktif 30 hari ke depan. Order ID: ' + result.order_id);
-                        formEl.reset();
+                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=${kind}&status=success`;
                     },
-                    onPending: function() {
-                        showStatus(statusMsg, 'amber', 'Menunggu pembayaran Anda diselesaikan.');
+                    onPending: function(result) {
+                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=${kind}&status=pending`;
                     },
                     onError: function() {
                         showStatus(statusMsg, 'red', 'Pembayaran gagal. Silakan coba lagi.');
@@ -402,8 +401,7 @@
                         }
 
                         const data = await res.json();
-                        showStatus(statusMsg, 'emerald', `Langganan aktif! ID: ${data.subscriptionId}. Tagihan pertama akan segera diproses.`);
-                        formEl.reset();
+                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(data.subscriptionId)}&service=${kind}&status=success`;
 
                     } catch (err) {
                         console.error(err);

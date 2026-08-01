@@ -297,14 +297,10 @@
 
                 window.snap.pay(data.token, {
                     onSuccess: function(result) {
-                        statusMsg.className = 'text-[11px] font-mono max-w-md text-right text-emerald-400';
-                        statusMsg.innerText = 'Pembayaran berhasil. Order ID: ' + result.order_id;
-                        statusMsg.classList.remove('hidden');
+                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=${kind}&status=success`;
                     },
-                    onPending: function() {
-                        statusMsg.className = 'text-[11px] font-mono max-w-md text-right text-amber-400';
-                        statusMsg.innerText = 'Menunggu pembayaran Anda diselesaikan.';
-                        statusMsg.classList.remove('hidden');
+                    onPending: function(result) {
+                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=${kind}&status=pending`;
                     },
                     onError: function() {
                         statusMsg.className = 'text-[11px] font-mono max-w-md text-right text-red-400';
