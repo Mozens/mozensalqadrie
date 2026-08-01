@@ -55,7 +55,7 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-8">
+    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-8" id="berita-main-section">
 
         <!-- Hero Title Section -->
         <div class="text-center space-y-4 max-w-3xl mx-auto">
@@ -107,7 +107,7 @@
                 <input type="text" id="berita-search" placeholder="Cari topik intelijen, nama kota/kabupaten, adat, atau potensi ekonomi..." class="w-full bg-[#080c14] border border-slate-800 rounded-lg pl-4 pr-10 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none font-mono">
                 <span class="absolute right-3 top-2.5 text-slate-500 text-xs">🔍</span>
             </div>
-            <button onclick="loadBeritaData(true)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2 justify-center">
+            <button onclick="resetAndLoad()" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2 justify-center">
                 <span>🔄</span> Sinkron Data
             </button>
         </div>
@@ -139,13 +139,21 @@
             <div id="berita-error" class="hidden text-center py-12 border border-red-500/30 bg-red-500/5 rounded-xl">
                 <p class="text-sm text-red-400 font-mono font-bold">Gagal Mengakses Core Database BICH</p>
                 <p id="berita-error-detail" class="text-xs text-slate-500 font-mono mt-1"></p>
-                <button onclick="loadBeritaData(true)" class="mt-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono px-5 py-2 rounded-lg hover:bg-red-500/20 transition">Coba Lagi</button>
+                <button onclick="resetAndLoad()" class="mt-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono px-5 py-2 rounded-lg hover:bg-red-500/20 transition">Coba Lagi</button>
             </div>
 
-            <!-- Load more -->
-            <div id="berita-load-more-wrap" class="hidden text-center pt-6">
-                <button id="berita-load-more-btn" onclick="loadBeritaData(false)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 text-xs font-mono px-6 py-2.5 rounded-lg transition">
-                    Muat Lebih Banyak Narasi Regional &darr;
+            <!-- UI PAGINATION (Halaman 1, 2, 3) -->
+            <div id="berita-pagination" class="hidden flex items-center justify-between border-t border-slate-800/80 pt-6 mt-6">
+                <button id="btn-prev-page" onclick="changePage(-1)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-slate-800 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2">
+                    &larr; Sebelumnya
+                </button>
+                
+                <span id="page-indicator" class="text-xs font-mono text-emerald-400 font-bold bg-emerald-950/40 border border-emerald-500/30 px-3.5 py-1.5 rounded-full">
+                    Halaman 1
+                </span>
+                
+                <button id="btn-next-page" onclick="changePage(1)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-slate-800 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2">
+                    Selanjutnya &rarr;
                 </button>
             </div>
         </div>
@@ -168,13 +176,9 @@
 
             <!-- Modal Body -->
             <div class="p-6 space-y-6 overflow-y-auto custom-scrollbar">
-                
                 <div id="modal-meta" class="flex flex-wrap gap-3 text-[11px] font-mono text-slate-400 border-b border-slate-900 pb-3"></div>
-
-                <!-- Isi Narasi AI BICH -->
                 <div id="modal-content" class="text-sm text-slate-200 leading-relaxed space-y-4 font-sans italic-quotes"></div>
                 
-                <!-- Panduan ESG BICH -->
                 <div class="bg-emerald-950/30 border border-emerald-500/30 p-5 rounded-xl space-y-2">
                     <h5 class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
                         <span>💡</span> ANALISIS & PANDUAN STRATEGIS BICH:
@@ -182,7 +186,6 @@
                     <p id="modal-insight" class="text-xs text-slate-300 leading-relaxed font-mono"></p>
                 </div>
 
-                <!-- Pesan Kebangsaan / Atribusi -->
                 <div class="border-t border-slate-900 pt-4 space-y-2">
                     <p id="modal-source-note" class="text-[11px] text-slate-400 font-mono italic"></p>
                 </div>
@@ -202,7 +205,7 @@
         © 2026 BICH Intelligence Desk • Mozens Inc. (<a href="http://www.mozensalqadrie.com" class="hover:underline text-slate-500">www.mozensalqadrie.com</a>)
     </footer>
 
-    <!-- ==================== LOGIKA INTEGRASI SUPABASE ==================== -->
+    <!-- ==================== LOGIKA INTEGRASI SUPABASE & PAGINATION ==================== -->
     <script>
         const SUPABASE_URL = 'https://gehbuhuevfxfjyytmrht.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_yPGSsXXIoc_wfn_Kkq8xzA_lGi7zEEn';
@@ -210,9 +213,9 @@
         const BERITA_KATEGORI_VALUE = 'Berita';
         const PAGE_SIZE = 12;
 
-        let beritaOffset = 0;
-        let beritaAllItems = [];
+        let currentPage = 1;
         let selectedProvinsi = 'ALL';
+        let searchQuery = '';
         let beritaSearchDebounce = null;
 
         function escapeHtml(str) {
@@ -232,7 +235,8 @@
             return `${months} bulan lalu`;
         }
 
-        async function fetchBeritaFromSupabase(offset) {
+        async function fetchBeritaFromSupabase(page) {
+            const offset = (page - 1) * PAGE_SIZE;
             const params = new URLSearchParams({
                 select: '*',
                 kategori: `eq.${BERITA_KATEGORI_VALUE}`,
@@ -241,6 +245,16 @@
                 limit: String(PAGE_SIZE),
                 offset: String(offset),
             });
+
+            // Server-Side Filter Provinsi (Direct Supabase Query)
+            if (selectedProvinsi && selectedProvinsi !== 'ALL') {
+                params.append('wilayah', `ilike.%${selectedProvinsi}%`);
+            }
+
+            // Server-Side Search Query
+            if (searchQuery) {
+                params.append('or', `(judul.ilike.%${searchQuery}%,lokasi.ilike.%${searchQuery}%,artikel_ai.ilike.%${searchQuery}%)`);
+            }
 
             const res = await fetch(`${SUPABASE_URL}/rest/v1/master_konten?${params.toString()}`, {
                 headers: {
@@ -255,44 +269,46 @@
             return res.json();
         }
 
-        async function loadBeritaData(reset) {
+        async function loadBeritaData() {
             const skeleton = document.getElementById('berita-skeleton');
             const container = document.getElementById('berita-list-container');
             const emptyState = document.getElementById('berita-empty');
             const errorState = document.getElementById('berita-error');
-            const loadMoreWrap = document.getElementById('berita-load-more-wrap');
+            const paginationUI = document.getElementById('berita-pagination');
             const countLabel = document.getElementById('berita-count-label');
 
-            if (reset) {
-                beritaOffset = 0;
-                beritaAllItems = [];
-                container.innerHTML = '';
-            }
-
+            container.innerHTML = '';
             errorState.classList.add('hidden');
             emptyState.classList.add('hidden');
             skeleton.classList.remove('hidden');
-            loadMoreWrap.classList.add('hidden');
+            paginationUI.classList.add('hidden');
             countLabel.textContent = 'Memuat data...';
 
             try {
-                const data = await fetchBeritaFromSupabase(beritaOffset);
+                const data = await fetchBeritaFromSupabase(currentPage);
                 skeleton.classList.add('hidden');
 
-                if (reset && data.length === 0) {
-                    emptyState.classList.remove('hidden');
-                    countLabel.textContent = '0 Laporan';
+                if (data.length === 0) {
+                    if (currentPage === 1) {
+                        emptyState.classList.remove('hidden');
+                        countLabel.textContent = '0 Laporan Intelijen';
+                    } else {
+                        // Jika halaman berikutnya kosong, kembalikan ke halaman sebelumnya
+                        currentPage--;
+                        loadBeritaData();
+                    }
                     return;
                 }
 
-                beritaAllItems = beritaAllItems.concat(data);
-                beritaOffset += data.length;
+                // Render Kartu Berita
+                data.forEach(item => {
+                    container.appendChild(renderBeritaCard(item));
+                });
 
-                renderFilteredList();
+                countLabel.textContent = `Menampilkan ${data.length} Laporan (Halaman ${currentPage})`;
 
-                if (data.length === PAGE_SIZE) {
-                    loadMoreWrap.classList.remove('hidden');
-                }
+                // Update UI Navigation Pagination
+                updatePaginationControls(data.length);
 
             } catch (err) {
                 console.error('Gagal memuat intel BICH:', err);
@@ -303,10 +319,37 @@
             }
         }
 
+        function updatePaginationControls(itemsFetched) {
+            const paginationUI = document.getElementById('berita-pagination');
+            const btnPrev = document.getElementById('btn-prev-page');
+            const btnNext = document.getElementById('btn-next-page');
+            const pageIndicator = document.getElementById('page-indicator');
+
+            paginationUI.classList.remove('hidden');
+            pageIndicator.textContent = `Halaman ${currentPage}`;
+
+            // Matikan tombol Sebelumnya jika ada di Halaman 1
+            btnPrev.disabled = (currentPage === 1);
+
+            // Matikan tombol Selanjutnya jika data yang didapat kurang dari limit (berarti data habis)
+            btnNext.disabled = (itemsFetched < PAGE_SIZE);
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+
+            loadBeritaData();
+
+            // Scroll halus kembali ke bagian atas daftar berita
+            const section = document.getElementById('berita-list-container');
+            if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         function filterByProvinsi(prov, btnElement) {
             selectedProvinsi = prov;
+            currentPage = 1; // Reset ke Halaman 1 setiap ubah filter
             
-            // Update UI Button Active State
             document.querySelectorAll('.prov-btn').forEach(btn => {
                 btn.className = 'prov-btn bg-[#080c14] hover:border-emerald-500 text-slate-300 border border-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-mono transition';
             });
@@ -318,36 +361,12 @@
                 ? 'Semua Wilayah (Kalimantan)' 
                 : `Wilayah: ${prov.toUpperCase()}`;
 
-            renderFilteredList();
+            loadBeritaData();
         }
 
-        function renderFilteredList() {
-            const container = document.getElementById('berita-list-container');
-            const emptyState = document.getElementById('berita-empty');
-            const countLabel = document.getElementById('berita-count-label');
-            const searchQuery = document.getElementById('berita-search').value.trim().toLowerCase();
-
-            container.innerHTML = '';
-
-            const filtered = beritaAllItems.filter(item => {
-                const textHaystack = `${item.judul || ''} ${item.info_tambahan || ''} ${item.artikel_ai || ''} ${item.lokasi || ''} ${item.penyelenggara_perusahaan || ''}`.toLowerCase();
-                
-                // Filter Provinsi
-                const matchProv = (selectedProvinsi === 'ALL') || textHaystack.includes(selectedProvinsi.toLowerCase());
-                
-                // Filter Search Query
-                const matchSearch = !searchQuery || textHaystack.includes(searchQuery);
-
-                return matchProv && matchSearch;
-            });
-
-            emptyState.classList.toggle('hidden', filtered.length > 0);
-
-            filtered.forEach(item => {
-                container.appendChild(renderBeritaCard(item));
-            });
-
-            countLabel.textContent = `${filtered.length} Laporan Intelijen Ditampilkan`;
+        function resetAndLoad() {
+            currentPage = 1;
+            loadBeritaData();
         }
 
         function renderBeritaCard(item) {
@@ -362,7 +381,7 @@
                 <div class="space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                            📍 ${escapeHtml(item.lokasi || 'KALIMANTAN')}
+                            📍 ${escapeHtml(item.lokasi || item.wilayah || 'KALIMANTAN')}
                         </span>
                         <span class="text-[10px] font-mono text-slate-500">${timeAgo(item.created_at)}</span>
                     </div>
@@ -382,7 +401,7 @@
         function openBeritaModal(item) {
             document.getElementById('modal-badges').innerHTML = `
                 <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono px-2.5 py-0.5 rounded-full font-bold">
-                    📍 ${escapeHtml(item.lokasi || 'KALIMANTAN')}
+                    📍 ${escapeHtml(item.lokasi || item.wilayah || 'KALIMANTAN')}
                 </span>
                 <span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-mono px-2.5 py-0.5 rounded-full font-bold">
                     🛡️ ANALISIS INDEPENDEN BICH
@@ -401,16 +420,12 @@
             `;
 
             const fullText = item.artikel_ai || item.info_tambahan || 'Isi laporan narasi belum tersedia.';
-            
-            // Render paragraf dengan format rapi
             const paragraphs = fullText.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
             document.getElementById('modal-content').innerHTML = paragraphs;
 
-            // Insight ESG BICH
             const defaultInsight = "Pengembangan kawasan ini wajib mengedepankan asas keberlanjutan lingkungan (ESG) serta pelibatan aktif putra daerah agar menciptakan pertumbuhan ekonomi yang sehat tanpa mengorbankan paru-paru dunia.";
             document.getElementById('modal-insight').textContent = item.info_tambahan && item.artikel_ai ? item.info_tambahan.slice(0, 200) : defaultInsight;
 
-            // Retensi Pembaca Strict: Tanpa Link Keluar
             const sourceNote = document.getElementById('modal-source-note');
             sourceNote.innerHTML = `🛡️ <strong>Sistem Intelijen BICH:</strong> Laporan ini disintesis secara mandiri dari arsip fakta terverifikasi dan diolah ulang berdasarkan Standar Etika & Pelestarian Banua BICH. Dokumen ini disajikan penuh di portal resmi <strong>www.mozensalqadrie.com</strong>.`;
 
@@ -428,16 +443,18 @@
         });
 
         // Search Input Listener dengan Debounce
-        document.getElementById('berita-search').addEventListener('input', () => {
+        document.getElementById('berita-search').addEventListener('input', (e) => {
             clearTimeout(beritaSearchDebounce);
+            searchQuery = e.target.value.trim();
             beritaSearchDebounce = setTimeout(() => {
-                renderFilteredList();
-            }, 250);
+                currentPage = 1;
+                loadBeritaData();
+            }, 350);
         });
 
         // Auto Load saat halaman siap
         document.addEventListener('DOMContentLoaded', () => {
-            loadBeritaData(true);
+            loadBeritaData();
         });
     </script>
 </body>
