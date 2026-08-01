@@ -3,393 +3,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow, noarchive">
-    <title>Macro Economic Briefing: Arbitrase Capital Flow & Likuiditas Kalimantan 2026 | BICH Executive Briefing</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <title>Buletin Ekonomi Mingguan — Sungai Mahakam Desk | BICH</title>
+    <meta name="description" content="Buletin analisis ekonomi mingguan BICH per provinsi Kalimantan: PDRB, investasi, dan ESG. Analisis edukatif independen, bukan nasihat investasi berizin.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark: #0b0f17;
-            --bg-card: rgba(15, 23, 42, 0.85);
-            --emerald-bich: #059669;
-            --emerald-light: #34d399;
-            --gold-accent: #d4af37;
-            --gold-light: #f3e5ab;
-            --cyan-tech: #38bdf8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-emerald: rgba(5, 150, 105, 0.35);
-            --font-serif: 'Playfair Display', Georgia, serif;
-            --font-sans: 'Plus Jakarta Sans', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
-        /* --- PROTEKSI SELEKSI TEKS & COPAS --- */
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+        .skeleton {
+            background: linear-gradient(90deg, #0b0f17 25%, #131a26 37%, #0b0f17 63%);
+            background-size: 400% 100%;
+            animation: skeleton-loading 1.4s ease infinite;
         }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-sans);
-            line-height: 1.8;
-            overflow-x: hidden;
+        @keyframes skeleton-loading {
+            0% { background-position: 100% 50%; }
+            100% { background-position: 0 50%; }
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 24px;
+        #berita-modal { backdrop-filter: blur(6px); }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-
-        /* --- HEADER & NAVIGATION --- */
-        header {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(11, 15, 23, 0.95);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #080c14;
         }
-
-        .nav-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 3px;
         }
-
-        .back-link {
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            color: var(--emerald-light);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: color 0.2s ease;
-        }
-
-        .back-link:hover {
-            color: #ffffff;
-        }
-
-        .bich-tag {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            color: var(--gold-accent);
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-
-        /* --- ARTICLE HEADER --- */
-        .article-header {
-            padding: 48px 0 32px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            margin-bottom: 40px;
-        }
-
-        .article-meta {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .badge-open-access {
-            color: var(--emerald-light);
-            background: rgba(5, 150, 105, 0.15);
-            border: 1px solid rgba(52, 211, 153, 0.4);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .article-title {
-            font-family: var(--font-serif);
-            font-size: 2.5rem;
-            font-weight: 900;
-            line-height: 1.25;
-            color: #ffffff;
-            margin-bottom: 20px;
-        }
-
-        .article-lead {
-            font-size: 1.15rem;
-            color: var(--gold-light);
-            font-family: var(--font-serif);
-            font-style: italic;
-            line-height: 1.6;
-            border-left: 3px solid var(--emerald-light);
-            padding-left: 20px;
-        }
-
-        /* --- ARTICLE CONTENT --- */
-        .article-body {
-            font-size: 1.05rem;
-            color: #cbd5e1;
-            position: relative;
-        }
-
-        .article-body h2 {
-            font-family: var(--font-serif);
-            font-size: 1.6rem;
-            color: #ffffff;
-            margin: 40px 0 16px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            padding-bottom: 8px;
-        }
-
-        .article-body h3 {
-            font-family: var(--font-sans);
-            font-size: 1.2rem;
-            color: var(--emerald-light);
-            margin: 28px 0 12px;
-        }
-
-        .article-body p {
-            margin-bottom: 20px;
-            text-align: justify;
-        }
-
-        .article-body ul {
-            margin: 0 0 24px 24px;
-            color: var(--text-muted);
-        }
-
-        .article-body li {
-            margin-bottom: 10px;
-        }
-
-        .callout-box {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid var(--border-emerald);
-            border-radius: 10px;
-            padding: 24px 28px;
-            margin: 32px 0;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        }
-
-        .callout-title {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--emerald-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* --- AUTHOR & FOOTER --- */
-        .briefing-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 40px 0;
-            margin-top: 60px;
-            text-align: center;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .author-box {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 40px;
-            text-align: left;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid var(--gold-accent);
-            object-fit: cover;
-        }
-
-        .author-info h4 {
-            color: #ffffff;
-            font-family: var(--font-serif);
-            font-size: 1.05rem;
-        }
-
-        .author-info p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            .article-title { font-size: 1.8rem; }
-            .article-lead { font-size: 1rem; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
 
-    <!-- NAVBAR -->
-    <header>
-        <div class="container nav-wrapper">
-            <a href="index.html" class="back-link">
-                &larr; Masuk ke Borneo Insight & Career Hub  
+    <!-- Header Navigation -->
+    <header class="border-b border-emerald-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-3">
+            <a href="index.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2">
+                <span>&larr;</span> Portal Utama BICH
             </a>
-            <span class="bich-tag">Ekonomi Dan Keuangan Desk</span>
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] sm:text-[11px] font-mono text-emerald-400/90 border border-emerald-500/30 px-3 py-1 rounded-full bg-emerald-500/10 font-semibold tracking-wide">
+                    MOZENS INC. • WWW.MOZENSALQADRIE.COM
+                </span>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <!-- ARTICLE HEADER -->
-        <article>
-            <header class="article-header">
-                <div class="article-meta">
-                    <span>🟢 <a href="ekonomi.html" style="color:inherit; text-decoration:none;">Buletin Analisis Ekonomi</a></span>
-                    <span>&bull;</span>
-                    <span>Edisi 27 Juli 2026</span>
-                    <span>&bull;</span>
-                    <span class="badge-open-access">OPEN ACCESS EXECUTIVE BRIEFING</span>
-                </div>
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-8" id="berita-main-section">
 
-                <h1 class="article-title">
-                    📈 Macro Economic Briefing: Arbitrase Capital Flow & Likuiditas Kalimantan 2026
-                </h1>
-
-                <p class="article-lead">
-                    Peta transformasi PDRB Kalimantan Timur dari sektor ekstraktif mentah ke siklus manufaktur presisi, efektivitas insentif Tax Holiday KEK IKN, serta strategi arbitrase arus modal private equity di sektor agro-komoditas unggulan.
-                </p>
-            </header>
-
-            <!-- ARTICLE BODY (KONTEN TERBUKA PENUH) -->
-            <div class="article-body">
-                <h2>1. Pergeseran Struktur PDRB & Realisasi Inflow Modal</h2>
-                <p>
-                    Kuartal ketiga tahun 2026 mencatatkan pergeseran struktural signifikan pada Produk Domestik Regional Bruto (PDRB) koridor Kalimantan Timur dan sekitarnya. Ketergantungan historis terhadap ekspor batu bara mentah mulai terkonsolidasi oleh percepatan pengoperasian kawasan pengolahan bernilai tambah tingkatan sekunder. Arus investasi asing (FDI) dan domestik (DDI) yang masuk lewat insentif khusus KEK IKN menciptakan tekanan likuiditas positif pada perbankan lokal.
-                </p>
-
-                <p>
-                    Meskipun <em>capital influx</em> meningkat sebesar 18.4% secara <em>year-on-year</em>, sebagian besar dana komersial tertahan pada skema <em>cash-collateralized loans</em> untuk konsorsium penyedia infrastruktur primer. Isu efisiensi transmisi moneter lokal meliputi:
-                </p>
-                <ul>
-                    <li><em>Yield Spread</em> pinjaman korporasi daerah yang masih mengalami deviasi dibanding suku bunga acuan pasca-revisi kebijakan likuiditas makroprudensial.</li>
-                    <li>Kekuatan penyerapan modal pada entitas menengah (<em>mid-cap</em>) industri pendukung rantai pasok hilir IKN.</li>
-                    <li>Akselerasi transaksi <em>block-trade</em> aset riil tanah komersial di sepanjang koridor penunjang Balikpapan-Samarinda.</li>
-                </ul>
-
-                <div class="callout-box">
-                    <div class="callout-title">⚡ Capital Allocation Note</div>
-                    <p style="margin:0; font-size: 0.95rem;">
-                        Pengelola dana korporasi disarankan mengalokasikan likuiditas jangka pendek pada instrumen <em>short-term sovereign paper</em> berdenominasi rupiah yang dijamin kas daerah, sembari mengunci posisi ekuitas pada entitas pemegang lisensi pengolahan komoditas ekspor.
-                    </p>
-                </div>
-
-                <h2>2. Arbitrase Sektor Agro-Komoditas & Efek Hilirisasi</h2>
-                <p>
-                    Penetapan regulasi nasional terkait kepastian rantai pasok agro-komoditas spesifik (termasuk kratom dan kelapa sawit olahan) membuka celah arbitrase harga bagi pemilik modal privat. Pemprov Kaltim memproyeksikan kontribusi retribusi rantai pasok agro-industri ini akan mengompensasi penyesuaian Dana Bagi Hasil (DBH) migas.
-                </p>
-                
-                <h3>Proyeksi Likuiditas & Imbal Hasil:</h3>
-                <p>
-                    Penataan batas kawasan industri berbasis ekstraksi farmasi dan oleokimia di Kutai Kartanegara memberikan proyeksi imbal hasil bersih (<em>internal rate of return</em>) rata-rata di atas 22% p.a. bagi entitas yang menguasai teknologi pengolahan dari hulu.
-                </p>
-                <ul>
-                    <li><strong>Efisiensi Rantai Logistik:</strong> Pemanfaatan jalur sungai strategis dan pelabuhan muat bebas bea memangkas <em>cost of goods sold</em> (COGS) hingga 12%.</li>
-                    <li><strong>Mitigasi Risiko Volatilitas Harga:</strong> Skema <em>forward contract</em> berbasis harga patokan regional melindungi pembeli utama dari lonjakan fluktuasi pasokan musiman.</li>
-                </ul>
-
-                <h2>3. Rekomendasi Taktis Rebalancing Portofolio</h2>
-                <p>
-                    Untuk memaksimalkan imbal hasil yang disesuaikan dengan risiko (<em>risk-adjusted return</em>) sepanjang H2 2026, manajer investasi dan pemegang kebijakan modal disarankan untuk:
-                </p>
-                <p>
-                    <strong>1. Long Position Sektor Pendukung Logistik IKN:</strong> Mengamankan porsi instrumen ekuitas private pada BUMD atau entitas penyedia armada angkut bahan baku & material presisi.
-                </p>
-                <p>
-                    <strong>2. Monetisasi Celah Arbitrase Agro-Industri Kaltim:</strong> Masuk melalui skema pinjaman terstruktur (<em>structured debt</em>) yang terikat langsung pada piutang dagang ekspor entitas pengolah ekstrak bersertifikat resmi.
-                </p>
-
-                <div class="callout-box" style="border-color: rgba(212,175,55,0.4);">
-                    <div class="callout-title" style="color: var(--gold-accent);">🔒 Ini Baru Cuplikan Mingguan Gratis</div>
-                    <p style="margin:0 0 16px; font-size: 0.95rem;">
-                        Briefing di atas adalah versi <em>open access</em>. Untuk data harga komoditas yang diperbarui harian dan briefing kebijakan/tender IKN lebih awal, BICH menyediakan dua jalur langganan:
-                    </p>
-                    <div style="display:flex; flex-wrap:wrap; gap:12px;">
-                        <a href="langganan.html?produk=sawit" style="flex:1; min-width:220px; text-decoration:none; background:rgba(5,150,105,0.12); border:1px solid var(--border-emerald); border-radius:8px; padding:14px 16px; display:block;">
-                            <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--emerald-light); font-weight:700; display:block;">🌴 ALERT HARGA SAWIT (WA)</span>
-                            <span style="font-size:0.82rem; color:var(--text-muted); display:block; margin-top:4px;">Harga TBS/CPO harian langsung ke WhatsApp. Mulai Rp 20rb/bulan.</span>
-                        </a>
-                        <a href="langganan.html?produk=ikn" style="flex:1; min-width:220px; text-decoration:none; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.35); border-radius:8px; padding:14px 16px; display:block;">
-                            <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--gold-accent); font-weight:700; display:block;">🏗️ BRIEFING IKN BISNIS (PDF)</span>
-                            <span style="font-size:0.82rem; color:var(--text-muted); display:block; margin-top:4px;">Ringkasan kebijakan & info tender lebih awal. Mulai Rp 300rb/bulan.</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- AUTHOR BOX -->
-                <div class="author-box">
-                    <img src="../profile.jpg" alt="Mozens Alqadrie" class="author-avatar">
-                    <div class="author-info">
-                        <h4>Mozens Alqadrie</h4>
-                        <p>Sovereign Strategic Advisory &bull; BICH Lead Intel Desk</p>
-                    </div>
-                </div>
+        <!-- Hero Title Section -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+            <div class="inline-flex items-center gap-2 border border-emerald-500/40 bg-emerald-950/60 px-4 py-1.5 rounded-full text-xs font-mono text-emerald-300 font-bold shadow-lg shadow-emerald-950/50">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>SUNGAI MAHAKAM DESK · EDISI MINGGUAN</span>
             </div>
-        </article>
+
+            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white leading-tight">
+                📈 BULETIN <span class="gold-gradient">EKONOMI MINGGUAN BANUA</span>
+            </h1>
+
+            <p class="text-xs sm:text-sm text-slate-300 font-mono max-w-2xl mx-auto leading-relaxed">
+                Sintesis mingguan dinamika ekonomi, investasi, dan ESG 5 provinsi Kalimantan — dari sudut pandang analisis independen BICH, ditulis untuk pengusaha lokal dan koperasi Banua.
+            </p>
+            <p class="text-[10px] font-mono text-amber-400/80 max-w-xl mx-auto leading-relaxed border border-amber-500/20 bg-amber-950/20 rounded-lg px-3 py-2">
+                ⚠️ Konten edukatif, bukan nasihat investasi berizin OJK. Keputusan finansial sepenuhnya tanggung jawab pembaca.
+            </p>
+        </div>
+
+        <!-- Filter Navigasi 5 Provinsi -->
+        <div class="space-y-3">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-bold">● Filter Wilayah Ekonomi BICH:</span>
+                <span id="active-provinsi-label" class="text-[11px] font-mono text-emerald-400 font-bold">Semua Wilayah (Kalimantan)</span>
+            </div>
+            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4" id="provinsi-filters">
+                <button onclick="filterByProvinsi('ALL', this)" class="prov-btn active bg-emerald-500 text-black font-bold border border-emerald-400 px-3.5 py-1.5 rounded-lg text-xs font-mono transition shadow-lg shadow-emerald-500/20">
+                    🌐 Semua
+                </button>
+                <button onclick="filterByProvinsi('Kaltim', this)" class="prov-btn bg-[#080c14] hover:border-emerald-500 text-slate-300 border border-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-mono transition">
+                    🏛️ Kaltim
+                </button>
+                <button onclick="filterByProvinsi('Kalsel', this)" class="prov-btn bg-[#080c14] hover:border-emerald-500 text-slate-300 border border-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-mono transition">
+                    🌊 Kalsel
+                </button>
+                <button onclick="filterByProvinsi('Kalbar', this)" class="prov-btn bg-[#080c14] hover:border-emerald-500 text-slate-300 border border-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-mono transition">
+                    🌳 Kalbar
+                </button>
+                <button onclick="filterByProvinsi('Kalteng', this)" class="prov-btn bg-[#080c14] hover:border-emerald-500 text-slate-300 border border-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-mono transition">
+                    🔥 Kalteng
+                </button>
+                <button onclick="filterByProvinsi('Kaltara', this)" class="prov-btn bg-[#080c14] hover:border-emerald-500 text-slate-300 border border-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-mono transition">
+                    ⚡ Kaltara
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-grow">
+                <input type="text" id="berita-search" placeholder="Cari topik ekonomi, sektor, nama kota/kabupaten..." class="w-full bg-[#080c14] border border-slate-800 rounded-lg pl-4 pr-10 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none font-mono">
+                <span class="absolute right-3 top-2.5 text-slate-500 text-xs">🔍</span>
+            </div>
+            <button onclick="resetAndLoad()" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2 justify-center">
+                <span>🔄</span> Sinkron Data
+            </button>
+        </div>
+
+        <!-- Section Konten Berita -->
+        <div class="space-y-4">
+            <div class="flex items-center justify-between border-l-2 border-emerald-500 pl-3">
+                <h3 class="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">ARSIP BULETIN EKONOMI MINGGUAN</h3>
+                <span id="berita-count-label" class="text-[10px] font-mono text-slate-500">Memuat data...</span>
+            </div>
+
+            <!-- List Container (Dinamis via JS) -->
+            <div id="berita-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+            <!-- Skeleton loading state -->
+            <div id="berita-skeleton" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="skeleton h-56 rounded-xl border border-slate-800"></div>
+                <div class="skeleton h-56 rounded-xl border border-slate-800"></div>
+                <div class="skeleton h-56 rounded-xl border border-slate-800"></div>
+            </div>
+
+            <!-- Empty state -->
+            <div id="berita-empty" class="hidden text-center py-16 border border-dashed border-slate-800 rounded-xl space-y-2">
+                <p class="text-sm text-slate-300 font-mono font-bold">Belum Ada Buletin Ekonomi untuk Parameter Ini</p>
+                <p class="text-xs text-slate-500 font-mono max-w-md mx-auto">Buletin ekonomi mingguan berikutnya sedang disusun Sistem Analis BICH — terbit setiap pekan.</p>
+            </div>
+
+            <!-- Error state -->
+            <div id="berita-error" class="hidden text-center py-12 border border-red-500/30 bg-red-500/5 rounded-xl">
+                <p class="text-sm text-red-400 font-mono font-bold">Gagal Mengakses Core Database BICH</p>
+                <p id="berita-error-detail" class="text-xs text-slate-500 font-mono mt-1"></p>
+                <button onclick="resetAndLoad()" class="mt-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono px-5 py-2 rounded-lg hover:bg-red-500/20 transition">Coba Lagi</button>
+            </div>
+
+            <!-- UI PAGINATION (Halaman 1, 2, 3) -->
+            <div id="berita-pagination" class="hidden flex items-center justify-between border-t border-slate-800/80 pt-6 mt-6">
+                <button id="btn-prev-page" onclick="changePage(-1)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-slate-800 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2">
+                    &larr; Sebelumnya
+                </button>
+                
+                <span id="page-indicator" class="text-xs font-mono text-emerald-400 font-bold bg-emerald-950/40 border border-emerald-500/30 px-3.5 py-1.5 rounded-full">
+                    Halaman 1
+                </span>
+                
+                <button id="btn-next-page" onclick="changePage(1)" class="bg-[#080c14] border border-slate-800 hover:border-emerald-400 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-slate-800 text-xs font-mono px-4 py-2.5 rounded-lg transition flex items-center gap-2">
+                    Selanjutnya &rarr;
+                </button>
+            </div>
+        </div>
+
     </main>
 
-    <!-- FOOTER -->
-    <footer class="briefing-footer">
-        <div class="container">
-            <p>&copy; 2026 Borneo Insight & Career Hub (BICH). Sovereign Intelligence Protocol.</p>
+    <!-- ==================== MODAL BACA LAPORAN ANALIS BICH ==================== -->
+    <div id="berita-modal" class="hidden fixed inset-0 bg-black/85 z-[100] flex items-center justify-center p-4" onclick="if(event.target===this) closeBeritaModal()">
+        <div class="bg-[#080c14] border border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl custom-scrollbar">
+            
+            <!-- Modal Header -->
+            <div class="sticky top-0 bg-[#080c14]/95 backdrop-blur-md border-b border-slate-800 p-5 flex justify-between items-start gap-4 z-10">
+                <div class="space-y-2">
+                    <div id="modal-badges" class="flex flex-wrap gap-1.5"></div>
+                    <h2 id="modal-title" class="text-lg sm:text-2xl font-serif font-bold text-white leading-snug"></h2>
+                    <p id="modal-author" class="text-xs text-emerald-400 font-mono font-semibold"></p>
+                </div>
+                <button onclick="closeBeritaModal()" class="text-slate-500 hover:text-white text-2xl leading-none flex-shrink-0 p-1">&times;</button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-6 overflow-y-auto custom-scrollbar">
+                <div id="modal-meta" class="flex flex-wrap gap-3 text-[11px] font-mono text-slate-400 border-b border-slate-900 pb-3"></div>
+                <div id="modal-content" class="text-sm text-slate-200 leading-relaxed space-y-4 font-sans italic-quotes"></div>
+                
+                <div class="bg-emerald-950/30 border border-emerald-500/30 p-5 rounded-xl space-y-2">
+                    <h5 class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                        <span>💡</span> INSIGHT ESG & EKONOMI BICH:
+                    </h5>
+                    <p class="text-[10px] text-amber-400/70 font-mono">⚠️ Bukan nasihat/rekomendasi investasi. BICH bukan penasihat investasi berizin OJK.</p>
+                    <p id="modal-insight" class="text-xs text-slate-300 leading-relaxed font-mono"></p>
+                </div>
+
+                <div class="border-t border-slate-900 pt-4 space-y-2">
+                    <p id="modal-source-note" class="text-[11px] text-slate-400 font-mono italic"></p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-[#080c14] border-t border-slate-800 p-4 text-right">
+                <button onclick="closeBeritaModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono px-6 py-2 rounded-lg transition font-semibold">
+                    Selesai Membaca
+                </button>
+            </div>
         </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600 space-y-1">
+        <p>© 2026 BICH Intelligence Desk • Mozens Inc. (<a href="http://www.mozensalqadrie.com" class="hover:underline text-slate-500">www.mozensalqadrie.com</a>)</p>
+        <p class="text-[10px] text-slate-700">"Perhatikan, Analisa. Eksekusi." · SOP-BICH-NEWS-002 · Sungai Mahakam Desk</p>
+        <p class="text-[10px] text-amber-400/60 max-w-lg mx-auto pt-1">Seluruh konten ekonomi bersifat edukatif dan analitis, bukan nasihat/rekomendasi investasi resmi. BICH bukan penasihat investasi berizin OJK.</p>
     </footer>
 
-    <!-- SCRIPT PROTEKSI KEAMANAN KONTEN (ANTI-COPAS & ANTI-INSPECT) -->
+    <!-- ==================== LOGIKA INTEGRASI SUPABASE & PAGINATION ==================== -->
     <script>
-        // Disable Klik Kanan
-        document.addEventListener('contextmenu', function(e) { 
-            e.preventDefault(); 
+        const SUPABASE_URL = 'https://gehbuhuevfxfjyytmrht.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_yPGSsXXIoc_wfn_Kkq8xzA_lGi7zEEn';
+
+        const BERITA_KATEGORI_VALUE = 'Ekonomi';
+        const PAGE_SIZE = 12;
+
+        let currentPage = 1;
+        let selectedProvinsi = 'ALL';
+        let searchQuery = '';
+        let beritaSearchDebounce = null;
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str == null ? '' : String(str);
+            return div.innerHTML;
+        }
+
+        function timeAgo(dateStr) {
+            if (!dateStr) return 'Baru saja';
+            const diffMs = Date.now() - new Date(dateStr).getTime();
+            const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            if (days <= 0) return 'Hari ini';
+            if (days === 1) return '1 hari lalu';
+            if (days < 30) return `${days} hari lalu`;
+            const months = Math.floor(days / 30);
+            return `${months} bulan lalu`;
+        }
+
+        async function fetchBeritaFromSupabase(page) {
+            const offset = (page - 1) * PAGE_SIZE;
+            const params = new URLSearchParams({
+                select: '*',
+                kategori: `eq.${BERITA_KATEGORI_VALUE}`,
+                status: 'eq.Ready',
+                order: 'created_at.desc',
+                limit: String(PAGE_SIZE),
+                offset: String(offset),
+            });
+
+            // Server-Side Filter Provinsi (Direct Supabase Query)
+            if (selectedProvinsi && selectedProvinsi !== 'ALL') {
+                params.append('wilayah', `ilike.%${selectedProvinsi}%`);
+            }
+
+            // Server-Side Search Query
+            if (searchQuery) {
+                params.append('or', `(judul.ilike.%${searchQuery}%,lokasi.ilike.%${searchQuery}%,artikel_ai.ilike.%${searchQuery}%)`);
+            }
+
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/master_konten?${params.toString()}`, {
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                },
+            });
+            if (!res.ok) {
+                const errText = await res.text().catch(() => '');
+                throw new Error(`Status ${res.status}${errText ? ' - ' + errText.slice(0, 150) : ''}`);
+            }
+            return res.json();
+        }
+
+        async function loadBeritaData() {
+            const skeleton = document.getElementById('berita-skeleton');
+            const container = document.getElementById('berita-list-container');
+            const emptyState = document.getElementById('berita-empty');
+            const errorState = document.getElementById('berita-error');
+            const paginationUI = document.getElementById('berita-pagination');
+            const countLabel = document.getElementById('berita-count-label');
+
+            container.innerHTML = '';
+            errorState.classList.add('hidden');
+            emptyState.classList.add('hidden');
+            skeleton.classList.remove('hidden');
+            paginationUI.classList.add('hidden');
+            countLabel.textContent = 'Memuat data...';
+
+            try {
+                const data = await fetchBeritaFromSupabase(currentPage);
+                skeleton.classList.add('hidden');
+
+                if (data.length === 0) {
+                    if (currentPage === 1) {
+                        emptyState.classList.remove('hidden');
+                        countLabel.textContent = '0 Laporan Intelijen';
+                    } else {
+                        // Jika halaman berikutnya kosong, kembalikan ke halaman sebelumnya
+                        currentPage--;
+                        loadBeritaData();
+                    }
+                    return;
+                }
+
+                // Render Kartu Berita
+                data.forEach(item => {
+                    container.appendChild(renderBeritaCard(item));
+                });
+
+                countLabel.textContent = `Menampilkan ${data.length} Laporan (Halaman ${currentPage})`;
+
+                // Update UI Navigation Pagination
+                updatePaginationControls(data.length);
+
+            } catch (err) {
+                console.error('Gagal memuat intel BICH:', err);
+                skeleton.classList.add('hidden');
+                errorState.classList.remove('hidden');
+                document.getElementById('berita-error-detail').textContent = err.message || 'Gagal terhubung ke jaringan core BICH.';
+                countLabel.textContent = 'Gagal memuat';
+            }
+        }
+
+        function updatePaginationControls(itemsFetched) {
+            const paginationUI = document.getElementById('berita-pagination');
+            const btnPrev = document.getElementById('btn-prev-page');
+            const btnNext = document.getElementById('btn-next-page');
+            const pageIndicator = document.getElementById('page-indicator');
+
+            paginationUI.classList.remove('hidden');
+            pageIndicator.textContent = `Halaman ${currentPage}`;
+
+            // Matikan tombol Sebelumnya jika ada di Halaman 1
+            btnPrev.disabled = (currentPage === 1);
+
+            // Matikan tombol Selanjutnya jika data yang didapat kurang dari limit (berarti data habis)
+            btnNext.disabled = (itemsFetched < PAGE_SIZE);
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+
+            loadBeritaData();
+
+            // Scroll halus kembali ke bagian atas daftar berita
+            const section = document.getElementById('berita-list-container');
+            if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function filterByProvinsi(prov, btnElement) {
+            selectedProvinsi = prov;
+            currentPage = 1; // Reset ke Halaman 1 setiap ubah filter
+            
+            document.querySelectorAll('.prov-btn').forEach(btn => {
+                btn.className = 'prov-btn bg-[#080c14] hover:border-emerald-500 text-slate-300 border border-slate-800 px-3.5 py-1.5 rounded-lg text-xs font-mono transition';
+            });
+            if (btnElement) {
+                btnElement.className = 'prov-btn active bg-emerald-500 text-black font-bold border border-emerald-400 px-3.5 py-1.5 rounded-lg text-xs font-mono transition shadow-lg shadow-emerald-500/20';
+            }
+
+            document.getElementById('active-provinsi-label').textContent = prov === 'ALL' 
+                ? 'Semua Wilayah (Kalimantan)' 
+                : `Wilayah: ${prov.toUpperCase()}`;
+
+            loadBeritaData();
+        }
+
+        function resetAndLoad() {
+            currentPage = 1;
+            loadBeritaData();
+        }
+
+        function renderBeritaCard(item) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `bg-[#080c14] border border-slate-800 hover:border-emerald-500/60 rounded-xl p-5 space-y-4 transition flex flex-col justify-between cursor-pointer group shadow-lg hover:shadow-emerald-950/20`;
+            wrapper.onclick = () => openBeritaModal(item);
+
+            const contentText = item.artikel_ai || item.info_tambahan || '';
+            const snippet = contentText ? contentText.slice(0, 120).trim() + (contentText.length > 120 ? '…' : '') : 'Klik untuk membaca laporan sintesis lengkap BICH...';
+
+            wrapper.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                            📍 ${escapeHtml(item.lokasi || item.wilayah || 'KALIMANTAN')}
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-500">${timeAgo(item.created_at)}</span>
+                    </div>
+                    <h4 class="text-base font-serif font-bold text-white group-hover:text-emerald-300 transition leading-snug">${escapeHtml(item.judul || 'Laporan Narasi Banua')}</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed font-sans">${escapeHtml(snippet)}</p>
+                </div>
+                <div class="pt-3 border-t border-slate-900 flex justify-between items-center text-[11px] font-mono">
+                    <span class="text-slate-500">Buletin Ekonomi BICH</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                        Baca Laporan &rarr;
+                    </span>
+                </div>
+            `;
+            return wrapper;
+        }
+
+        function openBeritaModal(item) {
+            document.getElementById('modal-badges').innerHTML = `
+                <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[9px] font-mono px-2.5 py-0.5 rounded-full font-bold">
+                    📍 ${escapeHtml(item.lokasi || item.wilayah || 'KALIMANTAN')}
+                </span>
+                <span class="bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-mono px-2.5 py-0.5 rounded-full font-bold">
+                    📈 BULETIN EKONOMI MINGGUAN
+                </span>
+            `;
+
+            document.getElementById('modal-title').textContent = item.judul || 'Laporan Intelijen Banua';
+            document.getElementById('modal-author').textContent = `Oleh: Tim Analis Senior BICH (${item.penyelenggara_perusahaan || 'Mozens Inc.'})`;
+
+            document.getElementById('modal-meta').innerHTML = `
+                <span>🗓️ Diposting: ${timeAgo(item.created_at)}</span>
+                <span>•</span>
+                <span>Status: Terverifikasi SOP BICH</span>
+                <span>•</span>
+                <span>Motto: Perhatikan, Analisa. Eksekusi.</span>
+            `;
+
+            const fullText = item.artikel_ai || item.info_tambahan || 'Isi laporan narasi belum tersedia.';
+            const paragraphs = fullText.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('');
+            document.getElementById('modal-content').innerHTML = paragraphs;
+
+            const defaultInsight = "Pengembangan kawasan ini wajib mengedepankan asas keberlanjutan lingkungan (ESG) serta pelibatan aktif putra daerah agar menciptakan pertumbuhan ekonomi yang sehat tanpa mengorbankan paru-paru dunia.";
+            document.getElementById('modal-insight').textContent = item.info_tambahan && item.artikel_ai ? item.info_tambahan.slice(0, 200) : defaultInsight;
+
+            const sourceNote = document.getElementById('modal-source-note');
+            sourceNote.innerHTML = `🛡️ <strong>Sistem Intelijen BICH:</strong> Buletin ini disintesis secara mandiri dari arsip fakta ekonomi publik dan diolah ulang berdasarkan Kode Etik & Batasan Narasi BICH (SOP-BICH-NEWS-002). Bersifat edukatif dan BUKAN nasihat investasi berizin OJK. Dokumen ini disajikan penuh di portal resmi <strong>www.mozensalqadrie.com</strong>.`;
+
+            document.getElementById('berita-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBeritaModal() {
+            document.getElementById('berita-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeBeritaModal();
         });
 
-        // Disable Shortcut Keyboard (Ctrl+C, Ctrl+U, Ctrl+S, F12, Ctrl+Shift+I/J)
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
-                e.preventDefault();
-            }
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) {
-                e.preventDefault();
-            }
-            if (e.key === 'F12') { 
-                e.preventDefault(); 
-            }
+        // Search Input Listener dengan Debounce
+        document.getElementById('berita-search').addEventListener('input', (e) => {
+            clearTimeout(beritaSearchDebounce);
+            searchQuery = e.target.value.trim();
+            beritaSearchDebounce = setTimeout(() => {
+                currentPage = 1;
+                loadBeritaData();
+            }, 350);
         });
 
-        // Block Event Copy Intercept
-        document.addEventListener('copy', function(e) { 
-            e.preventDefault(); 
+        // Auto Load saat halaman siap
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBeritaData();
         });
     </script>
-
 </body>
 </html>
