@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sungai Mahakam — Pilih Kanal Ekonomi | BICH</title>
+    <meta name="description" content="Pilih kanal ekonomi BICH: Buletin Ekonomi Mingguan atau Analisa Pasar Modal.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #05070c; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .river-line {
+            background: repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(212,175,55,0.35) 6px, rgba(212,175,55,0.35) 12px);
+            height: 2px;
+        }
+        .card-choice {
+            transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+        }
+        .card-choice:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -20px rgba(5,150,105,0.35);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white flex flex-col">
+
+    <header class="py-6 border-b border-slate-900">
+        <div class="max-w-4xl mx-auto px-6 flex items-center justify-between">
+            <a href="index.html" class="text-xs font-mono text-emerald-400 hover:text-white transition">&larr; Portal Utama BICH</a>
+            <span class="text-[10px] font-mono text-amber-400/80 border border-amber-500/20 bg-amber-950/20 rounded-full px-3 py-1">SUNGAI MAHAKAM · KANAL EKONOMI</span>
+        </div>
+    </header>
+
+    <main class="flex-1 flex items-center justify-center px-6 py-16">
+        <div class="max-w-4xl w-full text-center space-y-4">
+            <p class="font-mono text-[11px] tracking-[0.3em] text-emerald-400/80 uppercase">Muara Sungai Mahakam</p>
+            <h1 class="font-serif text-4xl sm:text-5xl font-extrabold leading-tight">
+                Mau baca yang mana, <span class="gold-gradient">bolo?</span>
+            </h1>
+            <p class="text-slate-400 text-sm max-w-xl mx-auto">
+                Dua kanal ekonomi BICH punya sudut pandang berbeda — pilih sesuai kebutuhan Anda.
+            </p>
+            <div class="river-line w-24 mx-auto my-8"></div>
+
+            <div class="grid sm:grid-cols-2 gap-6 text-left">
+                <a href="ekonomi.html" class="card-choice block bg-[#080c14] border border-slate-800 hover:border-emerald-500/60 rounded-2xl p-8 space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-2xl">📈</div>
+                    <h2 class="font-serif text-xl font-bold text-white">Buletin Ekonomi Mingguan</h2>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Analisis mendalam per provinsi setiap pekan — dampak kebijakan, ESG, dan peluang bisnis riil bagi pengusaha lokal dan koperasi.
+                    </p>
+                    <span class="inline-flex items-center gap-1 text-emerald-400 text-xs font-mono font-bold">
+                        Buka Buletin &rarr;
+                    </span>
+                </a>
+
+                <a href="pasar_modal.html" class="card-choice block bg-[#080c14] border border-slate-800 hover:border-cyan-500/60 rounded-2xl p-8 space-y-4">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-2xl">📊</div>
+                    <h2 class="font-serif text-xl font-bold text-white">Analisa Pasar Modal</h2>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Pembacaan indikator teknikal (IHSG, RSI, MACD, Bollinger Bands) — data edukatif, bukan sinyal beli-jual.
+                    </p>
+                    <span class="inline-flex items-center gap-1 text-cyan-400 text-xs font-mono font-bold">
+                        Buka Analisa &rarr;
+                    </span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
+        © 2026 BICH Intelligence Desk • Mozens Inc. · "Perhatikan, Analisa. Eksekusi."
+    </footer>
+</body>
+</html>

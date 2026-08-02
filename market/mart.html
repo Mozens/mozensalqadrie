@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BICH Mart — Pasar Digital Putra Banua</title>
+    
+    <!-- PWA Headers -->
+    <link rel="manifest" href="/market/manifest.json">
+    <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- GOOGLE FONTS: Poppins (Headline) + Plus Jakarta Sans (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- CSS, Alpine, FontAwesome & Supabase Client -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="/market/supabase.js"></script>
+    
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif; 
+            letter-spacing: -0.2px;
+        }
+        h1, h2, h3, .font-black, .font-extrabold {
+            font-family: 'Poppins', sans-serif;
+        }
+        [x-cloak] { display: none !important; }
+        .gold-glow { text-shadow: 0 0 16px rgba(245, 158, 11, 0.45); }
+        .card-glow:hover { box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950" x-data="bichMartApp()" x-init="initApp()">
+
+    <!-- BANNER PWA MOBILE PROMPT -->
+    <div x-show="showPwaBanner" x-cloak class="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-slate-950 text-xs px-4 py-2.5 flex justify-between items-center font-bold sticky top-0 z-50 shadow-lg shadow-amber-500/10">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-bolt text-sm"></i>
+            <span>Pasang <b>BICH Mart App</b> di HP — Akses Pasar Banua Tanpa Hambatan!</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <button @click="installPwa()" class="bg-slate-950 text-amber-400 px-3 py-1 rounded-xl text-xs font-black hover:bg-slate-900 transition">
+                Install
+            </button>
+            <button @click="showPwaBanner = false" class="text-slate-950 hover:text-slate-900 text-sm px-1"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-3">
+            
+            <!-- Logo & Brand (Panah Tetap Biasa / Non-Clickable) -->
+            <div class="flex items-center gap-2.5 cursor-default select-none">
+                <div class="bg-gradient-to-br from-amber-400 via-amber-500 to-emerald-500 text-slate-950 font-black text-2xl rounded-2xl w-10 h-10 flex items-center justify-center shadow-lg shadow-amber-500/30 ring-2 ring-amber-400/40">
+                    M
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-black text-xl text-slate-100 leading-none gold-glow">BICH Mart</span>
+                    <span class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30">v1.0</span>
+                </div>
+            </div>
+
+            <!-- Search Bar (Pusat Input) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-4">
+                <div class="relative w-full">
+                    <input type="text" x-model="searchQuery" placeholder="Cari komoditas, kerajinan, kuliner khas Banua..." class="w-full bg-slate-900/90 border border-slate-800 rounded-2xl px-4 py-2.5 pl-10 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition cursor-text">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-xs pointer-events-none"></i>
+                </div>
+            </div>
+
+            <!-- Action Buttons (HANYA INI YANG JADI JARI / CURSOR POINTER) -->
+            <div class="flex items-center gap-2">
+                <!-- 1. Tombol Muara Utama -->
+                <a href="../bich/index.html" title="Kembali ke Portal Berita" class="bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-amber-400 border border-slate-800 px-3 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition duration-300 cursor-pointer">
+                    <i class="fa-solid fa-house text-amber-400"></i>
+                    <span class="hidden md:inline">Muara Utama</span>
+                </a>
+
+                <!-- 2. Tombol Buka Lapak -->
+                <a href="seller.html" class="bg-slate-900 hover:bg-emerald-600/20 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 px-3 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition duration-300 cursor-pointer">
+                    <i class="fa-solid fa-store text-emerald-400"></i>
+                    <span class="hidden sm:inline">Buka Lapak</span>
+                </a>
+
+                <!-- 3. Tombol Keranjang Emas -->
+                <button @click="isCartOpen = true" class="relative bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 px-3.5 py-2 rounded-xl font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-500/20 active:scale-95 transition cursor-pointer">
+                    <i class="fa-solid fa-basket-shopping text-sm"></i>
+                    <span class="hidden sm:inline">Keranjang</span>
+                    <span x-show="totalCartCount > 0" x-text="totalCartCount" class="bg-slate-950 text-amber-400 text-[10px] px-2 py-0.5 rounded-full font-black border border-amber-500/40"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="relative bg-slate-950 border-b border-slate-800/80 py-10 px-4 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/20 via-slate-950 to-slate-950 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto text-center relative z-10 space-y-3">
+            <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] px-3.5 py-1 rounded-full font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Langsung dari Lapak Pedagang Banua
+            </span>
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-100">
+                Pasar DIGITAL <span class="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">RAKYAT Banua</span>
+            </h1>
+            
+            <!-- Teks Renggang Elegan (tracking-wide) -->
+            <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto font-medium leading-relaxed tracking-wide pt-1">
+                Persembahan <b class="text-amber-400 font-bold">Putra Banua</b> Untuk Banua
+            </p>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+        <!-- Filter Bar -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <div class="flex flex-wrap gap-2">
+                <template x-for="cat in ['ALL', 'Hasil Tani', 'Kuliner Banua', 'Kerajinan']">
+                    <button @click="selectedCategory = cat" 
+                            :class="selectedCategory === cat ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/10' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'" 
+                            class="px-4 py-2 rounded-xl text-xs transition duration-200" 
+                            x-text="cat === 'ALL' ? '🔥 Semua Produk' : cat">
+                    </button>
+                </template>
+            </div>
+            <div class="text-xs text-slate-400 font-medium">
+                Menampilkan <span class="text-amber-400 font-bold" x-text="filteredProducts.length"></span> produk
+            </div>
+        </div>
+
+        <!-- GRID PRODUK GARANG -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+            <template x-for="item in filteredProducts" :key="item.id">
+                <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-amber-500/40 transition duration-300 flex flex-col justify-between card-glow group">
+                    <div>
+                        <!-- Gambar Produk -->
+                        <div class="aspect-square bg-slate-950 relative overflow-hidden">
+                            <img :src="item.gambar_url || 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart'" :alt="item.nama_produk" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-2.5 left-2.5 bg-slate-950/90 backdrop-blur-md text-amber-400 text-[10px] font-bold px-2 py-1 rounded-lg border border-amber-500/30" x-text="item.lokasi || 'Kalimantan'"></span>
+                        </div>
+                        
+                        <!-- Details -->
+                        <div class="p-4 space-y-1.5">
+                            <span class="text-[11px] text-emerald-400 font-semibold block" x-text="item.bich_toko?.nama_toko || 'Lapak Banua'"></span>
+                            <h3 class="text-xs font-bold text-slate-100 line-clamp-2 leading-snug group-hover:text-amber-400 transition" x-text="item.nama_produk"></h3>
+                            <div class="text-base font-extrabold text-amber-400 pt-1" x-text="formatRupiah(item.harga)"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Keranjang -->
+                    <div class="p-4 pt-0">
+                        <button @click="addToCart(item)" class="w-full bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-extrabold py-2.5 rounded-xl border border-slate-700/80 hover:border-amber-500 transition duration-200 flex items-center justify-center gap-2 active:scale-95">
+                            <i class="fa-solid fa-plus text-xs"></i> Keranjang Emas
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </main>
+
+    <!-- DRAWER SLIDE-OVER KERANJANG EMAS (WITH QTY CONTROL) -->
+    <div x-show="isCartOpen" x-cloak class="fixed inset-0 z-50 overflow-hidden">
+        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity" @click="isCartOpen = false"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-slate-900 border-l border-slate-800 p-6 flex flex-col justify-between shadow-2xl">
+                <div>
+                    <!-- Drawer Header -->
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-basket-shopping text-amber-400 text-xl"></i>
+                            <h2 class="text-base font-bold text-slate-100">Keranjang Emas</h2>
+                        </div>
+                        <button @click="isCartOpen = false" class="text-slate-400 hover:text-slate-100 p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+
+                    <!-- Microcopy Fee Warm & Friendly -->
+                    <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-[11px] text-amber-300 mb-4 flex items-start gap-2.5">
+                        <i class="fa-solid fa-shield-heart text-amber-400 text-sm mt-0.5"></i>
+                        <span>Setiap transaksi di Keranjang Emas menyisihkan <b>2.5% fee</b> untuk pemberdayaan ekonomi UMKM Banua.</span>
+                    </div>
+
+                    <!-- List Items Keranjang -->
+                    <div class="space-y-3 overflow-y-auto max-h-[55vh] pr-1">
+                        <template x-for="(cartItem, index) in cart" :key="cartItem.id">
+                            <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3.5 flex items-center justify-between gap-3">
+                                <div class="flex-1">
+                                    <h4 class="text-xs font-bold text-slate-100 line-clamp-1" x-text="cartItem.nama_produk"></h4>
+                                    <span class="text-xs text-amber-400 font-extrabold" x-text="formatRupiah(cartItem.harga)"></span>
+                                </div>
+
+                                <!-- Control Qty (+/-) -->
+                                <div class="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg p-1">
+                                    <button @click="decreaseQty(index)" class="w-6 h-6 rounded bg-slate-800 text-slate-300 hover:text-amber-400 font-bold text-xs flex items-center justify-center">-</button>
+                                    <span class="text-xs font-extrabold text-slate-100 px-1" x-text="cartItem.qty"></span>
+                                    <button @click="increaseQty(index)" class="w-6 h-6 rounded bg-slate-800 text-slate-300 hover:text-amber-400 font-bold text-xs flex items-center justify-center">+</button>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Microcopy Empty State Warm -->
+                        <template x-if="cart.length === 0">
+                            <div class="text-center py-12 space-y-2">
+                                <i class="fa-solid fa-basket-shopping text-slate-700 text-4xl"></i>
+                                <p class="text-xs text-slate-400 font-medium">Yuk isi Keranjang Emas. Dukung UMKM Banua 💛</p>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Footer Drawer / Checkout Button Warm -->
+                <div class="border-t border-slate-800 pt-4 space-y-3">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-400 font-medium">Total Pembayaran:</span>
+                        <span class="text-amber-400 text-lg font-black" x-text="formatRupiah(cartTotal)"></span>
+                    </div>
+                    <button @click="proceedToCheckout()" :disabled="cart.length === 0" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 disabled:opacity-50 text-slate-950 font-black text-xs py-3.5 rounded-xl text-center shadow-lg shadow-amber-500/20 transition duration-200">
+                        Bayar & Kirim ke Banua (<span x-text="totalCartCount"></span>)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT ALPINE LOGIC -->
+    <script>
+        function bichMartApp() {
+            return {
+                products: [],
+                cart: [],
+                searchQuery: '',
+                selectedCategory: 'ALL',
+                isCartOpen: false,
+                showPwaBanner: false,
+                deferredPrompt: null,
+
+                async initApp() {
+                    // Fetch Produk dari supabase.js
+                    if (typeof fetchSemuaProduk === 'function') {
+                        this.products = await fetchSemuaProduk();
+                    }
+
+                    // Restore Cart dari localStorage
+                    const savedCart = localStorage.getItem('bich_cart');
+                    if (savedCart) this.cart = JSON.parse(savedCart);
+
+                    // PWA Prompt Detection
+                    window.addEventListener('beforeinstallprompt', (e) => {
+                        e.preventDefault();
+                        this.deferredPrompt = e;
+                        this.showPwaBanner = true;
+                    });
+
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.register('/market/sw.js');
+                    }
+                },
+
+                get filteredProducts() {
+                    return this.products.filter(p => {
+                        const matchCat = this.selectedCategory === 'ALL' || p.kategori === this.selectedCategory;
+                        const matchSearch = p.nama_produk.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        return matchCat && matchSearch;
+                    });
+                },
+
+                get totalCartCount() {
+                    return this.cart.reduce((sum, item) => sum + item.qty, 0);
+                },
+
+                get cartTotal() {
+                    return this.cart.reduce((sum, item) => sum + (item.harga * item.qty), 0);
+                },
+
+                addToCart(item) {
+                    const existing = this.cart.find(i => i.id === item.id);
+                    if (existing) {
+                        existing.qty++;
+                    } else {
+                        this.cart.push({ ...item, qty: 1 });
+                    }
+                    this.saveCart();
+                    this.isCartOpen = true;
+                },
+
+                increaseQty(index) {
+                    this.cart[index].qty++;
+                    this.saveCart();
+                },
+
+                decreaseQty(index) {
+                    if (this.cart[index].qty > 1) {
+                        this.cart[index].qty--;
+                    } else {
+                        this.cart.splice(index, 1);
+                    }
+                    this.saveCart();
+                },
+
+                saveCart() {
+                    localStorage.setItem('bich_cart', JSON.stringify(this.cart));
+                },
+
+                proceedToCheckout() {
+                    window.location.href = '/market/checkout.html';
+                },
+
+                formatRupiah(angka) {
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka || 0);
+                },
+
+                installPwa() {
+                    if (this.deferredPrompt) {
+                        this.deferredPrompt.prompt();
+                        this.deferredPrompt.userChoice.then(() => {
+                            this.deferredPrompt = null;
+                            this.showPwaBanner = false;
+                        });
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

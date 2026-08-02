@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout — BICH Mart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/market/supabase.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen py-10 px-4" x-data="checkoutApp()">
+    <div class="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
+        <a href="/market/" class="text-amber-400 text-xs font-bold flex items-center gap-2 mb-6 hover:underline">
+            <i class="fa-solid fa-arrow-left"></i> Kembali ke BICH Mart
+        </a>
+
+        <h1 class="text-xl font-black text-slate-100 mb-1">Pengiriman & Pembayaran</h1>
+        <p class="text-xs text-slate-400 mb-6">Lengkapi data Anda untuk memproses pesanan Keranjang Emas.</p>
+
+        <!-- Form Data Pembeli -->
+        <form @submit.prevent="prosesBayar()" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap</label>
+                <input type="text" x-model="form.name" required placeholder="Contoh: Mozens Al Qadrie" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Email</label>
+                    <input type="email" x-model="form.email" required placeholder="email@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">No. WhatsApp</label>
+                    <input type="tel" x-model="form.phone" required placeholder="081234567890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                </div>
+            </div>
+
+            <!-- Ringkasan Fee BICH -->
+            <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-4 my-4 space-y-2 text-xs">
+                <div class="flex justify-between text-slate-400">
+                    <span>Subtotal Produk</span>
+                    <span class="text-slate-200 font-bold" x-text="formatRupiah(cartTotal)"></span>
+                </div>
+                <div class="flex justify-between text-emerald-400 font-semibold border-t border-slate-800 pt-2">
+                    <span>Dukungan Ekonomi Banua (2.5%)</span>
+                    <span x-text="formatRupiah(feeBich)"></span>
+                </div>
+            </div>
+
+            <button type="submit" :disabled="loading" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm py-3.5 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2">
+                <i x-show="loading" class="fa-solid fa-circle-notch fa-spin"></i>
+                <span x-text="loading ? 'Menghubungkan Gateway...' : 'Bayar Sekarang via PG'"></span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function checkoutApp() {
+            return {
+                cart: [],
+                loading: false,
+                form: { name: '', email: '', phone: '' },
+
+                init() {
+                    // Ambil data keranjang dari localStorage atau state
+                    const savedCart = localStorage.getItem('bich_cart');
+                    if (savedCart) this.cart = JSON.parse(savedCart);
+                },
+
+                get cartTotal() {
+                    return this.cart.reduce((sum, item) => sum + item.harga, 0);
+                },
+
+                get feeBich() {
+                    return Math.floor(this.cartTotal * 0.025);
+                },
+
+                async prosesBayar() {
+                    if (this.cart.length === 0) {
+                        alert("Keranjang Emas kamu kosong!");
+                        return;
+                    }
+
+                    this.loading = true;
+                    try {
+                        // Panggil PG Handler (Supabase Edge Function)
+                        const { data, error } = await db.functions.invoke('create-payment', {
+                            body: {
+                                items: this.cart,
+                                customer_name: this.form.name,
+                                customer_email: this.form.email,
+                                customer_phone: this.form.phone
+                            }
+                        });
+
+                        if (error) throw error;
+
+                        if (data && data.checkout_url) {
+                            localStorage.removeItem('bich_cart'); // Clear cart
+                            window.location.href = data.checkout_url; // Redirect ke halaman bayar PG
+                        } else {
+                            throw new Error("Gagal menerima respon Payment Gateway.");
+                        }
+
+                    } catch (err) {
+                        alert("Error: " + err.message);
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                formatRupiah(angka) {
+                    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(angka || 0);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

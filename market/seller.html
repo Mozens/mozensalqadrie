@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buka Lapak — BICH Mart Putra Banua</title>
+
+    <!-- GOOGLE FONTS: Poppins + Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- CSS, Alpine & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="/market/supabase.js"></script>
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif; 
+            letter-spacing: -0.2px;
+        }
+        h1, h2, h3, .font-black, .font-extrabold {
+            font-family: 'Poppins', sans-serif;
+        }
+        [x-cloak] { display: none !important; }
+        .gold-glow { text-shadow: 0 0 16px rgba(245, 158, 11, 0.45); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950" x-data="sellerApp()" x-init="initSeller()">
+
+    <!-- HEADER & NAVIGASI GANDA -->
+    <header class="bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center gap-3">
+            
+            <!-- Logo Brand (Panah Tetap Biasa / Non-Clickable) -->
+            <div class="flex items-center gap-2.5 cursor-default select-none">
+                <div class="bg-gradient-to-br from-amber-400 via-amber-500 to-emerald-500 text-slate-950 font-black text-xl rounded-xl w-9 h-9 flex items-center justify-center shadow-lg shadow-amber-500/20 ring-1 ring-amber-400/40">
+                    M
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-black text-lg text-slate-100 gold-glow">BICH Mart</span>
+                    <span class="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">Lapak Pedagang</span>
+                </div>
+            </div>
+
+            <!-- Tombol Navigasi Antar Halaman (HANYA INI YANG JADI JARI) -->
+            <div class="flex items-center gap-2">
+                <a href="mart.html" class="bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-amber-400 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition duration-200 cursor-pointer">
+                    <i class="fa-solid fa-store text-amber-400"></i>
+                    <span class="hidden sm:inline">Ke BICH Mart</span>
+                </a>
+                <a href="../bich/index.html" class="bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-amber-400 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition duration-200 cursor-pointer">
+                    <i class="fa-solid fa-house text-amber-400"></i>
+                    <span class="hidden sm:inline">Muara Utama</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- CONTENT FORM BUKA LAPAK & TAMBAH PRODUK -->
+    <main class="max-w-2xl mx-auto w-full px-4 py-8 flex-grow space-y-6">
+
+        <!-- TITLE HEAD -->
+        <div class="text-center space-y-2">
+            <span class="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[11px] px-3 py-1 rounded-full font-bold">
+                <i class="fa-solid fa-hand-holding-heart text-xs"></i> Pemberdayaan UMKM Banua
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-black text-slate-100">
+                Kelola <span class="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500 bg-clip-text text-transparent">Lapak Banua</span>
+            </h1>
+            <p class="text-xs text-slate-400 max-w-md mx-auto">
+                Daftarkan toko kamu dan pajang produk terbaik buatan Putra-Putri Banua untuk menjangkau pembeli lebih luas.
+            </p>
+        </div>
+
+        <!-- NOTIFIKASI TOAST -->
+        <div x-show="toast.show" x-cloak x-transition 
+             :class="toast.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-rose-500/10 border-rose-500/30 text-rose-300'"
+             class="p-4 rounded-2xl border text-xs font-bold flex items-center justify-between shadow-lg">
+            <div class="flex items-center gap-2">
+                <i :class="toast.type === 'success' ? 'fa-solid fa-circle-check text-emerald-400 text-base' : 'fa-solid fa-triangle-exclamation text-rose-400 text-base'"></i>
+                <span x-text="toast.message"></span>
+            </div>
+            <button @click="toast.show = false" class="text-slate-400 hover:text-slate-100"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- STEP 1: REGISTRASI TOKO (Jika Belum Daftarkan Toko) -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5 relative overflow-hidden">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-black text-xs">1</span>
+                    <h2 class="text-sm font-bold text-slate-100">Profil Lapak Kamu</h2>
+                </div>
+                <span x-show="isTokoSaved" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                    <i class="fa-solid fa-check"></i> Terdaftar
+                </span>
+            </div>
+
+            <form @submit.prevent="saveToko()" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Nama Toko / Lapak *</label>
+                        <input type="text" x-model="toko.nama_toko" placeholder="Contoh: Lapak Berkah Banua" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Nama Pemilik *</label>
+                        <input type="text" x-model="toko.pemilik" placeholder="Contoh: Bang Haji Ahmad" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">No. WhatsApp Toko *</label>
+                        <input type="tel" x-model="toko.wa" placeholder="Contoh: 081234567890" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Deskripsi Singkat Lapak</label>
+                        <input type="text" x-model="toko.deskripsi" placeholder="Pusat kerajinan & olahan hasil tani..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                </div>
+
+                <div class="pt-2 flex justify-end">
+                    <button type="submit" :disabled="loading" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span x-text="isTokoSaved ? 'Perbarui Profil Lapak' : 'Simpan Profil Lapak'"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- STEP 2: FORM TAMBAH PRODUK BARU -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5" :class="!isTokoSaved ? 'opacity-50 pointer-events-none' : ''">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-black text-xs">2</span>
+                    <h2 class="text-sm font-bold text-slate-100">Tambah Produk Baru</h2>
+                </div>
+                <span class="text-[11px] text-slate-400">Pajang ke katalog BICH Mart</span>
+            </div>
+
+            <form @submit.prevent="saveProduk()" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Nama Produk *</label>
+                    <input type="text" x-model="produk.nama_produk" placeholder="Contoh: Madu Hutan Murni Borneo (500ml)" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Harga (Rp) *</label>
+                        <input type="number" x-model="produk.harga" placeholder="125000" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Jumlah Stok *</label>
+                        <input type="number" x-model="produk.stok" placeholder="20" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Kategori *</label>
+                        <select x-model="produk.kategori" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                            <option value="Hasil Tani">🌾 Hasil Tani</option>
+                            <option value="Kuliner Banua">🍲 Kuliner Banua</option>
+                            <option value="Kerajinan">🎨 Kerajinan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Asal / Lokasi Lapak *</label>
+                        <input type="text" x-model="produk.lokasi" placeholder="Contoh: Banjarmasin, Kalsel" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">URL Foto Produk</label>
+                        <input type="url" x-model="produk.gambar_url" placeholder="https://..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    </div>
+                </div>
+
+                <div class="pt-3 flex items-center justify-between">
+                    <p class="text-[10px] text-slate-500">* Produk yang di-submit akan langsung tampil di BICH Mart.</p>
+                    <button type="submit" :disabled="loading" class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs px-6 py-3 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-95 transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span>Pajang Produk Sekarang</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- FOOTER SIMPLE -->
+    <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 BICH Mart — Dibuat dengan cinta oleh Putra Banua 💛</p>
+    </footer>
+
+    <!-- SCRIPT ALPINE LOGIC FOR SELLER -->
+    <script>
+        function sellerApp() {
+            return {
+                toko: {
+                    id: null,
+                    nama_toko: '',
+                    pemilik: '',
+                    wa: '',
+                    deskripsi: ''
+                },
+                produk: {
+                    nama_produk: '',
+                    harga: '',
+                    stok: '',
+                    kategori: 'Kuliner Banua',
+                    lokasi: 'Banjarmasin, Kalsel',
+                    gambar_url: ''
+                },
+                isTokoSaved: false,
+                loading: false,
+                toast: {
+                    show: false,
+                    message: '',
+                    type: 'success'
+                },
+
+                initSeller() {
+                    // Check if store already exists in local storage
+                    const savedToko = localStorage.getItem('bich_toko_data');
+                    if (savedToko) {
+                        this.toko = JSON.parse(savedToko);
+                        this.isTokoSaved = true;
+                    }
+                },
+
+                showToast(msg, type = 'success') {
+                    this.toast.message = msg;
+                    this.toast.type = type;
+                    this.toast.show = true;
+                    setTimeout(() => { this.toast.show = false; }, 4000);
+                },
+
+                async saveToko() {
+                    this.loading = true;
+                    try {
+                        let tokoId = this.toko.id || Date.now();
+                        this.toko.id = tokoId;
+
+                        // Save to LocalStorage
+                        localStorage.setItem('bich_toko_data', JSON.stringify(this.toko));
+
+                        // Sync with Supabase if client exists
+                        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                            await supabaseClient.from('bich_toko').upsert([this.toko]);
+                        }
+
+                        this.isTokoSaved = true;
+                        this.showToast('Profil Lapak berhasil disimpan, Bolo! Silakan tambah produk.');
+                    } catch (err) {
+                        this.showToast('Gagal menyimpan profil lapak: ' + err.message, 'error');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async saveProduk() {
+                    if (!this.isTokoSaved) {
+                        this.showToast('Simpan profil lapak terlebih dahulu, Bolo!', 'error');
+                        return;
+                    }
+
+                    this.loading = true;
+                    try {
+                        const payload = {
+                            toko_id: this.toko.id,
+                            nama_produk: this.produk.nama_produk,
+                            harga: parseInt(this.produk.harga) || 0,
+                            stok: parseInt(this.produk.stok) || 1,
+                            kategori: this.produk.kategori,
+                            lokasi: this.produk.lokasi,
+                            gambar_url: this.produk.gambar_url || 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart'
+                        };
+
+                        // Sync with Supabase
+                        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                            await supabaseClient.from('bich_produk').insert([payload]);
+                        }
+
+                        this.showToast('Produk berhasil dipajang di BICH Mart! 🔥');
+
+                        // Reset form produk
+                        this.produk.nama_produk = '';
+                        this.produk.harga = '';
+                        this.produk.stok = '';
+                        this.produk.gambar_url = '';
+
+                    } catch (err) {
+                        this.showToast('Gagal memajang produk: ' + err.message, 'error');
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
