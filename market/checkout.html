@@ -3,78 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout — BICH Mart</title>
+    <title>Kasir Pembayaran — BICH Mart</title>
+    
+    <!-- FONTS & STYLES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="/market/supabase.js"></script>
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        h1, h2, h3, .font-black { font-family: 'Poppins', sans-serif; }
+        [x-cloak] { display: none !important; }
+        .gold-glow { text-shadow: 0 0 16px rgba(245, 158, 11, 0.45); }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen py-10 px-4" x-data="checkoutApp()">
-    <div class="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
-        <a href="/market/" class="text-amber-400 text-xs font-bold flex items-center gap-2 mb-6 hover:underline">
-            <i class="fa-solid fa-arrow-left"></i> Kembali ke BICH Mart
-        </a>
+<body class="bg-slate-950 text-slate-100 min-h-screen py-8 px-4" x-data="checkoutApp()" x-init="init()">
 
-        <h1 class="text-xl font-black text-slate-100 mb-1">Pengiriman & Pembayaran</h1>
-        <p class="text-xs text-slate-400 mb-6">Lengkapi data Anda untuk memproses pesanan Keranjang Emas.</p>
+    <div class="max-w-3xl mx-auto space-y-6">
+        
+        <!-- HEADER KASIR -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <a href="/market/" class="text-amber-400 text-xs font-bold flex items-center gap-2 hover:underline">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke BICH Mart
+            </a>
+            <span class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-3 py-1 rounded-full border border-amber-500/30">
+                Kasir Keranjang Emas
+            </span>
+        </div>
 
-        <!-- Form Data Pembeli -->
-        <form @submit.prevent="prosesBayar()" class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap</label>
-                <input type="text" x-model="form.name" required placeholder="Contoh: Mozens Al Qadrie" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+        <!-- JIKA KERANJANG KOSONG -->
+        <div x-show="cart.length === 0" x-cloak class="bg-slate-900 border border-slate-800 rounded-2xl p-10 text-center space-y-4">
+            <i class="fa-solid fa-basket-shopping text-4xl text-amber-400"></i>
+            <h2 class="text-lg font-bold">Keranjang Belanja Kamu Masih Kosong!</h2>
+            <a href="/market/" class="inline-block bg-amber-500 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl">Mulai Belanja</a>
+        </div>
+
+        <!-- FORM & RINGKASAN (JIKA ISI ADA) -->
+        <div x-show="cart.length > 0" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            
+            <!-- FORM PENGIRIMAN & DATA PEMBELI (LEFT - 7 COLS) -->
+            <div class="md:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+                <h1 class="text-lg font-black text-slate-100 flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-amber-400"></i> Data Pemesan & Pengiriman
+                </h1>
+
+                <form @submit.prevent="prosesBayar()" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap *</label>
+                        <input type="text" x-model="form.name" required placeholder="Contoh: Mozens Al Qadrie" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Email *</label>
+                            <input type="email" x-model="form.email" required placeholder="email@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">No. WhatsApp *</label>
+                            <input type="tel" x-model="form.phone" required placeholder="081234567890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Alamat Lengkap Pengiriman *</label>
+                        <textarea x-model="form.alamat" rows="2" required placeholder="Jl. Ahmad Yani Km..., No. Rumah, Kota/Kabupaten" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500"></textarea>
+                    </div>
+
+                    <!-- OPSIONAL OPSI KURIR -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-2">Metode Pengiriman</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-amber-500/50">
+                                <div class="flex items-center gap-2 text-xs">
+                                    <input type="radio" name="pengiriman" value="Kurir Lokal Banua" x-model="form.metode_pengiriman" @change="ongkir = 12000" class="accent-amber-500">
+                                    <span>Kurir Lokal Banua (Sameday)</span>
+                                </div>
+                                <span class="text-xs font-bold text-amber-400">Rp 12.000</span>
+                            </label>
+                            <label class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-amber-500/50">
+                                <div class="flex items-center gap-2 text-xs">
+                                    <input type="radio" name="pengiriman" value="Ekspedisi Reguler" x-model="form.metode_pengiriman" @change="ongkir = 22000" class="accent-amber-500">
+                                    <span>Ekspedisi Reguler (JNE/J&T)</span>
+                                </div>
+                                <span class="text-xs font-bold text-amber-400">Rp 22.000</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- METODE BAYAR -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-2">Pilihan Metode Pembayaran</label>
+                        <select x-model="form.tipe_bayar" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                            <option value="pg">Payment Gateway Otomatis (QRIS / VA Bank)</option>
+                            <option value="wa">Direct WhatsApp (Transfer Manual / COD)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" :disabled="loading" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs py-3.5 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                        <i x-show="loading" class="fa-solid fa-circle-notch fa-spin"></i>
+                        <span x-text="loading ? 'Memproses Pesanan...' : 'Bayar / Konfirmasi Pesanan Sekarang'"></span>
+                    </button>
+                </form>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Email</label>
-                    <input type="email" x-model="form.email" required placeholder="email@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+            <!-- RINCIAN TAGIHAN (RIGHT - 5 COLS) -->
+            <div class="md:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 h-fit">
+                <h2 class="text-sm font-bold border-b border-slate-800 pb-3">Rincian Belanja</h2>
+
+                <div class="space-y-3 max-h-48 overflow-y-auto pr-1">
+                    <template x-for="(item, index) in cart" :key="index">
+                        <div class="flex justify-between items-center text-xs border-b border-slate-800/50 pb-2">
+                            <div>
+                                <p class="font-bold text-slate-200" x-text="item.nama_produk"></p>
+                                <p class="text-[10px] text-slate-400" x-text="formatRupiah(item.harga)"></p>
+                            </div>
+                            <span class="font-bold text-amber-400" x-text="formatRupiah(item.harga)"></span>
+                        </div>
+                    </template>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">No. WhatsApp</label>
-                    <input type="tel" x-model="form.phone" required placeholder="081234567890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+
+                <!-- RINCIAN BIAYA & FEE BANUA 2.5% -->
+                <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3.5 space-y-2 text-xs">
+                    <div class="flex justify-between text-slate-400">
+                        <span>Subtotal Produk</span>
+                        <span class="text-slate-200 font-bold" x-text="formatRupiah(cartTotal)"></span>
+                    </div>
+                    <div class="flex justify-between text-amber-400">
+                        <span>Ongkos Kirim</span>
+                        <span class="font-bold" x-text="formatRupiah(ongkir)"></span>
+                    </div>
+                    <div class="flex justify-between text-emerald-400 font-semibold border-t border-slate-800/80 pt-2">
+                        <span>Dukungan Ekonomi Banua (2.5%)</span>
+                        <span x-text="formatRupiah(feeBich)"></span>
+                    </div>
+                    <div class="flex justify-between text-sm font-black text-slate-100 border-t border-slate-800 pt-2">
+                        <span>Total Tagihan</span>
+                        <span class="text-amber-400 gold-glow" x-text="formatRupiah(grandTotal)"></span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Ringkasan Fee BICH -->
-            <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-4 my-4 space-y-2 text-xs">
-                <div class="flex justify-between text-slate-400">
-                    <span>Subtotal Produk</span>
-                    <span class="text-slate-200 font-bold" x-text="formatRupiah(cartTotal)"></span>
-                </div>
-                <div class="flex justify-between text-emerald-400 font-semibold border-t border-slate-800 pt-2">
-                    <span>Dukungan Ekonomi Banua (2.5%)</span>
-                    <span x-text="formatRupiah(feeBich)"></span>
-                </div>
-            </div>
+        </div>
 
-            <button type="submit" :disabled="loading" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm py-3.5 rounded-xl shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2">
-                <i x-show="loading" class="fa-solid fa-circle-notch fa-spin"></i>
-                <span x-text="loading ? 'Menghubungkan Gateway...' : 'Bayar Sekarang via PG'"></span>
-            </button>
-        </form>
     </div>
 
     <script>
         function checkoutApp() {
             return {
                 cart: [],
+                ongkir: 12000,
                 loading: false,
-                form: { name: '', email: '', phone: '' },
+                form: { 
+                    name: '', 
+                    email: '', 
+                    phone: '', 
+                    alamat: '', 
+                    metode_pengiriman: 'Kurir Lokal Banua',
+                    tipe_bayar: 'pg'
+                },
 
                 init() {
-                    // Ambil data keranjang dari localStorage atau state
                     const savedCart = localStorage.getItem('bich_cart');
                     if (savedCart) this.cart = JSON.parse(savedCart);
                 },
 
                 get cartTotal() {
-                    return this.cart.reduce((sum, item) => sum + item.harga, 0);
+                    return this.cart.reduce((sum, item) => sum + Number(item.harga), 0);
                 },
 
                 get feeBich() {
                     return Math.floor(this.cartTotal * 0.025);
+                },
+
+                get grandTotal() {
+                    return this.cartTotal + this.ongkir + this.feeBich;
                 },
 
                 async prosesBayar() {
@@ -84,24 +193,44 @@
                     }
 
                     this.loading = true;
+
                     try {
-                        // Panggil PG Handler (Supabase Edge Function)
-                        const { data, error } = await db.functions.invoke('create-payment', {
-                            body: {
-                                items: this.cart,
-                                customer_name: this.form.name,
-                                customer_email: this.form.email,
-                                customer_phone: this.form.phone
+                        // JIKA MEMILIH PAYMENT GATEWAY (PG)
+                        if (this.form.tipe_bayar === 'pg') {
+                            const { data, error } = await db.functions.invoke('create-payment', {
+                                body: {
+                                    items: this.cart,
+                                    customer_name: this.form.name,
+                                    customer_email: this.form.email,
+                                    customer_phone: this.form.phone,
+                                    shipping_address: this.form.alamat,
+                                    shipping_fee: this.ongkir,
+                                    fee_bich: this.feeBich,
+                                    total_amount: this.grandTotal
+                                }
+                            });
+
+                            if (error) throw error;
+
+                            if (data && data.checkout_url) {
+                                localStorage.removeItem('bich_cart');
+                                window.location.href = data.checkout_url;
+                            } else {
+                                throw new Error("Gagal menerima respon Payment Gateway.");
                             }
-                        });
+                        } 
+                        // JIKA MEMILIH DIRECT WHATSAPP
+                        else {
+                            let textWA = `*PESANAN BICH MART*\n`;
+                            textWA += `Nama: ${this.form.name}\n`;
+                            textWA += `WA: ${this.form.phone}\n`;
+                            textWA += `Alamat: ${this.form.alamat}\n`;
+                            textWA += `Pengiriman: ${this.form.metode_pengiriman}\n\n`;
+                            textWA += `Total Tagihan: ${this.formatRupiah(this.grandTotal)}`;
 
-                        if (error) throw error;
-
-                        if (data && data.checkout_url) {
-                            localStorage.removeItem('bich_cart'); // Clear cart
-                            window.location.href = data.checkout_url; // Redirect ke halaman bayar PG
-                        } else {
-                            throw new Error("Gagal menerima respon Payment Gateway.");
+                            localStorage.removeItem('bich_cart');
+                            window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(textWA)}`, '_blank');
+                            window.location.href = "/market/";
                         }
 
                     } catch (err) {
