@@ -197,6 +197,12 @@
                     try {
                         // JIKA MEMILIH PAYMENT GATEWAY (PG)
                         if (this.form.tipe_bayar === 'pg') {
+                            // ⚠️ PENTING (keamanan): this.cart datang dari localStorage yang bisa
+                            // diubah bebas lewat DevTools oleh pengunjung (termasuk field `harga`).
+                            // Edge Function `create-payment` WAJIB mengambil ulang harga asli dari
+                            // tabel bich_produk berdasarkan product id, BUKAN memercayai `harga`
+                            // yang dikirim dari sini. Lihat market/supabase/functions/create-payment/
+                            // untuk contoh implementasi yang benar.
                             const { data, error } = await db.functions.invoke('create-payment', {
                                 body: {
                                     items: this.cart,
@@ -221,7 +227,32 @@
                         } 
                         // JIKA MEMILIH DIRECT WHATSAPP
                         else {
+                            // Kode referensi dibuat di klien supaya tidak bergantung pada
+                            // .select() setelah insert (yang butuh izin SELECT terpisah di RLS,
+                            // sementara tabel pesanan sebaiknya TIDAK bisa dibaca publik).
+                            const kodeReferensi = 'BM-' + Date.now().toString(36).toUpperCase();
+
+                            const { error: errPesanan } = await db
+                                .from('bich_pesanan')
+                                .insert([{
+                                    kode_referensi: kodeReferensi,
+                                    items: this.cart,
+                                    customer_name: this.form.name,
+                                    customer_email: this.form.email,
+                                    customer_phone: this.form.phone,
+                                    shipping_address: this.form.alamat,
+                                    shipping_method: this.form.metode_pengiriman,
+                                    shipping_fee: this.ongkir,
+                                    fee_bich: this.feeBich,
+                                    total_amount: this.grandTotal,
+                                    payment_type: 'wa_manual',
+                                    status: 'menunggu_konfirmasi_wa',
+                                }]);
+
+                            if (errPesanan) throw errPesanan;
+
                             let textWA = `*PESANAN BICH MART*\n`;
+                            textWA += `No. Pesanan: ${kodeReferensi}\n`;
                             textWA += `Nama: ${this.form.name}\n`;
                             textWA += `WA: ${this.form.phone}\n`;
                             textWA += `Alamat: ${this.form.alamat}\n`;
@@ -229,7 +260,7 @@
                             textWA += `Total Tagihan: ${this.formatRupiah(this.grandTotal)}`;
 
                             localStorage.removeItem('bich_cart');
-                            window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(textWA)}`, '_blank');
+                            window.open(`https://wa.me/6282341333313?text=${encodeURIComponent(textWA)}`, '_blank');
                             window.location.href = "/market/";
                         }
 

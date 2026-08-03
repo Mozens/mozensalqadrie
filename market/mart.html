@@ -293,6 +293,14 @@
 
                 addToCart(item) {
                     const existing = this.cart.find(i => i.id === item.id);
+                    const stokTersedia = item.stok ?? Infinity;
+                    const qtySekarang = existing ? existing.qty : 0;
+
+                    if (qtySekarang + 1 > stokTersedia) {
+                        alert(`Stok "${item.nama_produk}" cuma tersisa ${stokTersedia}, Bolo.`);
+                        return;
+                    }
+
                     if (existing) {
                         existing.qty++;
                     } else {
@@ -303,7 +311,13 @@
                 },
 
                 increaseQty(index) {
-                    this.cart[index].qty++;
+                    const item = this.cart[index];
+                    const stokTersedia = item.stok ?? Infinity;
+                    if (item.qty + 1 > stokTersedia) {
+                        alert(`Stok "${item.nama_produk}" cuma tersisa ${stokTersedia}, Bolo.`);
+                        return;
+                    }
+                    item.qty++;
                     this.saveCart();
                 },
 

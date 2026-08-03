@@ -1,9 +1,14 @@
 // Konfigurasi Supabase BICH Engine
 const SUPABASE_URL = "https://gehbuhuevfxfjyytmrht.supabase.co";
-// Menggunakan Anon Key untuk akses publik store
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdlaGJ1aHVldmZ4Zmp5eXRtcmh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM2MTg1OTUsImV4cCI6MjA2OTE5NDU5NX0.YOUR_ACTUAL_ANON_KEY"; 
+// Menggunakan Anon/Publishable Key untuk akses publik store — key yang sama
+// dengan yang sudah dipakai di berita.html/ekonomi.html/politik.html/index.html.
+// PENTING: sebelumnya key ini PATAH (masih ada teks placeholder "YOUR_ACTUAL_ANON_KEY"
+// yang belum diganti) sehingga seluruh BICH Mart gagal konek ke database.
+const SUPABASE_ANON_KEY = "sb_publishable_yPGSsXXIoc_wfn_Kkq8xzA_lGi7zEEn";
 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Alias supaya konsisten dengan penamaan yang dipakai di seller.html (supabaseClient)
+const supabaseClient = db;
 
 // Helper Fetch Produk
 async function fetchSemuaProduk() {

@@ -89,16 +89,54 @@
             <button @click="toast.show = false" class="text-slate-400 hover:text-slate-100"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
+        <!-- STEP 0: LOGIN PENJUAL (WAJIB, supaya toko tidak bisa diklaim orang lain) -->
+        <div x-show="!isLoggedIn" x-cloak class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+            <div class="flex items-center gap-2.5 border-b border-slate-800/80 pb-4">
+                <span class="w-7 h-7 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-black text-xs">
+                    <i class="fa-solid fa-lock text-[10px]"></i>
+                </span>
+                <h2 class="text-sm font-bold text-slate-100">Masuk / Daftar Sebagai Penjual</h2>
+            </div>
+            <p class="text-[11px] text-slate-400">
+                Toko & produk kamu terikat ke email ini — orang lain tidak bisa mengubah lapak kamu tanpa akses email tersebut.
+            </p>
+
+            <template x-if="!otpSent">
+                <form @submit.prevent="kirimOtp()" class="space-y-3">
+                    <input type="email" x-model="authEmail" required placeholder="Email kamu (untuk kode verifikasi)"
+                           class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    <button type="submit" :disabled="loading" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition">
+                        <span x-text="loading ? 'Mengirim kode...' : 'Kirim Kode Verifikasi'"></span>
+                    </button>
+                </form>
+            </template>
+
+            <template x-if="otpSent">
+                <form @submit.prevent="verifikasiOtp()" class="space-y-3">
+                    <p class="text-[11px] text-emerald-400">✅ Kode 6-digit sudah dikirim ke <b x-text="authEmail"></b>, cek email kamu (termasuk folder spam).</p>
+                    <input type="text" x-model="otpCode" required maxlength="6" placeholder="Masukkan kode 6 digit"
+                           class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 tracking-widest text-center focus:outline-none focus:border-amber-500 transition">
+                    <button type="submit" :disabled="loading" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition">
+                        <span x-text="loading ? 'Memverifikasi...' : 'Verifikasi & Masuk'"></span>
+                    </button>
+                    <button type="button" @click="otpSent = false" class="w-full text-slate-500 text-[11px] hover:text-slate-300">Ganti email / kirim ulang</button>
+                </form>
+            </template>
+        </div>
+
         <!-- STEP 1: REGISTRASI TOKO (Jika Belum Daftarkan Toko) -->
-        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5 relative overflow-hidden">
+        <div x-show="isLoggedIn" x-cloak class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5 relative overflow-hidden">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
                 <div class="flex items-center gap-2.5">
                     <span class="w-7 h-7 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-black text-xs">1</span>
                     <h2 class="text-sm font-bold text-slate-100">Profil Lapak Kamu</h2>
                 </div>
-                <span x-show="isTokoSaved" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                    <i class="fa-solid fa-check"></i> Terdaftar
-                </span>
+                <div class="flex items-center gap-2">
+                    <span x-show="isTokoSaved" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-check"></i> Terdaftar
+                    </span>
+                    <button @click="logout()" class="text-[10px] text-slate-500 hover:text-rose-400 font-bold">Keluar (<span x-text="authEmail"></span>)</button>
+                </div>
             </div>
 
             <form @submit.prevent="saveToko()" class="space-y-4">
@@ -134,7 +172,7 @@
         </div>
 
         <!-- STEP 2: FORM TAMBAH PRODUK BARU -->
-        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5" :class="!isTokoSaved ? 'opacity-50 pointer-events-none' : ''">
+        <div x-show="isLoggedIn" x-cloak class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5" :class="!isTokoSaved ? 'opacity-50 pointer-events-none' : ''">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
                 <div class="flex items-center gap-2.5">
                     <span class="w-7 h-7 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-black text-xs">2</span>
@@ -200,6 +238,13 @@
     <script>
         function sellerApp() {
             return {
+                // --- AUTH STATE ---
+                isLoggedIn: false,
+                authEmail: '',
+                otpSent: false,
+                otpCode: '',
+                userId: null,
+
                 toko: {
                     id: null,
                     nama_toko: '',
@@ -223,13 +268,24 @@
                     type: 'success'
                 },
 
-                initSeller() {
-                    // Check if store already exists in local storage
-                    const savedToko = localStorage.getItem('bich_toko_data');
-                    if (savedToko) {
-                        this.toko = JSON.parse(savedToko);
-                        this.isTokoSaved = true;
+                async initSeller() {
+                    // Cek sesi login yang masih aktif (Supabase Auth session, BUKAN localStorage manual)
+                    const { data: { session } } = await db.auth.getSession();
+                    if (session) {
+                        this.userId = session.user.id;
+                        this.authEmail = session.user.email;
+                        this.isLoggedIn = true;
+                        await this.muatTokoSaya();
                     }
+
+                    db.auth.onAuthStateChange((event, session) => {
+                        if (event === 'SIGNED_OUT') {
+                            this.isLoggedIn = false;
+                            this.userId = null;
+                            this.toko = { id: null, nama_toko: '', pemilik: '', wa: '', deskripsi: '' };
+                            this.isTokoSaved = false;
+                        }
+                    });
                 },
 
                 showToast(msg, type = 'success') {
@@ -239,20 +295,86 @@
                     setTimeout(() => { this.toast.show = false; }, 4000);
                 },
 
-                async saveToko() {
+                // --- AUTH: kirim & verifikasi kode OTP email (Supabase Auth bawaan) ---
+                async kirimOtp() {
                     this.loading = true;
                     try {
-                        let tokoId = this.toko.id || Date.now();
-                        this.toko.id = tokoId;
+                        const { error } = await db.auth.signInWithOtp({ email: this.authEmail });
+                        if (error) throw error;
+                        this.otpSent = true;
+                        this.showToast('Kode verifikasi terkirim, cek email kamu.');
+                    } catch (err) {
+                        this.showToast('Gagal mengirim kode: ' + err.message, 'error');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
 
-                        // Save to LocalStorage
-                        localStorage.setItem('bich_toko_data', JSON.stringify(this.toko));
+                async verifikasiOtp() {
+                    this.loading = true;
+                    try {
+                        const { data, error } = await db.auth.verifyOtp({
+                            email: this.authEmail,
+                            token: this.otpCode,
+                            type: 'email',
+                        });
+                        if (error) throw error;
+                        this.userId = data.user.id;
+                        this.isLoggedIn = true;
+                        this.otpSent = false;
+                        this.showToast('Berhasil masuk, Bolo!');
+                        await this.muatTokoSaya();
+                    } catch (err) {
+                        this.showToast('Kode salah/kedaluwarsa: ' + err.message, 'error');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
 
-                        // Sync with Supabase if client exists
-                        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
-                            await supabaseClient.from('bich_toko').upsert([this.toko]);
+                async logout() {
+                    await db.auth.signOut();
+                    this.otpCode = '';
+                    this.authEmail = '';
+                },
+
+                // --- Muat toko milik user yang sedang login (bukan dari localStorage) ---
+                async muatTokoSaya() {
+                    try {
+                        const { data, error } = await db
+                            .from('bich_toko')
+                            .select('*')
+                            .eq('owner_id', this.userId)
+                            .maybeSingle();
+                        if (error) throw error;
+                        if (data) {
+                            this.toko = data;
+                            this.isTokoSaved = true;
                         }
+                    } catch (err) {
+                        console.error('Gagal memuat toko:', err.message);
+                    }
+                },
 
+                async saveToko() {
+                    if (!this.isLoggedIn) {
+                        this.showToast('Silakan login dulu, Bolo!', 'error');
+                        return;
+                    }
+                    this.loading = true;
+                    try {
+                        const payload = {
+                            ...(this.toko.id ? { id: this.toko.id } : {}),
+                            owner_id: this.userId, // <-- kunci keamanan: RLS memastikan hanya owner_id = auth.uid() yang boleh insert/update
+                            nama_toko: this.toko.nama_toko,
+                            pemilik: this.toko.pemilik,
+                            wa: this.toko.wa,
+                            deskripsi: this.toko.deskripsi,
+                        };
+
+                        const { data, error } = await db.from('bich_toko').upsert([payload]).select().single();
+                        if (error) throw error;
+
+                        this.toko = data;
                         this.isTokoSaved = true;
                         this.showToast('Profil Lapak berhasil disimpan, Bolo! Silakan tambah produk.');
                     } catch (err) {
@@ -263,6 +385,10 @@
                 },
 
                 async saveProduk() {
+                    if (!this.isLoggedIn) {
+                        this.showToast('Silakan login dulu, Bolo!', 'error');
+                        return;
+                    }
                     if (!this.isTokoSaved) {
                         this.showToast('Simpan profil lapak terlebih dahulu, Bolo!', 'error');
                         return;
@@ -271,7 +397,7 @@
                     this.loading = true;
                     try {
                         const payload = {
-                            toko_id: this.toko.id,
+                            toko_id: this.toko.id, // RLS akan menolak kalau toko_id ini bukan milik auth.uid()
                             nama_produk: this.produk.nama_produk,
                             harga: parseInt(this.produk.harga) || 0,
                             stok: parseInt(this.produk.stok) || 1,
@@ -280,14 +406,11 @@
                             gambar_url: this.produk.gambar_url || 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart'
                         };
 
-                        // Sync with Supabase
-                        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
-                            await supabaseClient.from('bich_produk').insert([payload]);
-                        }
+                        const { error } = await db.from('bich_produk').insert([payload]);
+                        if (error) throw error;
 
                         this.showToast('Produk berhasil dipajang di BICH Mart! 🔥');
 
-                        // Reset form produk
                         this.produk.nama_produk = '';
                         this.produk.harga = '';
                         this.produk.stok = '';

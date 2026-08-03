@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meja Redaksi BICH</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #05070c; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    .tab-btn.active { background: #059669; color: white; }
+    textarea { resize: vertical; }
+</style>
+</head>
+<body class="text-white min-h-screen">
+
+<!-- ===================== LOGIN SCREEN ===================== -->
+<div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-sm bg-[#0b0f17] border border-slate-800 rounded-2xl p-8 space-y-5">
+        <h1 class="text-xl font-bold flex items-center gap-2">🔒 Login Meja Redaksi BICH</h1>
+        <input id="login-password" type="password" placeholder="Masukkan Password Admin"
+               class="w-full bg-[#080c14] border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
+        <button id="login-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 transition rounded-lg py-2.5 text-sm font-bold">Masuk</button>
+        <p id="login-error" class="text-red-400 text-xs hidden">❌ Password salah, Bolo.</p>
+    </div>
+</div>
+
+<!-- ===================== APP SCREEN ===================== -->
+<div id="app-screen" class="hidden max-w-[1400px] mx-auto px-4 py-6">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold">📰 Meja Redaksi BICH <span class="text-xs font-mono text-slate-500">— HTML Edition</span></h1>
+        <div class="flex items-center gap-3">
+            <button id="refresh-btn" class="text-xs font-mono border border-slate-700 hover:border-emerald-500 rounded-lg px-3 py-1.5 transition">🔄 Refresh</button>
+            <button id="logout-btn" class="text-xs font-mono text-slate-500 hover:text-white transition">Keluar</button>
+        </div>
+    </div>
+
+    <div id="tabs" class="flex flex-wrap gap-2 mb-6"></div>
+    <div id="loading-indicator" class="text-center py-10 font-mono text-sm text-slate-500 hidden">⏳ Memuat antrean...</div>
+    <div id="tab-content"></div>
+</div>
+
+<script>
+const API = ''; // same origin (server FastAPI menyajikan halaman ini juga)
+let TOKEN = localStorage.getItem('bich_redaksi_token') || '';
+let QUEUE = [];
+let ACTIVE_TAB = 'loker';
+
+const TABS = [
+    { key: 'loker',         label: '💼 Loker',                    kategori: 'Loker',        requireAiReady: false },
+    { key: 'ekonomi',       label: '📈 Ekonomi (Mingguan)',        kategori: 'Ekonomi',      requireAiReady: true  },
+    { key: 'wisata',        label: '🌴 Pariwisata',                kategori: 'Pariwisata',   requireAiReady: false },
+    { key: 'berita',        label: '📰 Berita',                    kategori: 'Berita',       requireAiReady: true  },
+    { key: 'edukasi',       label: '📚 Edukasi',                   kategori: 'Edukasi',      requireAiReady: false },
+    { key: 'politik',       label: '🏛️ Politik (Mingguan)',        kategori: 'Politik',      requireAiReady: true  },
+    { key: 'pasar_modal',   label: '📊 Pasar Modal',               kategori: 'Pasar Modal',  requireAiReady: false },
+    { key: 'tokoh_politik', label: '🎤 Panggung Tokoh',            kategori: 'Tokoh Politik',requireAiReady: false },
+];
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str ?? '';
+    return div.innerHTML;
+}
+
+function isAiReady(item) {
+    return !!(item.artikel_ai && String(item.artikel_ai).trim() !== '');
+}
+
+// ------------------ AUTH ------------------
+async function doLogin() {
+    const password = document.getElementById('login-password').value;
+    document.getElementById('login-error').classList.add('hidden');
+    try {
+        const res = await fetch(`${API}/api/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password }),
+        });
+        if (!res.ok) throw new Error('unauthorized');
+        const data = await res.json();
+        TOKEN = data.token;
+        localStorage.setItem('bich_redaksi_token', TOKEN);
+        showApp();
+    } catch (e) {
+        document.getElementById('login-error').classList.remove('hidden');
+    }
+}
+
+function logout() {
+    TOKEN = '';
+    localStorage.removeItem('bich_redaksi_token');
+    document.getElementById('app-screen').classList.add('hidden');
+    document.getElementById('login-screen').classList.remove('hidden');
+}
+
+async function apiFetch(path, options = {}) {
+    const res = await fetch(`${API}${path}`, {
+        ...options,
+        headers: {
+            ...(options.headers || {}),
+            'Authorization': `Bearer ${TOKEN}`,
+            ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+        },
+    });
+    if (res.status === 401) {
+        logout();
+        throw new Error('Sesi habis, silakan login ulang.');
+    }
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({ detail: res.statusText }));
+        throw new Error(err.detail || 'Terjadi kesalahan.');
+    }
+    return res.json();
+}
+
+// ------------------ QUEUE ------------------
+async function loadQueue() {
+    document.getElementById('loading-indicator').classList.remove('hidden');
+    try {
+        QUEUE = await apiFetch('/api/queue');
+    } catch (e) {
+        alert('Gagal memuat antrean: ' + e.message);
+        QUEUE = [];
+    }
+    document.getElementById('loading-indicator').classList.add('hidden');
+    renderTabs();
+    renderActiveTab();
+}
+
+function renderTabs() {
+    const container = document.getElementById('tabs');
+    container.innerHTML = TABS.map(t => {
+        const count = QUEUE.filter(d => d.kategori === t.kategori && (!t.requireAiReady || isAiReady(d))).length;
+        return `<button data-tab="${t.key}" class="tab-btn ${t.key === ACTIVE_TAB ? 'active' : ''} text-xs font-mono border border-slate-800 rounded-lg px-3 py-2 transition hover:border-emerald-500">
+            ${t.label} <span class="opacity-60">(${count})</span>
+        </button>`;
+    }).join('');
+    container.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.onclick = () => { ACTIVE_TAB = btn.dataset.tab; renderTabs(); renderActiveTab(); };
+    });
+}
+
+function renderActiveTab() {
+    const tabDef = TABS.find(t => t.key === ACTIVE_TAB);
+    const items = QUEUE.filter(d => d.kategori === tabDef.kategori && (!tabDef.requireAiReady || isAiReady(d)));
+    const content = document.getElementById('tab-content');
+
+    if (items.length === 0) {
+        content.innerHTML = `<div class="text-center py-16 text-slate-500 font-mono text-sm">✨ Antrean ${escapeHtml(tabDef.kategori)} bersih, Bolo.</div>`;
+        return;
+    }
+    content.innerHTML = `<div class="space-y-4">${items.map(item => renderItemCard(item, tabDef.key)).join('')}</div>`;
+    items.forEach(item => wireItemCard(item, tabDef.key));
+}
+
+// ------------------ ITEM CARD (COL1: info + aksi | COL2: draft review) ------------------
+function renderCategoryFields(item) {
+    const k = item.kategori;
+    if (k === 'Ekonomi' || k === 'Berita') {
+        return `<p class="text-sm text-slate-400">ℹ️ ${escapeHtml(item.info_tambahan || '')}</p>`;
+    }
+    if (k === 'Pasar Modal') {
+        return `
+        <h4 class="text-sm font-bold text-emerald-400 mt-2">📈 Data Teknikal Pasar Modal</h4>
+        ${item.ihsg ? `<div class="text-xs font-mono text-slate-400">IHSG/Harga Acuan: <span class="text-white font-bold">${escapeHtml(item.ihsg)}</span> <span class="text-emerald-400">${escapeHtml(item.perubahan_ihsg || '')}</span></div>` : ''}
+        <label class="block text-xs text-slate-500 mt-2">RSI</label>
+        <input data-field="rsi" value="${escapeHtml(item.rsi || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">MACD</label>
+        <input data-field="macd" value="${escapeHtml(item.macd || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">Bollinger Bands</label>
+        <input data-field="bollinger_bands" value="${escapeHtml(item.bollinger_bands || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">Foreign Flow</label>
+        <input data-field="foreign_flow" value="${escapeHtml(item.foreign_flow || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">Info Tambahan</label>
+        <textarea data-field="info_tambahan" rows="3" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">${escapeHtml(item.info_tambahan || '')}</textarea>`;
+    }
+    if (k === 'Pariwisata') {
+        return `<p class="text-sm text-slate-400">🏞️ <strong>Tempat:</strong> ${escapeHtml(item.nama_tempat || '-')}</p>
+                <p class="text-sm text-slate-400">📍 <strong>Provinsi:</strong> ${escapeHtml(item.provinsi || '-')}</p>`;
+    }
+    if (k === 'Loker') {
+        return `<p class="text-sm text-slate-400">🏢 <strong>Perusahaan:</strong> ${escapeHtml(item.penyelenggara_perusahaan || '-')}</p>`;
+    }
+    if (k === 'Tokoh Politik') {
+        return `
+        <h4 class="text-sm font-bold text-emerald-400 mt-2">🏛️ Profil Tokoh — Panggung Tokoh</h4>
+        <label class="block text-xs text-slate-500 mt-2">👤 Tokoh / Jabatan Terkait</label>
+        <input data-field="jabatan_tokoh" value="${escapeHtml(item.jabatan_tokoh || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">🎯 Fokus Kebijakan Publik</label>
+        <input data-field="fokus_kebijakan" value="${escapeHtml(item.fokus_kebijakan || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">📁 Klasifikasi Isu</label>
+        <input data-field="isu_politik" value="${escapeHtml(item.isu_politik || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">📍 Cakupan Dampak Wilayah</label>
+        <input data-field="dampak_wilayah" value="${escapeHtml(item.dampak_wilayah || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">📝 Detail Peristiwa</label>
+        <textarea data-field="info_tambahan" rows="3" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">${escapeHtml(item.info_tambahan || '')}</textarea>`;
+    }
+    return `<p class="text-sm text-slate-400">🏢 <strong>Sumber:</strong> ${escapeHtml(item.penyelenggara_perusahaan || '-')}</p>
+            <p class="text-sm text-slate-400">ℹ️ ${escapeHtml(item.info_tambahan || '')}</p>`;
+}
+
+function renderCatatanRedaksi(item) {
+    if (!['Ekonomi', 'Politik', 'Berita'].includes(item.kategori) || !item.artikel_ai) return '';
+    let daftar = [];
+    try {
+        daftar = typeof item.catatan_redaksi === 'string' ? JSON.parse(item.catatan_redaksi) : (item.catatan_redaksi || []);
+    } catch { daftar = []; }
+    const checklist = daftar.length ? daftar.map(poin => `
+        <label class="flex items-start gap-2 text-xs text-slate-400 py-1">
+            <input type="checkbox" class="mt-0.5"> <span>${escapeHtml(poin)}</span>
+        </label>`).join('') : '';
+    const disclaimer = item.disclaimer ? `<p class="text-xs text-cyan-400/80 mt-2">🛡️ ${escapeHtml(item.disclaimer)}</p>` : '';
+    return `<div class="border-t border-slate-800 mt-3 pt-3">
+        <p class="text-[11px] font-mono text-slate-500 mb-1">📋 Sudah diracik AI — checklist sebelum terbit:</p>
+        ${checklist}
+        ${disclaimer}
+    </div>`;
+}
+
+function renderItemCard(item, tabKey) {
+    const sudahDiracikClaude = ['Ekonomi', 'Politik', 'Berita'].includes(item.kategori) && !!item.artikel_ai;
+    const btnLabel = sudahDiracikClaude
+        ? '📥 Muat Draft (0 token)'
+        : (['Pasar Modal', 'Tokoh Politik'].includes(item.kategori) ? '📊 Racik Analisis AI' : '⚡ Susun Draft Konten');
+
+    return `
+    <div class="bg-[#0b0f17] border border-slate-800 rounded-xl p-5" id="card-${item.id}">
+        <div class="grid md:grid-cols-[1.2fr_1.8fr] gap-6">
+            <div>
+                <h3 class="font-bold text-white mb-2">${escapeHtml(item.judul || '(tanpa judul)')}</h3>
+                ${renderCategoryFields(item)}
+                ${renderCatatanRedaksi(item)}
+                ${item.link ? `<p class="text-[10px] font-mono text-slate-600 mt-2">Sumber Data Faktual: ${escapeHtml(item.link)}</p>` : ''}
+                <div class="flex gap-2 mt-4">
+                    <button class="btn-generate flex-1 bg-slate-800 hover:bg-slate-700 transition rounded-lg py-2 text-xs font-bold">${btnLabel}</button>
+                    ${sudahDiracikClaude ? `<button class="btn-regen bg-slate-900 border border-slate-700 hover:border-amber-500 transition rounded-lg px-3 py-2 text-xs" title="Panggil AI lagi dari nol (pakai kuota API)">🔄 Racik Ulang</button>` : ''}
+                    <button class="btn-reject bg-red-950/40 border border-red-900 hover:border-red-500 transition rounded-lg px-3 py-2 text-xs">🗑️ Tolak</button>
+                </div>
+            </div>
+            <div class="draft-panel"></div>
+        </div>
+    </div>`;
+}
+
+function renderDraftPanel(item, draft) {
+    const valLokasi = item.lokasi || item.dampak_wilayah || '';
+    const valWa = item.link_wa || '';
+    const valFoto = item.link_foto || item.foto_tokoh || '';
+    return `
+    <div class="space-y-3">
+        <p class="text-sm font-bold">📝 Hasil Draft Review (Siap Terbit)</p>
+        <textarea class="draft-json w-full bg-[#080c14] border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono h-40">${escapeHtml(JSON.stringify({ artikel: draft.artikel, caption_ig: draft.caption_ig, hook_tiktok: draft.hook_tiktok }, null, 2))}</textarea>
+        <p class="json-status text-xs"></p>
+        <input class="input-lokasi w-full bg-[#080c14] border border-slate-700 rounded-lg px-3 py-2 text-xs" placeholder="📍 Konfirmasi Lokasi Penerbitan" value="${escapeHtml(valLokasi)}">
+        <input class="input-wa w-full bg-[#080c14] border border-slate-700 rounded-lg px-3 py-2 text-xs" placeholder="📱 Link WA Lamar/Info (Opsional)" value="${escapeHtml(valWa)}">
+        <input class="input-foto w-full bg-[#080c14] border border-slate-700 rounded-lg px-3 py-2 text-xs" placeholder="🖼️ URL Foto Tokoh / Gambar Banner (Opsional)" value="${escapeHtml(valFoto)}">
+        <button class="btn-publish w-full bg-emerald-600 hover:bg-emerald-500 transition rounded-lg py-2.5 text-sm font-bold">✅ Terbitkan Konten</button>
+    </div>`;
+}
+
+function wireItemCard(item, tabKey) {
+    const card = document.getElementById(`card-${item.id}`);
+    if (!card) return;
+
+    const doGenerate = async (forceRegenerate) => {
+        const overrides = {};
+        card.querySelectorAll('.field-input').forEach(el => { overrides[el.dataset.field] = el.value; });
+        const btn = forceRegenerate ? card.querySelector('.btn-regen') : card.querySelector('.btn-generate');
+        const originalLabel = btn.textContent;
+        btn.disabled = true; btn.textContent = '⏳ Memproses...';
+        try {
+            const draft = await apiFetch('/api/generate', {
+                method: 'POST',
+                body: JSON.stringify({ id: item.id, force_regenerate: forceRegenerate, overrides }),
+            });
+            card.querySelector('.draft-panel').innerHTML = renderDraftPanel(item, draft);
+            wireDraftPanel(item, card);
+        } catch (e) {
+            alert('Gagal: ' + e.message);
+        } finally {
+            btn.disabled = false; btn.textContent = originalLabel;
+        }
+    };
+
+    card.querySelector('.btn-generate').onclick = () => doGenerate(false);
+    const regenBtn = card.querySelector('.btn-regen');
+    if (regenBtn) regenBtn.onclick = () => doGenerate(true);
+
+    card.querySelector('.btn-reject').onclick = async () => {
+        if (!confirm('Tolak konten ini?')) return;
+        try {
+            await apiFetch('/api/reject', { method: 'POST', body: JSON.stringify({ id: item.id }) });
+            QUEUE = QUEUE.filter(d => d.id !== item.id);
+            renderTabs(); renderActiveTab();
+        } catch (e) { alert('Gagal menolak: ' + e.message); }
+    };
+}
+
+function wireDraftPanel(item, card) {
+    const textarea = card.querySelector('.draft-json');
+    const status = card.querySelector('.json-status');
+    const publishBtn = card.querySelector('.btn-publish');
+
+    const validate = () => {
+        try {
+            JSON.parse(textarea.value);
+            status.textContent = '✅ Format JSON Valid';
+            status.className = 'json-status text-xs text-emerald-400';
+            publishBtn.disabled = false;
+            return true;
+        } catch (e) {
+            status.textContent = '❌ JSON Error: periksa tanda petik/koma yang hilang';
+            status.className = 'json-status text-xs text-red-400';
+            publishBtn.disabled = true;
+            return false;
+        }
+    };
+    textarea.addEventListener('input', validate);
+    validate();
+
+    publishBtn.onclick = async () => {
+        if (!validate()) return;
+        const parsed = JSON.parse(textarea.value);
+        publishBtn.disabled = true; publishBtn.textContent = '⏳ Menerbitkan...';
+        try {
+            await apiFetch('/api/publish', {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: item.id,
+                    artikel: parsed.artikel || '',
+                    caption_ig: parsed.caption_ig || '',
+                    hook_tiktok: parsed.hook_tiktok || '',
+                    lokasi: card.querySelector('.input-lokasi').value,
+                    link_wa: card.querySelector('.input-wa').value,
+                    link_foto: card.querySelector('.input-foto').value,
+                }),
+            });
+            QUEUE = QUEUE.filter(d => d.id !== item.id);
+            renderTabs(); renderActiveTab();
+        } catch (e) {
+            alert('Gagal menerbitkan: ' + e.message);
+            publishBtn.disabled = false; publishBtn.textContent = '✅ Terbitkan Konten';
+        }
+    };
+}
+
+// ------------------ INIT ------------------
+function showApp() {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('app-screen').classList.remove('hidden');
+    loadQueue();
+}
+
+document.getElementById('login-btn').onclick = doLogin;
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('logout-btn').onclick = logout;
+document.getElementById('refresh-btn').onclick = loadQueue;
+
+if (TOKEN) {
+    showApp();
+}
+</script>
+</body>
+</html>
