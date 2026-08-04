@@ -169,12 +169,28 @@ function renderCategoryFields(item) {
         ${item.ihsg ? `<div class="text-xs font-mono text-slate-400">IHSG/Harga Acuan: <span class="text-white font-bold">${escapeHtml(item.ihsg)}</span> <span class="text-emerald-400">${escapeHtml(item.perubahan_ihsg || '')}</span></div>` : ''}
         <label class="block text-xs text-slate-500 mt-2">RSI</label>
         <input data-field="rsi" value="${escapeHtml(item.rsi || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
-        <label class="block text-xs text-slate-500 mt-2">MACD</label>
-        <input data-field="macd" value="${escapeHtml(item.macd || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
-        <label class="block text-xs text-slate-500 mt-2">Bollinger Bands</label>
-        <input data-field="bollinger_bands" value="${escapeHtml(item.bollinger_bands || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
-        <label class="block text-xs text-slate-500 mt-2">Foreign Flow</label>
-        <input data-field="foreign_flow" value="${escapeHtml(item.foreign_flow || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">MA20</label>
+        <input data-field="ma20" value="${escapeHtml(item.ma20 || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <div class="grid grid-cols-2 gap-2">
+            <div>
+                <label class="block text-xs text-slate-500 mt-2">Support</label>
+                <input data-field="support" value="${escapeHtml(item.support || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+            </div>
+            <div>
+                <label class="block text-xs text-slate-500 mt-2">Resistance</label>
+                <input data-field="resistance" value="${escapeHtml(item.resistance || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+            </div>
+        </div>
+        <label class="block text-xs text-slate-500 mt-2">Sektor Terbaik</label>
+        <input data-field="sektor_terbaik" value="${escapeHtml(item.sektor_terbaik || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">Sektor Terburuk</label>
+        <input data-field="sektor_terburuk" value="${escapeHtml(item.sektor_terburuk || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">Saham Top Gainer</label>
+        <input data-field="saham_top_gainer" value="${escapeHtml(item.saham_top_gainer || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">Saham Top Loser</label>
+        <input data-field="saham_top_loser" value="${escapeHtml(item.saham_top_loser || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
+        <label class="block text-xs text-slate-500 mt-2">News Trigger</label>
+        <input data-field="news_trigger" value="${escapeHtml(item.news_trigger || '')}" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">
         <label class="block text-xs text-slate-500 mt-2">Info Tambahan</label>
         <textarea data-field="info_tambahan" rows="3" class="field-input w-full bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 text-xs">${escapeHtml(item.info_tambahan || '')}</textarea>`;
     }
@@ -249,7 +265,7 @@ function renderItemCard(item, tabKey) {
 function renderDraftPanel(item, draft) {
     const valLokasi = item.lokasi || item.dampak_wilayah || '';
     const valWa = item.link_wa || '';
-    const valFoto = item.link_foto || item.foto_tokoh || '';
+    const valFoto = item.link_foto || item.foto_tokoh_url || '';
     return `
     <div class="space-y-3">
         <p class="text-sm font-bold">📝 Hasil Draft Review (Siap Terbit)</p>

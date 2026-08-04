@@ -36,11 +36,8 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 LIVE INTEL
             </span>
-            <marquee behavior="scroll" direction="left" scrollamount="4" class="text-slate-300 w-full">
-                <span class="text-emerald-400 font-bold">🟢 TBS Sawit Kalbar (10-20 th, Periode III Jul 2026):</span> Rp 3.600,19/Kg &nbsp;•&nbsp; 
-                <span class="text-emerald-400 font-bold">🟢 HBA Batubara Kalori Tinggi (Periode II Jul 2026):</span> US$ 131,85/Ton &nbsp;•&nbsp; 
-                <span class="text-brandGold font-bold">📈 IHSG (Penutupan 31 Jul 2026):</span> 6.236,13 ▲ 0,80% &nbsp;•&nbsp;
-                <span class="text-blue-400 font-bold">💼 Update Loker:</span> Terintegrasi Supabase Feed
+            <marquee id="ticker-marquee" behavior="scroll" direction="left" scrollamount="4" class="text-slate-300 w-full">
+                <span id="ticker-content">Memuat data harga terkini...</span>
             </marquee>
         </div>
         <span class="shrink-0 text-[10px] bg-slate-900 px-2 py-0.5 rounded text-slate-400 border border-slate-800 hidden md:inline">
@@ -234,6 +231,48 @@
                     await channel.track({ online_at: new Date().toISOString() });
                 }
             });
+
+        // ------------------------------------------------------------
+        // TICKER LIVE dari tabel harga_komoditas (bukan angka hardcode)
+        // ------------------------------------------------------------
+        async function muatTickerHarga() {
+            const tickerEl = document.getElementById('ticker-content');
+            try {
+                const { data, error } = await client
+                    .from('harga_komoditas')
+                    .select('*')
+                    .order('updated_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    tickerEl.textContent = '💼 Update Loker & Data Pasar — Terintegrasi Supabase Feed';
+                    return;
+                }
+
+                const formatRupiah = (n) => new Intl.NumberFormat('id-ID').format(n);
+
+                tickerEl.innerHTML = data.map(item => {
+                    const naik = Number(item.selisih_persen) >= 0;
+                    const warna = naik ? 'text-emerald-400' : 'text-red-400';
+                    const panah = naik ? '▲' : '▼';
+                    const emoji = naik ? '🟢' : '🔴';
+                    return `<span class="${warna} font-bold">${emoji} ${escapeHtmlIndex(item.nama_komoditas)}:</span> Rp ${formatRupiah(item.harga)} ${panah} ${Math.abs(item.selisih_persen)}%`;
+                }).join(' &nbsp;•&nbsp; ') + ' &nbsp;•&nbsp; <span class="text-blue-400 font-bold">💼 Update Loker:</span> Terintegrasi Supabase Feed';
+            } catch (err) {
+                console.error('Gagal memuat ticker harga:', err.message);
+                tickerEl.textContent = '💼 BICH Intelligence — Terintegrasi Supabase Feed';
+            }
+        }
+
+        function escapeHtmlIndex(str) {
+            const div = document.createElement('div');
+            div.textContent = str ?? '';
+            return div.innerHTML;
+        }
+
+        muatTickerHarga();
+        setInterval(muatTickerHarga, 5 * 60 * 1000); // refresh tiap 5 menit
     })();
     </script>
 

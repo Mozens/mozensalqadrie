@@ -383,7 +383,8 @@
 
             const contentText = item.artikel_ai || item.info_tambahan || '';
             const snippet = contentText ? contentText.slice(0, 110).trim() + (contentText.length > 110 ? '…' : '') : 'Klik untuk membaca profil lengkap...';
-            const fotoUrl = item.foto_tokoh || '';
+            // link_foto = foto hasil konfirmasi redaksi (prioritas), foto_tokoh_url = hasil scrape awal (fallback)
+            const fotoUrl = item.link_foto || item.foto_tokoh_url || '';
             const namaTokoh = item.jabatan_tokoh || item.judul || 'Tokoh Publik';
 
             wrapper.innerHTML = `

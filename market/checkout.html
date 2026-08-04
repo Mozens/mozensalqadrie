@@ -227,32 +227,30 @@
                         } 
                         // JIKA MEMILIH DIRECT WHATSAPP
                         else {
-                            // Kode referensi dibuat di klien supaya tidak bergantung pada
-                            // .select() setelah insert (yang butuh izin SELECT terpisah di RLS,
-                            // sementara tabel pesanan sebaiknya TIDAK bisa dibaca publik).
-                            const kodeReferensi = 'BM-' + Date.now().toString(36).toUpperCase();
+                            // Kode referensi dibuat di klien (kolom UNIQUE: nomor_pesanan)
+                            const nomorPesanan = 'BM-' + Date.now().toString(36).toUpperCase();
 
                             const { error: errPesanan } = await db
                                 .from('bich_pesanan')
                                 .insert([{
-                                    kode_referensi: kodeReferensi,
-                                    items: this.cart,
-                                    customer_name: this.form.name,
-                                    customer_email: this.form.email,
-                                    customer_phone: this.form.phone,
-                                    shipping_address: this.form.alamat,
-                                    shipping_method: this.form.metode_pengiriman,
-                                    shipping_fee: this.ongkir,
+                                    nomor_pesanan: nomorPesanan,
+                                    nama_pembeli: this.form.name,
+                                    wa_pembeli: this.form.phone,
+                                    wa_pembeli_email: this.form.email,
+                                    alamat_lengkap: this.form.alamat,
+                                    item_pesanan: this.cart,
+                                    total_harga: this.grandTotal,
+                                    ongkir: this.ongkir,
                                     fee_bich: this.feeBich,
-                                    total_amount: this.grandTotal,
-                                    payment_type: 'wa_manual',
-                                    status: 'menunggu_konfirmasi_wa',
+                                    metode_pembayaran: 'WhatsApp Manual',
+                                    metode_pengiriman: this.form.metode_pengiriman,
+                                    status: 'Pending',
                                 }]);
 
                             if (errPesanan) throw errPesanan;
 
                             let textWA = `*PESANAN BICH MART*\n`;
-                            textWA += `No. Pesanan: ${kodeReferensi}\n`;
+                            textWA += `No. Pesanan: ${nomorPesanan}\n`;
                             textWA += `Nama: ${this.form.name}\n`;
                             textWA += `WA: ${this.form.phone}\n`;
                             textWA += `Alamat: ${this.form.alamat}\n`;

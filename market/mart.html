@@ -158,6 +158,17 @@
                         <div class="aspect-square bg-slate-950 relative overflow-hidden">
                             <img :src="item.gambar_url || 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart'" :alt="item.nama_produk" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <span class="absolute top-2.5 left-2.5 bg-slate-950/90 backdrop-blur-md text-amber-400 text-[10px] font-bold px-2 py-1 rounded-lg border border-amber-500/30" x-text="item.lokasi || 'Kalimantan'"></span>
+
+                            <!-- 🔴 BADGE LIVE REAL-TIME -->
+                            <a x-show="item.bich_toko?.is_live && item.bich_toko?.live_url"
+                               x-cloak
+                               :href="item.bich_toko?.live_url"
+                               target="_blank"
+                               rel="noopener"
+                               @click.stop
+                               class="absolute top-2.5 right-2.5 bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-lg flex items-center gap-1 shadow-lg shadow-red-600/40 animate-pulse">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white"></span> LIVE
+                            </a>
                         </div>
                         
                         <!-- Details -->
@@ -168,8 +179,18 @@
                         </div>
                     </div>
 
-                    <!-- Tombol Keranjang -->
-                    <div class="p-4 pt-0">
+                    <!-- Tombol Aksi -->
+                    <div class="p-4 pt-0 space-y-2">
+                        <div class="grid gap-2" :class="item.video_demo_url ? 'grid-cols-2' : 'grid-cols-1'">
+                            <button x-show="item.video_demo_url" x-cloak @click.stop="bukaVideoDemo(item)"
+                                    class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] font-extrabold py-2 rounded-xl border border-slate-700/80 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-play text-[10px]"></i> Video Demo
+                            </button>
+                            <button @click.stop="cekVC(item)"
+                                    class="bg-emerald-600/10 hover:bg-emerald-600 text-emerald-400 hover:text-white text-[11px] font-extrabold py-2 rounded-xl border border-emerald-600/40 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-video text-[10px]"></i> Cek VC
+                            </button>
+                        </div>
                         <button @click="addToCart(item)" class="w-full bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-extrabold py-2.5 rounded-xl border border-slate-700/80 hover:border-amber-500 transition duration-200 flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
                             <i class="fa-solid fa-plus text-xs"></i> Keranjang Emas
                         </button>
@@ -178,6 +199,34 @@
             </template>
         </div>
     </main>
+
+    <!-- FOOTER LEGALITAS & KONTAK BICH MART -->
+    <footer class="border-t border-slate-800 py-8 mt-16 text-center text-xs text-slate-500">
+        <div class="max-w-4xl mx-auto px-4 space-y-3">
+            <p>© 2026 BICH Mart — Borneo Intelligence Hub Marketplace</p>
+            <div class="flex flex-wrap justify-center gap-3 font-mono text-[11px]">
+                <a href="legal.html#syarat-ketentuan" class="hover:text-amber-400 transition">Syarat & Ketentuan</a> •
+                <a href="legal.html#kebijakan-refund" class="hover:text-amber-400 transition">Kebijakan Refund</a> •
+                <a href="legal.html#faq" class="hover:text-amber-400 transition">FAQ</a> •
+                <a href="legal.html#kontak" class="hover:text-amber-400 transition font-semibold text-amber-400/80">Kontak Usaha & Legal</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ▶️ MODAL VIDEO DEMO PRODUK -->
+    <div x-show="isVideoModalOpen" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-md" @click="tutupVideoDemo()"></div>
+        <div class="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between p-4 border-b border-slate-800">
+                <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                    <i class="fa-solid fa-play text-amber-400 text-xs"></i>
+                    <span x-text="videoModalTitle"></span>
+                </h3>
+                <button @click="tutupVideoDemo()" class="text-slate-400 hover:text-slate-100 cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="aspect-video bg-black flex items-center justify-center" x-ref="videoContainer"></div>
+        </div>
+    </div>
 
     <!-- DRAWER SLIDE-OVER KERANJANG EMAS -->
     <div x-show="isCartOpen" x-cloak class="fixed inset-0 z-50 overflow-hidden">
@@ -252,6 +301,8 @@
                 isCartOpen: false,
                 showPwaBanner: false,
                 deferredPrompt: null,
+                isVideoModalOpen: false,
+                videoModalTitle: '',
 
                 async initApp() {
                     // Fetch Produk dari supabase.js
@@ -350,6 +401,99 @@
                             this.showPwaBanner = false;
                         });
                     }
+                },
+
+                // --- Hanya izinkan URL http/https, tolak javascript:/data: dsb. ---
+                isUrlAman(url) {
+                    try {
+                        const u = new URL(url);
+                        return u.protocol === 'https:' || u.protocol === 'http:';
+                    } catch {
+                        return false;
+                    }
+                },
+
+                ekstrakYoutubeId(url) {
+                    const match = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                    return match ? match[1] : null;
+                },
+
+                bukaVideoDemo(item) {
+                    const url = item.video_demo_url;
+                    if (!url || !this.isUrlAman(url)) {
+                        alert('Link video demo tidak valid, Bolo.');
+                        return;
+                    }
+
+                    this.videoModalTitle = item.nama_produk;
+                    this.isVideoModalOpen = true;
+
+                    this.$nextTick(() => {
+                        const container = this.$refs.videoContainer;
+                        container.innerHTML = ''; // reset
+
+                        const youtubeId = this.ekstrakYoutubeId(url);
+
+                        if (youtubeId) {
+                            // YouTube / YouTube Shorts -> embed resmi (privacy-enhanced domain)
+                            const iframe = document.createElement('iframe');
+                            iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1`;
+                            iframe.className = 'w-full h-full';
+                            iframe.setAttribute('frameborder', '0');
+                            iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+                            iframe.setAttribute('allowfullscreen', 'true');
+                            container.appendChild(iframe);
+                        } else if (/\.(mp4|webm|mov)(\?.*)?$/i.test(url)) {
+                            // File video langsung
+                            const video = document.createElement('video');
+                            video.src = url;
+                            video.controls = true;
+                            video.autoplay = true;
+                            video.className = 'w-full h-full';
+                            container.appendChild(video);
+                        } else {
+                            // TikTok/IG/link lain yang tidak bisa di-embed langsung -> tombol buka tab baru
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'text-center p-8 space-y-3';
+
+                            const icon = document.createElement('i');
+                            icon.className = 'fa-solid fa-arrow-up-right-from-square text-amber-400 text-2xl';
+                            wrapper.appendChild(icon);
+
+                            const p = document.createElement('p');
+                            p.className = 'text-xs text-slate-300';
+                            p.textContent = 'Video ini cuma bisa diputar langsung di platform aslinya.';
+                            wrapper.appendChild(p);
+
+                            const a = document.createElement('a');
+                            a.href = url; // sudah divalidasi isUrlAman()
+                            a.target = '_blank';
+                            a.rel = 'noopener';
+                            a.className = 'inline-block bg-amber-500 text-slate-950 font-black text-xs px-4 py-2 rounded-xl';
+                            a.textContent = 'Buka Video Demo ↗';
+                            wrapper.appendChild(a);
+
+                            container.appendChild(wrapper);
+                        }
+                    });
+                },
+
+                tutupVideoDemo() {
+                    this.isVideoModalOpen = false;
+                    // Hentikan video yang sedang main (biar suara ga nyangkut) & bersihkan iframe
+                    const container = this.$refs.videoContainer;
+                    if (container) container.innerHTML = '';
+                },
+
+                cekVC(item) {
+                    const nomorWa = item.bich_toko?.wa;
+                    if (!nomorWa) {
+                        alert('Nomor WhatsApp lapak ini belum tersedia, Bolo.');
+                        return;
+                    }
+                    const nomorBersih = String(nomorWa).replace(/[^0-9]/g, '').replace(/^0/, '62');
+                    const pesan = `Halo, saya mau lihat kondisi produk ${item.nama_produk} di BICH Mart secara langsung via Video Call ya!`;
+                    window.open(`https://wa.me/${nomorBersih}?text=${encodeURIComponent(pesan)}`, '_blank');
                 }
             }
         }

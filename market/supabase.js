@@ -19,7 +19,9 @@ async function fetchSemuaProduk() {
             bich_toko (
                 nama_toko,
                 wa,
-                status_verifikasi
+                status_verifikasi,
+                is_live,
+                live_url
             )
         `)
         .order('created_at', { ascending: false });

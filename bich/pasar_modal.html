@@ -387,7 +387,7 @@
             const indikator = [
                 item.ihsg ? `IHSG ${escapeHtml(String(item.ihsg))}` : null,
                 item.rsi ? `RSI ${escapeHtml(String(item.rsi))}` : null,
-                item.macd ? `MACD ${escapeHtml(String(item.macd))}` : null,
+                item.saham_top_gainer ? `Top Gainer: ${escapeHtml(String(item.saham_top_gainer))}` : null,
             ].filter(Boolean).join(' · ');
 
             wrapper.innerHTML = `
@@ -438,8 +438,10 @@
 
             const indikatorList = [
                 ['IHSG', item.ihsg], ['Perubahan', item.perubahan_ihsg],
-                ['RSI', item.rsi], ['MACD', item.macd],
-                ['Bollinger Bands', item.bollinger_bands], ['Foreign Flow', item.foreign_flow],
+                ['RSI', item.rsi], ['MA20', item.ma20],
+                ['Support', item.support], ['Resistance', item.resistance],
+                ['Sektor Terbaik', item.sektor_terbaik], ['Sektor Terburuk', item.sektor_terburuk],
+                ['Top Gainer', item.saham_top_gainer], ['Top Loser', item.saham_top_loser],
             ].filter(([, v]) => v);
 
             const indikatorHtml = indikatorList.length ? `

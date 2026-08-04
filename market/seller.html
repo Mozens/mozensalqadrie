@@ -162,6 +162,22 @@
                     </div>
                 </div>
 
+                <!-- 🔴 TOGGLE LIVE REAL-TIME -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3">
+                    <label class="flex items-center justify-between cursor-pointer">
+                        <span class="flex items-center gap-2 text-xs font-bold text-slate-200">
+                            <span class="w-2 h-2 rounded-full" :class="toko.is_live ? 'bg-red-500 animate-pulse' : 'bg-slate-700'"></span>
+                            Saya Lagi Live Sekarang 🔴
+                        </span>
+                        <input type="checkbox" x-model="toko.is_live" class="w-9 h-5 accent-red-500 cursor-pointer">
+                    </label>
+                    <div x-show="toko.is_live" x-cloak>
+                        <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Link Live (TikTok/Instagram/YouTube) *</label>
+                        <input type="url" x-model="toko.live_url" :required="toko.is_live" placeholder="https://tiktok.com/@lapakmu/live" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-red-500 transition">
+                        <p class="text-[10px] text-slate-500 mt-1.5">Badge 🔴 LIVE akan muncul di semua produk kamu selama toggle ini menyala. Jangan lupa matikan setelah selesai live.</p>
+                    </div>
+                </div>
+
                 <div class="pt-2 flex justify-end">
                     <button type="submit" :disabled="loading" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition flex items-center gap-2">
                         <i class="fa-solid fa-floppy-disk"></i>
@@ -217,6 +233,12 @@
                     </div>
                 </div>
 
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 mb-1.5">▶️ Link Video Demo (Opsional)</label>
+                    <input type="url" x-model="produk.video_demo_url" placeholder="Link YouTube / YouTube Shorts / TikTok / .mp4 langsung" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
+                    <p class="text-[10px] text-slate-500 mt-1.5">Kalau diisi, tombol "▶️ Video Demo" akan muncul di kartu produk kamu.</p>
+                </div>
+
                 <div class="pt-3 flex items-center justify-between">
                     <p class="text-[10px] text-slate-500">* Produk yang di-submit akan langsung tampil di BICH Mart.</p>
                     <button type="submit" :disabled="loading" class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs px-6 py-3 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-95 transition flex items-center gap-2">
@@ -250,7 +272,9 @@
                     nama_toko: '',
                     pemilik: '',
                     wa: '',
-                    deskripsi: ''
+                    deskripsi: '',
+                    is_live: false,
+                    live_url: ''
                 },
                 produk: {
                     nama_produk: '',
@@ -258,7 +282,8 @@
                     stok: '',
                     kategori: 'Kuliner Banua',
                     lokasi: 'Banjarmasin, Kalsel',
-                    gambar_url: ''
+                    gambar_url: '',
+                    video_demo_url: ''
                 },
                 isTokoSaved: false,
                 loading: false,
@@ -369,6 +394,8 @@
                             pemilik: this.toko.pemilik,
                             wa: this.toko.wa,
                             deskripsi: this.toko.deskripsi,
+                            is_live: this.toko.is_live,
+                            live_url: this.toko.is_live ? this.toko.live_url : null,
                         };
 
                         const { data, error } = await db.from('bich_toko').upsert([payload]).select().single();
@@ -403,7 +430,8 @@
                             stok: parseInt(this.produk.stok) || 1,
                             kategori: this.produk.kategori,
                             lokasi: this.produk.lokasi,
-                            gambar_url: this.produk.gambar_url || 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart'
+                            gambar_url: this.produk.gambar_url || 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart',
+                            video_demo_url: this.produk.video_demo_url || null,
                         };
 
                         const { error } = await db.from('bich_produk').insert([payload]);
@@ -415,6 +443,7 @@
                         this.produk.harga = '';
                         this.produk.stok = '';
                         this.produk.gambar_url = '';
+                        this.produk.video_demo_url = '';
 
                     } catch (err) {
                         this.showToast('Gagal memajang produk: ' + err.message, 'error');
