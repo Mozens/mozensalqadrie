@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- GOOGLE FONTS: Poppins, Plus Jakarta Sans, & Cinzel/Playfair (Serif Mewah Gold) -->
+    <!-- GOOGLE FONTS: Poppins, Plus Jakarta Sans, & Cinzel/Playfair -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Playfair+Display:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
@@ -36,7 +36,6 @@
         .gold-glow { text-shadow: 0 0 16px rgba(245, 158, 11, 0.45); }
         .card-glow:hover { box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.25); }
 
-        /* FONT & EFEK GOLD SERIF MEWAH ALA BULETIN REPUBLIK */
         .gold-gradient {
             font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
             font-weight: 900;
@@ -44,6 +43,7 @@
             letter-spacing: 0.05em;
             background: linear-gradient(180deg, #FFF1B0 0%, #F59E0B 45%, #B45309 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.9));
         }
@@ -120,7 +120,6 @@
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Langsung dari Lapak Pedagang Banua
             </span>
             
-            <!-- JUDUL DENGAN FONT SERIF MEWAH + GOLD GRADIENT -->
             <h1 class="text-3xl sm:text-5xl font-black text-slate-100 tracking-wide">
                 PASAR DIGITAL <span class="gold-gradient">RAKYAT BANUA</span>
             </h1>
@@ -200,16 +199,34 @@
         </div>
     </main>
 
-    <!-- FOOTER LEGALITAS & KONTAK BICH MART -->
-    <footer class="border-t border-slate-800 py-8 mt-16 text-center text-xs text-slate-500">
-        <div class="max-w-4xl mx-auto px-4 space-y-3">
-            <p>© 2026 BICH Mart — Borneo Intelligence Hub Marketplace</p>
-            <div class="flex flex-wrap justify-center gap-3 font-mono text-[11px]">
-                <a href="legal.html#syarat-ketentuan" class="hover:text-amber-400 transition">Syarat & Ketentuan</a> •
-                <a href="legal.html#kebijakan-refund" class="hover:text-amber-400 transition">Kebijakan Refund</a> •
-                <a href="legal.html#faq" class="hover:text-amber-400 transition">FAQ</a> •
-                <a href="legal.html#kontak" class="hover:text-amber-400 transition font-semibold text-amber-400/80">Kontak Usaha & Legal</a>
+    <!-- FOOTER LEGALITAS & KONTAK BICH MART (TERKONEKSI SINKRON KE legal.html) -->
+    <footer class="border-t border-slate-800/80 bg-slate-950 py-10 mt-16 text-center text-xs text-slate-400">
+        <div class="max-w-4xl mx-auto px-4 space-y-4">
+            <div class="flex justify-center items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <p class="font-bold text-slate-200">BICH Mart — Borneo Intelligence Hub Marketplace</p>
             </div>
+            
+            <!-- Tautan Navigasi Legalitas -->
+            <div class="flex flex-wrap justify-center gap-y-2 gap-x-4 font-medium text-[12px] pt-1">
+                <a href="legal.html#syarat-ketentuan" class="hover:text-amber-400 transition flex items-center gap-1.5 text-slate-300">
+                    <i class="fa-solid fa-file-contract text-amber-400/80"></i> Syarat & Ketentuan
+                </a>
+                <span class="text-slate-700">•</span>
+                <a href="legal.html#kebijakan-refund" class="hover:text-amber-400 transition flex items-center gap-1.5 text-slate-300">
+                    <i class="fa-solid fa-rotate-left text-amber-400/80"></i> Kebijakan Refund
+                </a>
+                <span class="text-slate-700">•</span>
+                <a href="legal.html#faq" class="hover:text-amber-400 transition flex items-center gap-1.5 text-slate-300">
+                    <i class="fa-solid fa-circle-question text-amber-400/80"></i> FAQ
+                </a>
+                <span class="text-slate-700">•</span>
+                <a href="legal.html#kontak" class="hover:text-amber-400 transition flex items-center gap-1.5 font-bold text-amber-400">
+                    <i class="fa-solid fa-headset"></i> Kontak Usaha & Legal
+                </a>
+            </div>
+
+            <p class="text-[11px] text-slate-600 pt-2">© 2026 Borneo Insight & Career Hub. Hak Cipta Dilindungi Undang-Undang.</p>
         </div>
     </footer>
 
@@ -305,16 +322,13 @@
                 videoModalTitle: '',
 
                 async initApp() {
-                    // Fetch Produk dari supabase.js
                     if (typeof fetchSemuaProduk === 'function') {
                         this.products = await fetchSemuaProduk();
                     }
 
-                    // Restore Cart dari localStorage
                     const savedCart = localStorage.getItem('bich_cart');
                     if (savedCart) this.cart = JSON.parse(savedCart);
 
-                    // PWA Prompt Detection
                     window.addEventListener('beforeinstallprompt', (e) => {
                         e.preventDefault();
                         this.deferredPrompt = e;
@@ -403,7 +417,6 @@
                     }
                 },
 
-                // --- Hanya izinkan URL http/https, tolak javascript:/data: dsb. ---
                 isUrlAman(url) {
                     try {
                         const u = new URL(url);
@@ -430,12 +443,11 @@
 
                     this.$nextTick(() => {
                         const container = this.$refs.videoContainer;
-                        container.innerHTML = ''; // reset
+                        container.innerHTML = '';
 
                         const youtubeId = this.ekstrakYoutubeId(url);
 
                         if (youtubeId) {
-                            // YouTube / YouTube Shorts -> embed resmi (privacy-enhanced domain)
                             const iframe = document.createElement('iframe');
                             iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1`;
                             iframe.className = 'w-full h-full';
@@ -444,7 +456,6 @@
                             iframe.setAttribute('allowfullscreen', 'true');
                             container.appendChild(iframe);
                         } else if (/\.(mp4|webm|mov)(\?.*)?$/i.test(url)) {
-                            // File video langsung
                             const video = document.createElement('video');
                             video.src = url;
                             video.controls = true;
@@ -452,7 +463,6 @@
                             video.className = 'w-full h-full';
                             container.appendChild(video);
                         } else {
-                            // TikTok/IG/link lain yang tidak bisa di-embed langsung -> tombol buka tab baru
                             const wrapper = document.createElement('div');
                             wrapper.className = 'text-center p-8 space-y-3';
 
@@ -466,7 +476,7 @@
                             wrapper.appendChild(p);
 
                             const a = document.createElement('a');
-                            a.href = url; // sudah divalidasi isUrlAman()
+                            a.href = url;
                             a.target = '_blank';
                             a.rel = 'noopener';
                             a.className = 'inline-block bg-amber-500 text-slate-950 font-black text-xs px-4 py-2 rounded-xl';
@@ -480,7 +490,6 @@
 
                 tutupVideoDemo() {
                     this.isVideoModalOpen = false;
-                    // Hentikan video yang sedang main (biar suara ga nyangkut) & bersihkan iframe
                     const container = this.$refs.videoContainer;
                     if (container) container.innerHTML = '';
                 },
