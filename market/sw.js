@@ -1,10 +1,11 @@
-const CACHE_NAME = 'bich-mart-v2';
-const urlsToCache = [
+// Ubah v1 menjadi v2 (atau versi berikutnya)
+const CACHE_NAME = 'bich-mart-v2'; 
+
+const ASSETS_TO_CACHE = [
   '/market/mart.html',
-  '/market/seller.html',
-  '/market/checkout.html',
   '/market/manifest.json',
-  '/market/supabase.js',
+  '/market/icon-192.png',
+  '/market/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
