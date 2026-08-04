@@ -1,22 +1,23 @@
 {
   "name": "BICH Mart — Pasar Digital Banua",
   "short_name": "BICH Mart",
-  "description": "Platform Belanja UMKM Putra Banua",
-  "start_url": "/market/",
+  "start_url": "/market/mart.html",
+  "scope": "/market/",
   "display": "standalone",
   "background_color": "#020617",
   "theme_color": "#020617",
-  "orientation": "portrait",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3081/3081559.png",
+      "src": "/market/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3081/3081559.png",
+      "src": "/market/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
