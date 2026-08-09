@@ -19,12 +19,13 @@
     </style>
 
     <!--
-      INTEGRASI MIDTRANS - PENTING:
-      Jangan pernah menaruh Server Key di sini. Ganti data-client-key di bawah dengan
-      CLIENT KEY (bukan Server Key) dari dashboard Midtrans Anda. Pakai domain sandbox
-      dulu saat testing, baru pindah ke domain production saat sudah live.
+      INTEGRASI PEMBAYARAN: iPaymu via Supabase Edge Function
+      (create-payment-layanan). Tidak ada client key/token payment gateway
+      apa pun yang perlu ditaruh di frontend — semua kunci rahasia ada di
+      server (lihat supabase/functions/create-payment-layanan/index.ts).
     -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="GANTI_DENGAN_CLIENT_KEY_SANDBOX_ANDA"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/market/supabase.js"></script>
 </head>
 <body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
 
@@ -109,7 +110,7 @@
                     <div class="flex flex-col items-end gap-2 pt-2">
                         <p id="loker-status-msg" class="hidden text-[11px] font-mono max-w-md text-right"></p>
                         <button type="submit" id="btn-pay-loker" class="bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-black text-xs font-mono font-bold px-6 py-3 rounded-lg transition">
-                            Lanjutkan & Bayar (Midtrans) &rarr;
+                            Lanjutkan & Bayar &rarr;
                         </button>
                     </div>
                 </form>
@@ -153,7 +154,7 @@
                     <div class="flex flex-col items-end gap-2 pt-2">
                         <p id="cv-status-msg" class="hidden text-[11px] font-mono max-w-md text-right"></p>
                         <button type="submit" id="btn-pay-cv" class="bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-black text-xs font-mono font-bold px-6 py-3 rounded-lg transition">
-                            Lanjutkan & Bayar (Midtrans) &rarr;
+                            Lanjutkan & Bayar &rarr;
                         </button>
                     </div>
                 </form>
@@ -171,14 +172,16 @@
         /*
           ARSITEKTUR PEMBAYARAN AMAN (ringkas):
           1. Halaman ini HANYA mengirim kode paket (mis. "LOKER_FEATURED") + data formulir ke
-             backend. Harga TIDAK pernah dikirim dari browser ke server.
-          2. Backend mencari kode paket itu di katalog resminya sendiri, menghitung harga,
-             membuat order_id unik, lalu membuat Snap Token via Midtrans Server Key (rahasia,
-             hanya ada di server - lihat contoh di server-monetisasi-example.js).
-          3. Browser menerima Snap Token lalu memanggil window.snap.pay(token) - popup resmi
-             Midtrans yang menangani input kartu/e-wallet, bukan halaman ini.
-          4. Status pembayaran final dikonfirmasi lewat webhook server-to-server dari Midtrans
-             ke backend (dengan verifikasi signature), bukan dari respons di browser saja.
+             Edge Function create-payment-layanan. Harga TIDAK pernah dikirim dari browser.
+          2. Edge Function mencari kode paket itu di katalog resminya sendiri (di dalam kode
+             function, bukan di database yang bisa diubah lewat browser), menghitung harga,
+             membuat order_id unik, lalu membuat sesi bayar via iPaymu API menggunakan
+             VA/API Key (rahasia, hanya ada di server - lihat create-payment-layanan/index.ts).
+          3. Browser menerima checkout_url lalu redirect ke situ - halaman resmi iPaymu yang
+             menangani input QRIS/VA/e-wallet, bukan halaman ini.
+          4. Status pembayaran final dikonfirmasi lewat webhook server-to-server dari iPaymu
+             ke ipaymu-webhook (dengan verifikasi ulang ke API iPaymu), bukan dari redirect
+             URL saja - makanya status di success.html defaultnya "pending", bukan "success".
         */
 
         // Buka tab sesuai query string (?service=loker atau ?service=cv) dari loker.html
@@ -279,50 +282,27 @@
             statusMsg.classList.remove('hidden');
 
             try {
-                // GANTI URL DI BAWAH dengan endpoint backend Anda (lihat server-monetisasi-example.js).
-                // Endpoint ini WAJIB menghitung ulang harga dari katalog di server, bukan
-                // mempercayai angka apa pun yang datang dari browser.
-                const response = await fetch('/api/create-transaction', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ service: kind, planCode, customer })
+                const { data, error } = await db.functions.invoke('create-payment-layanan', {
+                    body: { service: kind, planCode, customer }
                 });
 
-                if (!response.ok) throw new Error('Gagal membuat transaksi (status ' + response.status + ')');
+                if (error) throw new Error(error.message || 'Gagal membuat transaksi.');
+                if (!data || !data.checkout_url) throw new Error(data?.error || 'Link pembayaran tidak diterima dari server.');
 
-                const data = await response.json();
-                if (!data.token) throw new Error('Token pembayaran tidak diterima dari server.');
+                statusMsg.className = 'text-[11px] font-mono max-w-md text-right text-emerald-400';
+                statusMsg.innerText = 'Mengarahkan ke halaman pembayaran...';
 
-                statusMsg.classList.add('hidden');
-
-                window.snap.pay(data.token, {
-                    onSuccess: function(result) {
-                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=${kind}&status=success`;
-                    },
-                    onPending: function(result) {
-                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=${kind}&status=pending`;
-                    },
-                    onError: function() {
-                        statusMsg.className = 'text-[11px] font-mono max-w-md text-right text-red-400';
-                        statusMsg.innerText = 'Pembayaran gagal. Silakan coba lagi.';
-                        statusMsg.classList.remove('hidden');
-                    },
-                    onClose: function() {
-                        statusMsg.className = 'text-[11px] font-mono max-w-md text-right text-slate-400';
-                        statusMsg.innerText = 'Anda menutup jendela pembayaran sebelum selesai.';
-                        statusMsg.classList.remove('hidden');
-                    }
-                });
+                window.location.href = data.checkout_url;
 
             } catch (err) {
                 console.error(err);
                 statusMsg.className = 'text-[11px] font-mono max-w-md text-right text-red-400';
-                statusMsg.innerText = 'Belum bisa terhubung ke server pembayaran - endpoint /api/create-transaction belum tersedia. Ini contoh frontend; lihat server-monetisasi-example.js.';
+                statusMsg.innerText = 'Gagal membuat transaksi: ' + err.message;
                 statusMsg.classList.remove('hidden');
             } finally {
                 isPaymentInProgress = false;
                 btn.disabled = false;
-                btn.innerText = 'Lanjutkan & Bayar (Midtrans) →';
+                btn.innerText = 'Lanjutkan & Bayar →';
             }
         }
     </script>

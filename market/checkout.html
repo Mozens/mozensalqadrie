@@ -197,12 +197,6 @@
                     try {
                         // JIKA MEMILIH PAYMENT GATEWAY (PG)
                         if (this.form.tipe_bayar === 'pg') {
-                            // ⚠️ PENTING (keamanan): this.cart datang dari localStorage yang bisa
-                            // diubah bebas lewat DevTools oleh pengunjung (termasuk field `harga`).
-                            // Edge Function `create-payment` WAJIB mengambil ulang harga asli dari
-                            // tabel bich_produk berdasarkan product id, BUKAN memercayai `harga`
-                            // yang dikirim dari sini. Lihat market/supabase/functions/create-payment/
-                            // untuk contoh implementasi yang benar.
                             const { data, error } = await db.functions.invoke('create-payment', {
                                 body: {
                                     items: this.cart,
@@ -211,12 +205,15 @@
                                     customer_phone: this.form.phone,
                                     shipping_address: this.form.alamat,
                                     shipping_fee: this.ongkir,
-                                    fee_bich: this.feeBich,
-                                    total_amount: this.grandTotal
+                                    shipping_method: this.form.metode_pengiriman,
+                                    payment_method: 'gateway',
+                                    // 🔴 Otomatis redirect ke success.html dengan service=mart
+                                    return_url: `${window.location.origin}/success.html?service=mart`
                                 }
                             });
 
                             if (error) throw error;
+                            if (data && data.error) throw new Error(data.error);
 
                             if (data && data.checkout_url) {
                                 localStorage.removeItem('bich_cart');
@@ -224,42 +221,36 @@
                             } else {
                                 throw new Error("Gagal menerima respon Payment Gateway.");
                             }
-                        } 
+                        }
                         // JIKA MEMILIH DIRECT WHATSAPP
                         else {
-                            // Kode referensi dibuat di klien (kolom UNIQUE: nomor_pesanan)
-                            const nomorPesanan = 'BM-' + Date.now().toString(36).toUpperCase();
+                            // DIPERBAIKI: sebelumnya di sini langsung `db.from('bich_pesanan').insert(...)`
+                            // memakai harga dari keranjang di browser (this.cart) - bisa dimanipulasi
+                            // lewat DevTools sebelum submit. Sekarang jalur ini WAJIB lewat Edge
+                            // Function yang sama dengan Payment Gateway, supaya harga selalu dihitung
+                            // ulang dari database di server, bukan dipercaya dari klien. Nomor pesanan
+                            // dan teks WhatsApp yang dipakai pun sekarang dari respons server (data
+                            // tervalidasi), bukan dibuat sendiri oleh browser.
+                            const { data, error } = await db.functions.invoke('create-payment', {
+                                body: {
+                                    items: this.cart,
+                                    customer_name: this.form.name,
+                                    customer_email: this.form.email,
+                                    customer_phone: this.form.phone,
+                                    shipping_address: this.form.alamat,
+                                    shipping_fee: this.ongkir,
+                                    shipping_method: this.form.metode_pengiriman,
+                                    payment_method: 'manual',
+                                }
+                            });
 
-                            const { error: errPesanan } = await db
-                                .from('bich_pesanan')
-                                .insert([{
-                                    nomor_pesanan: nomorPesanan,
-                                    nama_pembeli: this.form.name,
-                                    wa_pembeli: this.form.phone,
-                                    wa_pembeli_email: this.form.email,
-                                    alamat_lengkap: this.form.alamat,
-                                    item_pesanan: this.cart,
-                                    total_harga: this.grandTotal,
-                                    ongkir: this.ongkir,
-                                    fee_bich: this.feeBich,
-                                    metode_pembayaran: 'WhatsApp Manual',
-                                    metode_pengiriman: this.form.metode_pengiriman,
-                                    status: 'Pending',
-                                }]);
-
-                            if (errPesanan) throw errPesanan;
-
-                            let textWA = `*PESANAN BICH MART*\n`;
-                            textWA += `No. Pesanan: ${nomorPesanan}\n`;
-                            textWA += `Nama: ${this.form.name}\n`;
-                            textWA += `WA: ${this.form.phone}\n`;
-                            textWA += `Alamat: ${this.form.alamat}\n`;
-                            textWA += `Pengiriman: ${this.form.metode_pengiriman}\n\n`;
-                            textWA += `Total Tagihan: ${this.formatRupiah(this.grandTotal)}`;
+                            if (error) throw error;
+                            if (data && data.error) throw new Error(data.error);
+                            if (!data || !data.whatsapp_url) throw new Error("Gagal membuat pesanan (respons server tidak lengkap).");
 
                             localStorage.removeItem('bich_cart');
-                            window.open(`https://wa.me/6282341333313?text=${encodeURIComponent(textWA)}`, '_blank');
-                            window.location.href = "/market/";
+                            window.open(data.whatsapp_url, '_blank', 'noopener,noreferrer');
+                            window.location.href = "/success.html?service=mart&order_id=" + encodeURIComponent(data.nomor_pesanan);
                         }
 
                     } catch (err) {

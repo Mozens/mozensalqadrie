@@ -8,20 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!--
-      PENTING - INTEGRASI MIDTRANS:
-      1. JANGAN pernah menaruh Server Key Midtrans di file frontend ini. Server Key hanya boleh
-         hidup di backend (server), karena siapa pun bisa membuka "view source" halaman ini.
-      2. Untuk memicu popup pembayaran Snap, sertakan script resmi Midtrans di sini dan ganti
-         data-client-key dengan CLIENT KEY (bukan Server Key) dari dashboard Midtrans Anda.
-         Gunakan URL sandbox saat masih testing, dan URL production saat sudah live.
-
-         Sandbox:
-         <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-XXXXXXXXXXXX"></script>
-
-         Production:
-         <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-XXXXXXXXXXXX"></script>
+      INTEGRASI PEMBAYARAN: iPaymu via Supabase Edge Function
+      (create-payment-layanan). Tidak ada client key/token payment gateway
+      apa pun yang perlu ditaruh di frontend.
     -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="GANTI_DENGAN_CLIENT_KEY_SANDBOX_ANDA"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/market/supabase.js"></script>
     <style>
         .gold-gradient {
             background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
@@ -85,6 +77,52 @@
             <p class="text-xs sm:text-sm text-slate-400 font-mono">
                 Agregator Lintas Moda, Shuttle Antar-Kota & Transit Hub, Experiential Tour & Outbound Gateway
             </p>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- JOURNEY HUB: "Aku hendak ke mana, dan pakai apa yang paling bijak?" -->
+        <!-- Peta visual asal->tujuan dengan tarif standar, supaya pengunjung  -->
+        <!-- langsung "melihat" seluruh arah tujuan di Kalimantan sebelum      -->
+        <!-- dipaksa mengisi form. Data harga dihitung ulang dari tabel tarif di database yang  -->
+        <!-- sama dengan kalkulator booking di bawah - satu sumber kebenaran,  -->
+        <!-- bukan angka duplikat yang bisa jadi tidak sinkron.                -->
+        <!-- ================================================================ -->
+        <div class="bg-gradient-to-b from-amber-500/[0.04] to-transparent border border-amber-500/10 rounded-3xl p-6 sm:p-10 space-y-8">
+            <div class="text-center space-y-2 max-w-xl mx-auto">
+                <span class="text-[10px] font-mono text-amber-400 uppercase tracking-[0.2em]">Peta Perjalanan BICH</span>
+                <h2 class="text-xl sm:text-2xl font-serif font-bold text-white">
+                    Aku hendak ke mana? <span class="text-slate-500">Dan pakai apa yang paling bijak?</span>
+                </h2>
+                <p class="text-xs text-slate-400">
+                    Pilih titik keberangkatanmu — semua arah tujuan di Kalimantan langsung terlihat, dengan tarif standar yang relatif stabil. Tidak ada tebak-tebakan harga.
+                </p>
+            </div>
+
+            <!-- STEP 1: PILIH ORIGIN -->
+            <div class="space-y-3">
+                <p class="text-[10px] font-mono text-slate-400 uppercase text-center">1. Mulai dari mana?</p>
+                <div id="hub-origin-row" class="flex flex-wrap justify-center gap-2.5"></div>
+            </div>
+
+            <!-- STEP 2: FAN-OUT TUJUAN -->
+            <div id="hub-destination-wrap" class="hidden space-y-3">
+                <p class="text-[10px] font-mono text-slate-400 uppercase text-center">
+                    2. Dari <span id="hub-origin-label" class="text-amber-400 font-bold"></span>, kamu bisa ke:
+                </p>
+                <div id="hub-destination-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+                <p class="text-center text-[10px] text-slate-500 font-mono pt-1">
+                    * Harga per kursi shuttle reguler, estimasi standar sebelum konfirmasi akhir. Klik salah satu tujuan untuk lanjut ke pemesanan.
+                </p>
+            </div>
+
+            <!-- PETA TARIF LENGKAP (transparansi penuh) -->
+            <details class="group">
+                <summary class="cursor-pointer text-center text-[11px] font-mono text-amber-400/80 hover:text-amber-400 transition list-none flex items-center justify-center gap-1.5">
+                    📋 Lihat Peta Tarif Standar Lengkap (Semua Rute)
+                    <span class="transition group-open:rotate-180">▾</span>
+                </summary>
+                <div id="full-tariff-map" class="mt-5 space-y-4"></div>
+            </details>
         </div>
 
         <!-- Service Tab Selector -->
@@ -247,11 +285,21 @@
                         </ul>
                     </div>
 
+                    <!-- DATA PEMESAN (WAJIB, dipakai untuk sesi pembayaran iPaymu) -->
+                    <div class="space-y-2 pt-2 border-t border-slate-800">
+                        <span class="text-[10px] font-mono text-amber-400 uppercase font-bold block">Data Pemesan</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <input type="text" id="pemesan-nama" placeholder="Nama Lengkap" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                            <input type="tel" id="pemesan-wa" placeholder="Nomor WhatsApp" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                            <input type="email" id="pemesan-email" placeholder="Email (untuk bukti bayar)" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                        </div>
+                    </div>
+
                     <!-- ACTION BUTTON -->
                     <div class="pt-2 flex flex-col items-end gap-2">
                         <p id="payment-status-msg" class="hidden text-[11px] font-mono max-w-md text-right"></p>
                         <button id="btn-pay" onclick="proceedToPayment()" class="bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed text-black text-xs font-mono font-bold px-6 py-3 rounded-lg transition">
-                            Lanjutkan Booking & Pembayaran (Midtrans) &rarr;
+                            Lanjutkan Booking & Pembayaran &rarr;
                         </button>
                     </div>
                 </div>
@@ -313,7 +361,49 @@
                     <span class="text-xs font-mono text-amber-400 font-bold block">OFFICIAL REFERRAL & GATEWAY CONSORTIUM</span>
                     <h3 class="text-xl sm:text-2xl font-serif font-bold text-white">Layanan Ibadah Umrah & Outbound Travel Kalimantan</h3>
                     <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                        BICH bermitra langsung dengan biro perjalanan Umrah berlisensi resmi (PPIU/Kemenag) dan pengelola wisata mancanegara. Kami memastikan kepastian keberangkatan, manasik, dan fasilitas VIP bagi jamaah banua.
+                        BICH menghubungkan jamaah Banua dengan biro perjalanan Umrah <strong>berlisensi resmi PPIU (Kementerian Agama RI)</strong> yang sudah melalui proses verifikasi afiliasi kami.
+                    </p>
+                </div>
+
+                <!-- DISCLAIMER POSISI HUKUM - PENTING -->
+                <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-4 space-y-1.5">
+                    <p class="text-[11px] font-mono text-red-400 font-bold">⚠️ BICH ADALAH PLATFORM REFERRAL, BUKAN PENYELENGGARA UMRAH</p>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">
+                        BICH tidak menerima atau mengelola dana ibadah Umrah dalam bentuk apa pun. Seluruh transaksi, kontrak keberangkatan, dan tanggung jawab penyelenggaraan
+                        sepenuhnya berada di antara jamaah dan biro travel mitra yang dipilih. Selalu pastikan izin PPIU biro travel masih berlaku aktif di
+                        <a href="https://simpu.kemenag.go.id" target="_blank" rel="noopener" class="underline hover:text-red-300">simpu.kemenag.go.id</a> sebelum melakukan pembayaran apa pun.
+                    </p>
+                </div>
+
+                <!-- DAFTAR MITRA TERAFILIASI -->
+                <div class="space-y-3">
+                    <span class="text-[10px] font-mono text-slate-400 uppercase block">Mitra Travel Umrah Terafiliasi BICH</span>
+
+                    <!-- TEMPLATE KARTU MITRA - isi dengan data mitra riil yang sudah
+                         diverifikasi & menandatangani Perjanjian Kerja Sama Afiliasi.
+                         JANGAN tayangkan mitra yang izin PPIU-nya belum dikonfirmasi aktif. -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-[#05070a] border border-slate-800 rounded-xl p-5 space-y-2.5">
+                            <div class="flex items-start justify-between">
+                                <span class="text-sm font-serif font-bold text-white">[Nama Biro Travel Mitra 1]</span>
+                                <span class="text-[9px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">PPIU AKTIF</span>
+                            </div>
+                            <p class="text-[10px] font-mono text-slate-500">No. Izin PPIU: [ISI NOMOR SK KEMENAG]</p>
+                            <p class="text-[10px] text-slate-400">[Deskripsi singkat: tahun berdiri, jumlah jamaah diberangkatkan, keunggulan]</p>
+                            <a href="#" target="_blank" class="text-[11px] font-mono text-amber-400 hover:text-amber-300 underline inline-block pt-1">Lihat Paket & Jadwal &rarr;</a>
+                        </div>
+                        <div class="bg-[#05070a] border border-slate-800 rounded-xl p-5 space-y-2.5">
+                            <div class="flex items-start justify-between">
+                                <span class="text-sm font-serif font-bold text-white">[Nama Biro Travel Mitra 2]</span>
+                                <span class="text-[9px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">PPIU AKTIF</span>
+                            </div>
+                            <p class="text-[10px] font-mono text-slate-500">No. Izin PPIU: [ISI NOMOR SK KEMENAG]</p>
+                            <p class="text-[10px] text-slate-400">[Deskripsi singkat: tahun berdiri, jumlah jamaah diberangkatkan, keunggulan]</p>
+                            <a href="#" target="_blank" class="text-[11px] font-mono text-amber-400 hover:text-amber-300 underline inline-block pt-1">Lihat Paket & Jadwal &rarr;</a>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-600 font-mono text-center pt-1">
+                        Belum ada mitra terafiliasi ditampilkan di atas — ini placeholder template. Hubungi tim BICH untuk proses onboarding biro travel baru.
                     </p>
                 </div>
 
@@ -323,7 +413,7 @@
                     <div class="hp-trap-field" aria-hidden="true">
                         <input type="text" name="umrah_hp_check" id="umrah_hp_check" tabindex="-1" autocomplete="off">
                     </div>
-                    <h4 class="text-xs font-mono text-amber-400 font-bold uppercase">Form Daftar Minat / Konsultasi Jamaah</h4>
+                    <h4 class="text-xs font-mono text-amber-400 font-bold uppercase">Belum yakin pilih mitra mana? Konsultasi Gratis</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <input type="text" id="umrah-nama" placeholder="Nama Lengkap" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
                         <input type="tel" id="umrah-wa" placeholder="Nomor WhatsApp" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
@@ -387,7 +477,7 @@
           ------------------------------------------------
           Tabel harga di bawah ini (dan hasil kalkulasinya) HANYA untuk estimasi tampilan.
           Encoding Base64 di sini BUKAN enkripsi/keamanan - siapa saja bisa membuka DevTools,
-          mengubah nilai _P_MAP atau memanggil _dVal()/calculateAndDisplayPrice() secara manual
+          mengubah nilai TARIF_RUTE atau memanggil _dVal()/calculateAndDisplayPrice() secara manual
           dari console, lalu mengirim harga hasil rekayasa ke server.
 
           Sebelum go-live dengan payment gateway, WAJIB:
@@ -395,21 +485,173 @@
           2. Saat "Lanjutkan Pembayaran" ditekan, kirim origin/destination/service ke backend,
              lalu biarkan BACKEND yang menghitung ulang harga final dari tabel tarifnya sendiri.
           3. JANGAN PERNAH mempercayai angka harga yang dikirim dari browser/klien untuk
-             menentukan jumlah yang ditagihkan ke Midtrans. Backend Anda yang menentukan nominal.
+             menentukan jumlah yang ditagihkan ke iPaymu. Backend Anda yang menentukan nominal.
           Nilai di sini tetap dipakai untuk estimasi cepat di layar sebelum booking dikonfirmasi.
         */
-        const _P_MAP = {
-            "BPN_IKN": "MTc1MDAw",
-            "IKN_BPN": "MTc1MDAw",
-            "BDJ_IKN": "MzUwMDAw",
-            "IKN_BDJ": "MzUwMDAw",
-            "AIRPORT": "MTUwMDAw",
-            "DEFAULT": "MjUwMDAw"
-        };
+        /*
+          TARIF DINAMIS DARI DATABASE (bukan lagi hardcode di file ini)
+          ------------------------------------------------------------
+          Tarif sekarang disimpan di tabel tarif_travel_rute & tarif_travel_layanan
+          di Supabase, dan bisa diubah admin lewat redaksi.html kapan saja tanpa
+          perlu edit/deploy ulang file ini.
+
+          CATATAN KEAMANAN yang TETAP BERLAKU: angka yang tampil di sini hanya
+          untuk ESTIMASI TAMPILAN. Server (create-payment-layanan) menghitung
+          ulang harga final dari tabel yang SAMA saat transaksi dibuat - client
+          tidak pernah dipercaya untuk menentukan nominal tagihan.
+        */
+        let TARIF_RUTE = {};
+        let TARIF_LAYANAN = {};
+        let tarifSudahDimuat = false;
+
+        async function loadTarifFromSupabase() {
+            try {
+                const [ruteRes, layananRes] = await Promise.all([
+                    db.from('tarif_travel_rute').select('route_key, harga'),
+                    db.from('tarif_travel_layanan').select('service_type, tipe, nilai, unit_label'),
+                ]);
+
+                if (ruteRes.error) throw ruteRes.error;
+                if (layananRes.error) throw layananRes.error;
+
+                TARIF_RUTE = Object.fromEntries((ruteRes.data || []).map(r => [r.route_key, r.harga]));
+                TARIF_LAYANAN = Object.fromEntries((layananRes.data || []).map(l => [l.service_type, l]));
+                tarifSudahDimuat = true;
+            } catch (err) {
+                console.error('Gagal memuat tarif dari database, pakai fallback darurat:', err);
+                // Fallback darurat kalau koneksi database gagal - supaya halaman tidak
+                // blank total, tapi ini SEHARUSNYA tidak pernah kepakai di produksi.
+                TARIF_RUTE = { BPN_IKN: 175000, IKN_BPN: 175000, BDJ_IKN: 350000, IKN_BDJ: 350000, AIRPORT: 150000, DEFAULT: 250000 };
+                TARIF_LAYANAN = {
+                    shuttle: { tipe: 'multiplier', nilai: 1, unit_label: '/ kursi (Door-to-Door)' },
+                    airport: { tipe: 'multiplier', nilai: 1, unit_label: '/ penjemputan airport' },
+                    charter: { tipe: 'multiplier', nilai: 6, unit_label: '/ armada all-in (Maks 6 Orang)' },
+                    kargo: { tipe: 'multiplier', nilai: 0.2, unit_label: '/ paket same-day (s/d 5kg)' },
+                    speedboat: { tipe: 'flat', nilai: 300000, unit_label: '/ seat speedboat VIP' },
+                };
+                tarifSudahDimuat = true;
+            }
+        }
 
         function _dVal(key) {
-            const rawB64 = _P_MAP[key] || _P_MAP["DEFAULT"];
-            return parseInt(atob(rawB64), 10);
+            return TARIF_RUTE[key] ?? TARIF_RUTE['DEFAULT'] ?? 250000;
+        }
+
+        function applyServiceMultiplier(basePrice, serviceType) {
+            const l = TARIF_LAYANAN[serviceType];
+            if (!l) return { harga: basePrice, unit: '/ kursi (Door-to-Door)' };
+            const harga = l.tipe === 'flat' ? Number(l.nilai) : Math.round(basePrice * Number(l.nilai));
+            return { harga, unit: l.unit_label };
+        }
+
+        // ================================================================
+        // JOURNEY HUB: dibangun dari <option> yang SUDAH ADA di dropdown asli
+        // (bukan data terpisah) supaya harga yang tampil di sini selalu sinkron
+        // dengan kalkulator booking - satu sumber kebenaran (tabel tarif_travel_rute di database).
+        // ================================================================
+        const HUB_ICONS = {
+            IKN: '🏛️', BPN: '🌇', BDJ: '🕌', SMD: '🌆', PKY: '🌳', PNK: '🌉', TRK: '🏝️',
+        };
+
+        function getOptionList(selectId) {
+            const sel = document.getElementById(selectId);
+            return Array.from(sel.options).map(o => ({ value: o.value, label: o.text }));
+        }
+
+        function computeDisplayPrice(originVal, destVal, serviceType = 'shuttle') {
+            let base = _dVal(`${originVal}_${destVal}`);
+            if (originVal.includes('AIRPORT') || destVal.includes('AIRPORT')) {
+                base = _dVal('AIRPORT');
+            }
+            return applyServiceMultiplier(base, serviceType).harga;
+        }
+
+        function renderJourneyHub() {
+            const originOptions = getOptionList('origin-select');
+            const destOptions = getOptionList('destination-select');
+            const destValueSet = new Set(destOptions.map(o => o.value));
+
+            // Origin picker: kota HUB UTAMA yang juga valid sebagai tujuan
+            // (supaya tiap origin yang dipilih dijamin punya fan-out tujuan).
+            const hubOrigins = originOptions.filter(o => HUB_ICONS[o.value] && destValueSet.has(o.value));
+
+            const originRow = document.getElementById('hub-origin-row');
+            originRow.innerHTML = hubOrigins.map(o => `
+                <button type="button" onclick="selectHubOrigin('${o.value}')" data-hub-origin="${o.value}"
+                        class="hub-origin-chip px-4 py-2.5 rounded-xl border border-slate-800 bg-[#080c14] text-xs font-mono text-slate-300 hover:border-amber-400/60 hover:text-amber-300 transition flex items-center gap-2">
+                    <span>${HUB_ICONS[o.value] || '📍'}</span> ${o.label.replace(/\s*\(.*?\)/, '')}
+                </button>
+            `).join('');
+
+            renderFullTariffMap(hubOrigins, destOptions);
+        }
+
+        function selectHubOrigin(originVal) {
+            const originOptions = getOptionList('origin-select');
+            const destOptions = getOptionList('destination-select');
+            const originLabel = (originOptions.find(o => o.value === originVal) || {}).label || originVal;
+
+            // Highlight chip terpilih
+            document.querySelectorAll('.hub-origin-chip').forEach(btn => {
+                const active = btn.dataset.hubOrigin === originVal;
+                btn.className = 'hub-origin-chip px-4 py-2.5 rounded-xl border text-xs font-mono transition flex items-center gap-2 ' +
+                    (active
+                        ? 'border-amber-400 bg-amber-500/10 text-amber-300'
+                        : 'border-slate-800 bg-[#080c14] text-slate-300 hover:border-amber-400/60 hover:text-amber-300');
+            });
+
+            document.getElementById('hub-origin-label').textContent = originLabel.replace(/\s*\(.*?\)/, '');
+
+            const grid = document.getElementById('hub-destination-grid');
+            const tujuan = destOptions.filter(d => d.value !== originVal);
+
+            grid.innerHTML = tujuan.map(d => {
+                const price = computeDisplayPrice(originVal, d.value);
+                const isAirport = originVal.includes('AIRPORT') || d.value.includes('AIRPORT');
+                const icon = isAirport ? '✈️' : (d.value.startsWith('DERMAGA') || d.value === 'KCH' ? '🚤' : '🚐');
+                return `
+                    <button type="button" onclick="pickJourney('${originVal}', '${d.value}')"
+                            class="text-left bg-[#080c14] border border-slate-800 hover:border-amber-400/50 rounded-xl p-3.5 transition group">
+                        <div class="flex items-start justify-between gap-1">
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-amber-300 transition leading-snug">${icon} ${d.label.replace(/\s*\(.*?\)/, '')}</span>
+                        </div>
+                        <div class="mt-2 text-sm font-mono font-bold text-amber-400">Rp ${price.toLocaleString('id-ID')}</div>
+                        <div class="text-[9px] text-slate-500 font-mono">/ kursi shuttle reguler</div>
+                    </button>
+                `;
+            }).join('');
+
+            document.getElementById('hub-destination-wrap').classList.remove('hidden');
+            document.getElementById('hub-destination-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function pickJourney(originVal, destVal) {
+            // Isi dropdown form booking asli & jalankan kalkulator resmi yang
+            // sama (termasuk rate limiting & honeypot) - Journey Hub cuma
+            // lapisan visual, bukan jalur baru yang memotong pengamanan.
+            document.getElementById('origin-select').value = originVal;
+            document.getElementById('destination-select').value = destVal;
+            calculateAndDisplayPrice(new Event('submit'));
+            document.getElementById('booking-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function renderFullTariffMap(hubOrigins, destOptions) {
+            const container = document.getElementById('full-tariff-map');
+            container.innerHTML = hubOrigins.map(o => {
+                const rows = destOptions.filter(d => d.value !== o.value).map(d => {
+                    const price = computeDisplayPrice(o.value, d.value);
+                    return `<div class="flex justify-between text-[11px] font-mono py-1.5 border-b border-slate-900">
+                        <span class="text-slate-400">${d.label.replace(/\s*\(.*?\)/, '')}</span>
+                        <span class="text-slate-200 font-bold">Rp ${price.toLocaleString('id-ID')}</span>
+                    </div>`;
+                }).join('');
+                return `
+                    <div class="bg-[#05070a] border border-slate-800 rounded-xl p-4">
+                        <p class="text-xs font-mono text-amber-400 font-bold mb-2">${HUB_ICONS[o.value] || '📍'} Dari ${o.label.replace(/\s*\(.*?\)/, '')}</p>
+                        <div>${rows}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // TAB SWITCHER
@@ -478,27 +720,17 @@
                 return;
             }
 
-            // Dekripsi Tarif menggunakan Obfuscated Lookup
+            // Ambil tarif dari cache yang sudah dimuat dari database (bukan hardcode)
             let routeKey = `${originVal}_${destVal}`;
             let basePrice = _dVal(routeKey);
-            let unitText = "/ kursi (Door-to-Door)";
 
             if (originVal.includes('AIRPORT') || destVal.includes('AIRPORT')) {
                 basePrice = _dVal("AIRPORT");
-                unitText = "/ penjemputan airport";
             }
 
-            // Multiplier Service
-            if (serviceType === 'charter') {
-                basePrice = basePrice * 6;
-                unitText = "/ armada all-in (Maks 6 Orang)";
-            } else if (serviceType === 'kargo') {
-                basePrice = Math.round(basePrice * 0.2);
-                unitText = "/ paket same-day (s/d 5kg)";
-            } else if (serviceType === 'speedboat') {
-                basePrice = 300000;
-                unitText = "/ seat speedboat VIP";
-            }
+            const hasil = applyServiceMultiplier(basePrice, serviceType);
+            basePrice = hasil.harga;
+            const unitText = hasil.unit;
 
             // Format Currency Output
             const formattedPrice = "Rp " + basePrice.toLocaleString('id-ID');
@@ -527,17 +759,16 @@
 
         /*
           ALUR PEMBAYARAN YANG AMAN (ringkas):
-          1. Frontend kirim origin/destination/service (BUKAN harga) ke endpoint backend,
-             misalnya POST /api/create-transaction.
-          2. Backend menghitung ulang harga dari tabel tarifnya sendiri, membuat order_id unik,
-             lalu memanggil Midtrans Snap API menggunakan SERVER KEY (rahasia, hanya di server)
-             untuk mendapatkan "Snap Token".
-          3. Backend mengembalikan Snap Token itu ke frontend.
-          4. Frontend memanggil window.snap.pay(token, {...}) untuk membuka popup pembayaran resmi
-             Midtrans. Frontend TIDAK PERNAH menyentuh Server Key.
-          5. Status pembayaran final HARUS dikonfirmasi lewat Server-to-Server Notification/Webhook
-             dari Midtrans ke backend (dengan verifikasi signature_key), bukan dari respons popup
-             di browser saja - popup browser bisa dimanipulasi atau koneksi bisa putus.
+          1. Frontend kirim origin/destination/service (BUKAN harga) ke Edge Function
+             create-payment-layanan.
+          2. Edge Function menghitung ulang harga dari tabel tarifnya sendiri (replika PERSIS
+             dari tabel tarif di database), membuat order_id unik, lalu memanggil iPaymu API
+             menggunakan VA/API Key (rahasia, hanya di server) untuk membuat sesi bayar.
+          3. Backend mengembalikan checkout_url ke frontend.
+          4. Frontend redirect ke checkout_url - halaman resmi iPaymu, bukan popup di sini.
+          5. Status pembayaran final HARUS dikonfirmasi lewat webhook server-to-server dari
+             iPaymu ke backend (dengan verifikasi ulang ke API iPaymu), bukan dari redirect
+             URL saja - popup/redirect browser bisa dimanipulasi atau koneksi bisa putus.
         */
         let isPaymentInProgress = false;
 
@@ -551,6 +782,17 @@
                 return;
             }
 
+            const namaPemesan = document.getElementById('pemesan-nama').value.trim();
+            const waPemesan = document.getElementById('pemesan-wa').value.trim();
+            const emailPemesan = document.getElementById('pemesan-email').value.trim();
+
+            if (!namaPemesan || !waPemesan || !emailPemesan) {
+                statusMsg.className = "text-[11px] font-mono max-w-md text-right text-red-400";
+                statusMsg.innerText = "Mohon lengkapi nama, WhatsApp, dan email pemesan.";
+                statusMsg.classList.remove('hidden');
+                return;
+            }
+
             isPaymentInProgress = true;
             btn.disabled = true;
             btn.innerText = "Memproses...";
@@ -559,65 +801,34 @@
             statusMsg.classList.remove('hidden');
 
             try {
-                // GANTI URL DI BAWAH INI dengan endpoint backend Anda yang sesungguhnya.
-                // Endpoint ini WAJIB berjalan di server (Node.js/Express, Supabase Edge
-                // Function, dsb) dan menyimpan Midtrans Server Key sebagai environment
-                // variable di sana - jangan pernah di frontend.
-                const response = await fetch('/api/create-transaction', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
+                const { data, error } = await db.functions.invoke('create-payment-layanan', {
+                    body: {
                         service: 'travel',
                         origin: window._lastQuote.origin,
                         destination: window._lastQuote.destination,
-                        serviceType: window._lastQuote.serviceType
+                        serviceType: window._lastQuote.serviceType,
+                        customer: { nama: namaPemesan, whatsapp: waPemesan, email: emailPemesan },
                         // Sengaja TIDAK mengirim estimatedPrice - backend yang menentukan harga final.
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Gagal membuat transaksi (status ' + response.status + ')');
-                }
-
-                const data = await response.json();
-
-                if (!data.token) {
-                    throw new Error('Token pembayaran tidak diterima dari server.');
-                }
-
-                statusMsg.classList.add('hidden');
-
-                // Buka popup resmi Midtrans Snap menggunakan token dari backend.
-                window.snap.pay(data.token, {
-                    onSuccess: function(result) {
-                        // Redirect ke halaman konfirmasi bersama, bukan cuma ubah teks di
-                        // tempat - pengunjung butuh kepastian visual setelah bayar sungguhan.
-                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=travel&status=success`;
-                    },
-                    onPending: function(result) {
-                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=travel&status=pending`;
-                    },
-                    onError: function(result) {
-                        statusMsg.className = "text-[11px] font-mono max-w-md text-right text-red-400";
-                        statusMsg.innerText = "Pembayaran gagal. Silakan coba lagi.";
-                        statusMsg.classList.remove('hidden');
-                    },
-                    onClose: function() {
-                        statusMsg.className = "text-[11px] font-mono max-w-md text-right text-slate-400";
-                        statusMsg.innerText = "Anda menutup jendela pembayaran sebelum selesai.";
-                        statusMsg.classList.remove('hidden');
                     }
                 });
+
+                if (error) throw new Error(error.message || 'Gagal membuat transaksi.');
+                if (!data || !data.checkout_url) throw new Error(data?.error || 'Link pembayaran tidak diterima dari server.');
+
+                statusMsg.className = "text-[11px] font-mono max-w-md text-right text-emerald-400";
+                statusMsg.innerText = "Mengarahkan ke halaman pembayaran...";
+
+                window.location.href = data.checkout_url;
 
             } catch (err) {
                 console.error(err);
                 statusMsg.className = "text-[11px] font-mono max-w-md text-right text-red-400";
-                statusMsg.innerText = "Terjadi kendala saat menghubungkan ke sistem pembayaran. Backend /api/create-transaction belum tersedia/terhubung - ini contoh frontend, lihat contoh server yang menyertai file ini.";
+                statusMsg.innerText = "Gagal membuat transaksi: " + err.message;
                 statusMsg.classList.remove('hidden');
             } finally {
                 isPaymentInProgress = false;
                 btn.disabled = false;
-                btn.innerText = "Lanjutkan Booking & Pembayaran (Midtrans) →";
+                btn.innerText = "Lanjutkan Booking & Pembayaran →";
             }
         }
 
@@ -645,16 +856,17 @@
             btn.innerText = "Mengirim...";
 
             try {
-                // GANTI dengan endpoint backend Anda (mis. Supabase Edge Function) yang
-                // benar-benar menyimpan lead ini ke database dan/atau meneruskannya ke
-                // WhatsApp/CRM tim sales. Validasi ulang input ini juga di sisi server.
-                const response = await fetch('/api/umrah-lead', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nama, whatsapp: wa, paket })
+                // DIPERBAIKI: sebelumnya fetch('/api/umrah-lead') - path relatif yang cuma
+                // jalan kalau ada server Express di origin yang sama. Sejak arsitektur
+                // pindah ke Supabase Edge Functions, panggilan itu SELALU gagal (404) karena
+                // tidak ada lagi server di path itu. Sekarang pakai db.functions.invoke,
+                // konsisten dengan create-payment-layanan di halaman ini juga.
+                const { data, error } = await db.functions.invoke('umrah-lead', {
+                    body: { nama, whatsapp: wa, paket }
                 });
 
-                if (!response.ok) throw new Error('Gagal mengirim, status ' + response.status);
+                if (error) throw new Error(error.message || 'Gagal mengirim.');
+                if (data && data.error) throw new Error(data.error);
 
                 statusMsg.className = "text-[11px] font-mono text-emerald-400";
                 statusMsg.innerText = "Terima kasih! Data Anda telah kami terima, tim BICH akan segera menghubungi via WhatsApp.";
@@ -664,13 +876,25 @@
             } catch (err) {
                 console.error(err);
                 statusMsg.className = "text-[11px] font-mono text-red-400";
-                statusMsg.innerText = "Belum bisa mengirim - endpoint /api/umrah-lead belum tersedia/terhubung. Ini contoh frontend; lihat contoh server yang menyertai file ini.";
+                statusMsg.innerText = "Gagal mengirim: " + err.message;
                 statusMsg.classList.remove('hidden');
             } finally {
                 btn.disabled = false;
                 btn.innerText = "Kirim Permintaan Konsultasi →";
             }
         }
+
+        // Inisialisasi: muat tarif dari database DULU (async), baru render
+        // Journey Hub - supaya harga yang tampil pertama kali sudah benar,
+        // bukan kosong/salah lalu "berkedip" berubah setelah fetch selesai.
+        document.addEventListener('DOMContentLoaded', async () => {
+            const originRow = document.getElementById('hub-origin-row');
+            originRow.innerHTML = '<p class="text-xs font-mono text-slate-500">Memuat tarif terkini...</p>';
+
+            await loadTarifFromSupabase();
+            renderJourneyHub();
+            selectHubOrigin('BPN');
+        });
     </script>
 </body>
 </html>

@@ -60,20 +60,23 @@
     </div>
 
     <script>
-        /*
-          Halaman ini dipakai BERSAMA oleh semua layanan (travel, loker, cv, sawit, ikn).
-          Parameter URL menentukan tampilan: ?order_id=...&service=loker&status=success
-          Dipanggil dari onSuccess/onPending Midtrans Snap di masing-masing halaman
-          pembayaran - lihat pariwisata.html, monetisasi.html, langganan.html.
-        */
         const ADMIN_WA_NUMBER = '6282341333313';
 
         const params = new URLSearchParams(window.location.search);
         const orderId = params.get('order_id') || '-';
         const service = params.get('service') || '';
-        const status = params.get('status') || 'success'; // success | pending
+        const status = params.get('status') || 'success';
 
         const SERVICE_INFO = {
+            mart: {
+                name: 'Belanja BICH Mart',
+                backLink: 'market/mart.html',
+                backLabel: 'Kembali Belanja di Mart',
+                nextSteps: [
+                    'Pesanan kamu sedang diverifikasi otomatis oleh sistem.',
+                    'Rincian dan nomor resi pengiriman akan dikirimkan via WhatsApp/Email.',
+                ],
+            },
             travel: {
                 name: 'Layanan Travel/Shuttle BICH',
                 backLink: 'bich/pariwisata.html',

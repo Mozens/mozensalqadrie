@@ -1,0 +1,252 @@
+// supabase/functions/ipaymu-webhook/index.ts
+//
+// CATATAN JUJUR: dokumentasi resmi iPaymu soal payload "Parameter Notify"
+// yang saya temukan terpotong di bagian daftar field lengkapnya (cuma
+// kebaca trx_id, reference_id, status...). Daripada menebak nama field
+// dan skema verifikasi signature notify yang saya tidak yakin 100%,
+// pendekatan di sini SENGAJA tidak percaya begitu saja isi body webhook.
+// Begitu notify masuk, function ini balik nanya ke iPaymu sendiri
+// ("Cek Transaksi" / checkTransaction) pakai kredensial kita, dan HANYA
+// itu hasil yang dipercaya. Ini juga otomatis menutup risiko ada pihak
+// lain yang kirim notify palsu ke endpoint ini.
+//
+// PENTING SEBELUM PAKAI DI PRODUKSI:
+// 1. Uji di sandbox dulu, lihat log (`supabase functions logs ipaymu-webhook`)
+//    buat lihat field apa saja yang beneran dikirim iPaymu.
+// 2. Cek ulang path endpoint "Cek Transaksi" v2 (IPAYMU_CHECK_TX_PATH di
+//    bawah) terhadap dashboard/dokumentasi iPaymu akun Anda — saya pakai
+//    pola URL yang umum dipakai versi v1/v2, tapi belum saya verifikasi
+//    100% ke dokumentasi resmi untuk v2.
+//
+// Deploy:
+//   supabase functions deploy ipaymu-webhook --no-verify-jwt
+//   (--no-verify-jwt WAJIB, karena iPaymu yang manggil endpoint ini,
+//    bukan browser dengan sesi Supabase Auth)
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const IPAYMU_VA = Deno.env.get("IPAYMU_VA")!;
+const IPAYMU_API_KEY = Deno.env.get("IPAYMU_API_KEY")!;
+const IPAYMU_ENV = Deno.env.get("IPAYMU_ENV") || "sandbox";
+
+const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+const IPAYMU_CHECK_TX_URL =
+  IPAYMU_ENV === "production"
+    ? "https://my.ipaymu.com/api/v2/transaction"
+    : "https://sandbox.ipaymu.com/api/v2/transaction";
+
+Deno.serve(async (req) => {
+  try {
+    const rawBody = await req.text();
+    console.log("[ipaymu-webhook] Body mentah diterima:", rawBody);
+
+    // iPaymu bisa kirim application/x-www-form-urlencoded ATAU JSON
+    // tergantung konfigurasi — tangani dua-duanya.
+    let notifyData: Record<string, string> = {};
+    const contentType = req.headers.get("content-type") || "";
+    if (contentType.includes("application/json")) {
+      notifyData = JSON.parse(rawBody);
+    } else {
+      notifyData = Object.fromEntries(new URLSearchParams(rawBody));
+    }
+
+    const trxId = notifyData.trx_id || notifyData.trxId || notifyData.transactionId;
+    const referenceId = notifyData.reference_id || notifyData.referenceId;
+
+    if (!trxId) {
+      console.error("[ipaymu-webhook] Tidak ada trx_id di body notify:", notifyData);
+      return json({ error: "trx_id tidak ditemukan di notify" }, 400);
+    }
+    if (!referenceId) {
+      console.error("[ipaymu-webhook] Tidak ada referenceId di body notify:", notifyData);
+      return json({ error: "referenceId tidak ditemukan di notify" }, 400);
+    }
+
+    // ------------------------------------------------------------------
+    // VERIFIKASI ULANG ke iPaymu — WAJIB berhasil. TIDAK ADA fallback ke
+    // status dari body notify kalau verifikasi gagal.
+    //
+    // Kenapa ini tidak boleh dilonggarkan: endpoint webhook ini SELALU
+    // deploy dengan --no-verify-jwt (memang harus, karena iPaymu yang
+    // manggil, bukan user login), artinya URL ini bisa diakses SIAPA SAJA
+    // di internet tanpa autentikasi. Kalau ada fallback "kalau cek API
+    // gagal, percaya saja status dari body notify", siapa pun yang tahu
+    // URL webhook ini bisa POST manual dengan status="success" +
+    // reference_id sembarang, dan sistem akan auto-approve pesanan/
+    // langganan/kurangi stok TANPA ada uang masuk sama sekali.
+    //
+    // Kalau verifikasi gagal -> JANGAN tandai sukses. Biarkan pending,
+    // catat log selengkap mungkin untuk didiagnosis manual. "Fail closed".
+    // ------------------------------------------------------------------
+    const checkPayload = { transactionId: trxId };
+    const signature = await generateIPaymuSignature(IPAYMU_VA, IPAYMU_API_KEY, checkPayload);
+    const timestamp = formatTimestampIPaymu(new Date());
+
+    const checkResp = await fetch(IPAYMU_CHECK_TX_URL, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "va": IPAYMU_VA,
+        "signature": signature,
+        "timestamp": timestamp,
+      },
+      body: JSON.stringify(checkPayload),
+    });
+
+    // Baca sebagai teks dulu (bukan langsung .json()) supaya kalau iPaymu
+    // balas HTML/kosong/error non-JSON, kita tetap dapat log yang jelas
+    // alih-alih exception mentah yang kepotong ke error 500 generik.
+    const checkRawText = await checkResp.text();
+    console.log(
+      "[ipaymu-webhook] Cek transaksi -> HTTP", checkResp.status,
+      "| endpoint:", IPAYMU_CHECK_TX_URL,
+      "| trxId:", trxId, "| referenceId:", referenceId,
+      "| response mentah:", checkRawText
+    );
+
+    let checkData: Record<string, unknown> | null = null;
+    try {
+      checkData = JSON.parse(checkRawText) as Record<string, unknown>;
+    } catch {
+      console.error("[ipaymu-webhook] Response cek transaksi BUKAN JSON valid — lihat 'response mentah' di log atas.");
+    }
+
+    if (!checkResp.ok || !checkData?.Data) {
+      console.error(
+        "[ipaymu-webhook] GAGAL verifikasi ke iPaymu — transaksi TIDAK diproses (fail closed).",
+        "Kemungkinan penyebab: (1) IPAYMU_VA/IPAYMU_API_KEY belum/salah di-set via `supabase secrets set`,",
+        "(2) IPAYMU_ENV tidak cocok sandbox/production dengan kredensial yang dipakai,",
+        "(3) endpoint", IPAYMU_CHECK_TX_URL, "bukan path yang benar - cek ulang ke dashboard/dukungan iPaymu."
+      );
+      return json({
+        error: "Verifikasi ke iPaymu gagal, transaksi TIDAK diproses (fail closed demi keamanan).",
+        detail: checkData ?? checkRawText,
+      }, 502);
+    }
+
+    // Status resmi dari iPaymu (bukan dari body notify yang bisa dipalsukan)
+    const dataObj = (checkData?.Data ?? {}) as Record<string, unknown>;
+    const statusResmi = String(dataObj.Status ?? dataObj.StatusDesc ?? "").toLowerCase();
+    const berhasilBayar = ["berhasil", "success", "1", "completed"].some((s) => statusResmi.includes(s));
+
+    // ------------------------------------------------------------------
+    // DISPATCH berdasarkan prefix referenceId — ditentukan saat pembuatan
+    // transaksi di create-payment.ts (Mart, angka murni) vs
+    // create-payment-layanan.ts (LK-/CV-/TR- -> transaksi_atm,
+    // SUB- -> user_subscriptions).
+    // ------------------------------------------------------------------
+    let hasil: { table: string; statusBaru: string };
+
+    if (referenceId.startsWith("SUB-")) {
+      hasil = await prosesLangganan(referenceId, berhasilBayar, trxId);
+    } else if (referenceId.startsWith("LK-") || referenceId.startsWith("CV-") || referenceId.startsWith("TR-")) {
+      hasil = await prosesTransaksiAtm(referenceId, berhasilBayar, trxId);
+    } else {
+      hasil = await prosesPesananMart(referenceId, berhasilBayar, trxId);
+    }
+
+    return json({ status: "ok", table: hasil.table, status_baru: hasil.statusBaru });
+  } catch (err) {
+    console.error("[ipaymu-webhook] Error:", err);
+    return json({ error: String(err) }, 500);
+  }
+});
+
+async function prosesPesananMart(referenceId: string, berhasilBayar: boolean, trxId: string) {
+  const { data: pesanan, error } = await supabaseAdmin
+    .from("bich_pesanan")
+    .select("id, item_pesanan, status")
+    .eq("id", referenceId)
+    .single();
+
+  if (error || !pesanan) throw new Error("Pesanan Mart tidak ditemukan: " + referenceId);
+  if (pesanan.status === "Success") return { table: "bich_pesanan", statusBaru: "already_processed" };
+
+  const statusBaru = berhasilBayar ? "Success" : "Failed";
+  await supabaseAdmin.from("bich_pesanan").update({ status: statusBaru, payment_gateway_ref: trxId }).eq("id", pesanan.id);
+
+  // Kurangi stok HANYA kalau pembayaran beneran sukses, pakai update atomik
+  // biar tidak oversell kalau ada 2 pesanan konkuren.
+  if (berhasilBayar && Array.isArray(pesanan.item_pesanan)) {
+    for (const item of pesanan.item_pesanan) {
+      await supabaseAdmin.rpc("kurangi_stok_produk", { p_produk_id: item.id, p_qty: item.qty });
+    }
+  }
+  return { table: "bich_pesanan", statusBaru };
+}
+
+async function prosesTransaksiAtm(idTransaksi: string, berhasilBayar: boolean, trxId: string) {
+  const { data: trx, error } = await supabaseAdmin
+    .from("transaksi_atm")
+    .select("id_transaksi, status_pembayaran, meta_data")
+    .eq("id_transaksi", idTransaksi)
+    .single();
+
+  if (error || !trx) throw new Error("Transaksi tidak ditemukan: " + idTransaksi);
+  if (trx.status_pembayaran === "SUCCESS") return { table: "transaksi_atm", statusBaru: "already_processed" };
+
+  const statusBaru = berhasilBayar ? "SUCCESS" : "FAILED";
+  await supabaseAdmin
+    .from("transaksi_atm")
+    .update({
+      status_pembayaran: statusBaru,
+      meta_data: { ...(trx.meta_data || {}), payment_gateway_ref: trxId },
+    })
+    .eq("id_transaksi", idTransaksi);
+
+  // CATATAN: begitu status SUCCESS, ini titik yang tepat untuk memicu
+  // aksi lanjutan (mis. auto-insert loker ke master_konten dengan
+  // status_verifikasi='MENTAH' supaya masuk antrean redaksi, atau kirim
+  // notifikasi WA admin). Belum diimplementasikan di sini - beri tahu
+  // saya kalau mau langkah ini juga diotomatisasi.
+
+  return { table: "transaksi_atm", statusBaru };
+}
+
+async function prosesLangganan(subId: string, berhasilBayar: boolean, trxId: string) {
+  const { data: sub, error } = await supabaseAdmin
+    .from("user_subscriptions")
+    .select("sub_id, status, expires_at")
+    .eq("sub_id", subId)
+    .single();
+
+  if (error || !sub) throw new Error("Langganan tidak ditemukan: " + subId);
+
+  const statusBaru = berhasilBayar ? "active" : "pending";
+  const update: Record<string, unknown> = { status: statusBaru, payment_gateway_ref: trxId };
+
+  if (berhasilBayar) {
+    // Perpanjang 30 hari dari expires_at lama (kalau masih berlaku) atau dari sekarang.
+    const basis = sub.expires_at && new Date(sub.expires_at) > new Date() ? new Date(sub.expires_at) : new Date();
+    basis.setDate(basis.getDate() + 30);
+    update.expires_at = basis.toISOString();
+    update.last_paid_at = new Date().toISOString();
+  }
+
+  await supabaseAdmin.from("user_subscriptions").update(update).eq("sub_id", subId);
+  return { table: "user_subscriptions", statusBaru };
+}
+
+async function generateIPaymuSignature(va: string, apiKey: string, bodyObj: object): Promise<string> {
+  const bodyJson = JSON.stringify(bodyObj);
+  const encoder = new TextEncoder();
+  const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(bodyJson));
+  const bodyHash = Array.from(new Uint8Array(hashBuffer)).map((b) => b.toString(16).padStart(2, "0")).join("").toLowerCase();
+  const stringToSign = `POST:${va}:${bodyHash}:${apiKey}`;
+  const cryptoKey = await crypto.subtle.importKey("raw", encoder.encode(apiKey), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sigBuffer = await crypto.subtle.sign("HMAC", cryptoKey, encoder.encode(stringToSign));
+  return Array.from(new Uint8Array(sigBuffer)).map((b) => b.toString(16).padStart(2, "0")).join("").toLowerCase();
+}
+
+function formatTimestampIPaymu(d: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return d.getFullYear().toString() + pad(d.getMonth() + 1) + pad(d.getDate()) + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
+}
+
+function json(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
+}

@@ -58,6 +58,8 @@ const TABS = [
     { key: 'politik',       label: '🏛️ Politik (Mingguan)',        kategori: 'Politik',      requireAiReady: true  },
     { key: 'pasar_modal',   label: '📊 Pasar Modal',               kategori: 'Pasar Modal',  requireAiReady: false },
     { key: 'tokoh_politik', label: '🎤 Panggung Tokoh',            kategori: 'Tokoh Politik',requireAiReady: false },
+    { key: 'tarif_travel',  label: '🧭 Tarif Travel',              special: true },
+    { key: 'mitra',         label: '🚐 Mitra & Pencairan',         special: true },
 ];
 
 function escapeHtml(str) {
@@ -73,24 +75,46 @@ function isAiReady(item) {
 // ------------------ AUTH ------------------
 async function doLogin() {
     const password = document.getElementById('login-password').value;
-    document.getElementById('login-error').classList.add('hidden');
+    const errEl = document.getElementById('login-error');
+    errEl.classList.add('hidden');
     try {
         const res = await fetch(`${API}/api/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password }),
         });
-        if (!res.ok) throw new Error('unauthorized');
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+            // Tampilkan pesan asli dari server (mis. "Terlalu banyak percobaan
+            // login gagal, coba lagi dalam X detik") - bukan cuma "unauthorized"
+            // generik, supaya jelas kalau sedang kena rate limit vs password salah.
+            errEl.textContent = data.detail || 'Password salah, Bolo.';
+            errEl.classList.remove('hidden');
+            return;
+        }
         TOKEN = data.token;
         localStorage.setItem('bich_redaksi_token', TOKEN);
         showApp();
     } catch (e) {
-        document.getElementById('login-error').classList.remove('hidden');
+        errEl.textContent = 'Gagal terhubung ke server.';
+        errEl.classList.remove('hidden');
     }
 }
 
-function logout() {
+async function logout() {
+    // DIPERBAIKI: sebelumnya cuma hapus token di localStorage - token itu
+    // sendiri TETAP SAH di server sampai server restart. Sekarang panggil
+    // /api/logout dulu supaya token beneran dicabut di server. Dibuat
+    // "best-effort" (tetap logout di UI walau request ini gagal, mis. lagi
+    // offline) supaya pengguna tidak terjebak tidak bisa logout.
+    try {
+        await fetch(`${API}/api/logout`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${TOKEN}` },
+        });
+    } catch (e) {
+        console.warn('Gagal mencabut token di server (tetap logout di browser):', e);
+    }
     TOKEN = '';
     localStorage.removeItem('bich_redaksi_token');
     document.getElementById('app-screen').classList.add('hidden');
@@ -134,9 +158,9 @@ async function loadQueue() {
 function renderTabs() {
     const container = document.getElementById('tabs');
     container.innerHTML = TABS.map(t => {
-        const count = QUEUE.filter(d => d.kategori === t.kategori && (!t.requireAiReady || isAiReady(d))).length;
+        const countLabel = t.special ? '' : ` <span class="opacity-60">(${QUEUE.filter(d => d.kategori === t.kategori && (!t.requireAiReady || isAiReady(d))).length})</span>`;
         return `<button data-tab="${t.key}" class="tab-btn ${t.key === ACTIVE_TAB ? 'active' : ''} text-xs font-mono border border-slate-800 rounded-lg px-3 py-2 transition hover:border-emerald-500">
-            ${t.label} <span class="opacity-60">(${count})</span>
+            ${t.label}${countLabel}
         </button>`;
     }).join('');
     container.querySelectorAll('.tab-btn').forEach(btn => {
@@ -146,8 +170,12 @@ function renderTabs() {
 
 function renderActiveTab() {
     const tabDef = TABS.find(t => t.key === ACTIVE_TAB);
-    const items = QUEUE.filter(d => d.kategori === tabDef.kategori && (!tabDef.requireAiReady || isAiReady(d)));
     const content = document.getElementById('tab-content');
+
+    if (tabDef.key === 'tarif_travel') { renderTarifPanel(content); return; }
+    if (tabDef.key === 'mitra') { renderMitraPanel(content); return; }
+
+    const items = QUEUE.filter(d => d.kategori === tabDef.kategori && (!tabDef.requireAiReady || isAiReady(d)));
 
     if (items.length === 0) {
         content.innerHTML = `<div class="text-center py-16 text-slate-500 font-mono text-sm">✨ Antrean ${escapeHtml(tabDef.kategori)} bersih, Bolo.</div>`;
@@ -155,6 +183,182 @@ function renderActiveTab() {
     }
     content.innerHTML = `<div class="space-y-4">${items.map(item => renderItemCard(item, tabDef.key)).join('')}</div>`;
     items.forEach(item => wireItemCard(item, tabDef.key));
+}
+
+// ------------------ PANEL: TARIF TRAVEL (admin-editable) ------------------
+async function renderTarifPanel(content) {
+    content.innerHTML = `<div class="text-center py-10 font-mono text-sm text-slate-500">⏳ Memuat tarif...</div>`;
+    try {
+        const [rute, layanan] = await Promise.all([
+            apiFetch('/api/tarif-rute'),
+            apiFetch('/api/tarif-layanan'),
+        ]);
+
+        content.innerHTML = `
+        <div class="space-y-6">
+            <div class="bg-[#0b0f17] border border-slate-800 rounded-xl p-5">
+                <h3 class="font-bold text-white mb-1">🧭 Tarif per Rute</h3>
+                <p class="text-xs text-slate-500 mb-4">route_key format: ORIGIN_DESTINATION (mis. BPN_IKN). "DEFAULT" dipakai untuk rute yang belum ada harga khususnya, "AIRPORT" untuk rute yang melibatkan bandara.</p>
+                <div id="tarif-rute-rows" class="space-y-2"></div>
+                <div class="flex gap-2 mt-4 pt-4 border-t border-slate-800">
+                    <input id="new-route-key" placeholder="ROUTE_KEY baru (mis. SMD_PKY)" class="flex-1 bg-[#080c14] border border-slate-700 rounded px-3 py-2 text-xs font-mono">
+                    <input id="new-route-harga" type="number" placeholder="Harga (Rp)" class="w-32 bg-[#080c14] border border-slate-700 rounded px-3 py-2 text-xs font-mono">
+                    <button id="btn-add-route" class="bg-emerald-600 hover:bg-emerald-500 rounded px-4 py-2 text-xs font-bold">+ Tambah Rute</button>
+                </div>
+            </div>
+
+            <div class="bg-[#0b0f17] border border-slate-800 rounded-xl p-5">
+                <h3 class="font-bold text-white mb-1">🚐 Multiplier per Jenis Layanan</h3>
+                <p class="text-xs text-slate-500 mb-4">"multiplier" = tarif rute × nilai ini. "flat" = abaikan tarif rute, pakai nilai ini langsung (contoh: speedboat).</p>
+                <div id="tarif-layanan-rows" class="space-y-2"></div>
+            </div>
+        </div>`;
+
+        const ruteContainer = document.getElementById('tarif-rute-rows');
+        rute.forEach(r => {
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-2 text-xs';
+            row.innerHTML = `
+                <span class="w-32 font-mono text-slate-400 truncate">${escapeHtml(r.route_key)}</span>
+                <input type="number" value="${r.harga}" class="route-harga-input flex-1 bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 font-mono">
+                <input type="text" value="${escapeHtml(r.keterangan || '')}" placeholder="keterangan" class="route-ket-input flex-1 bg-[#080c14] border border-slate-700 rounded px-2 py-1.5">
+                <button class="btn-save-route bg-slate-800 hover:bg-emerald-700 rounded px-3 py-1.5 font-bold">Simpan</button>
+                <button class="btn-del-route bg-red-950/40 border border-red-900 hover:border-red-500 rounded px-2 py-1.5">🗑️</button>
+            `;
+            row.querySelector('.btn-save-route').onclick = async () => {
+                const harga = parseInt(row.querySelector('.route-harga-input').value) || 0;
+                const keterangan = row.querySelector('.route-ket-input').value;
+                await apiFetch('/api/tarif-rute', { method: 'POST', body: JSON.stringify({ route_key: r.route_key, harga, keterangan }) });
+                alert('Tarif ' + r.route_key + ' disimpan.');
+            };
+            row.querySelector('.btn-del-route').onclick = async () => {
+                if (!confirm(`Hapus rute ${r.route_key}?`)) return;
+                await apiFetch(`/api/tarif-rute/${r.route_key}`, { method: 'DELETE' });
+                renderTarifPanel(content);
+            };
+            ruteContainer.appendChild(row);
+        });
+
+        document.getElementById('btn-add-route').onclick = async () => {
+            const route_key = document.getElementById('new-route-key').value.trim().toUpperCase();
+            const harga = parseInt(document.getElementById('new-route-harga').value) || 0;
+            if (!route_key || !harga) { alert('Isi route_key dan harga.'); return; }
+            await apiFetch('/api/tarif-rute', { method: 'POST', body: JSON.stringify({ route_key, harga, keterangan: '' }) });
+            renderTarifPanel(content);
+        };
+
+        const layananContainer = document.getElementById('tarif-layanan-rows');
+        layanan.forEach(l => {
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-2 text-xs';
+            row.innerHTML = `
+                <span class="w-24 font-mono text-slate-400">${escapeHtml(l.service_type)}</span>
+                <select class="layanan-tipe-input bg-[#080c14] border border-slate-700 rounded px-2 py-1.5">
+                    <option value="multiplier" ${l.tipe === 'multiplier' ? 'selected' : ''}>multiplier</option>
+                    <option value="flat" ${l.tipe === 'flat' ? 'selected' : ''}>flat</option>
+                </select>
+                <input type="number" step="0.01" value="${l.nilai}" class="layanan-nilai-input w-28 bg-[#080c14] border border-slate-700 rounded px-2 py-1.5 font-mono">
+                <input type="text" value="${escapeHtml(l.unit_label)}" class="layanan-unit-input flex-1 bg-[#080c14] border border-slate-700 rounded px-2 py-1.5">
+                <button class="btn-save-layanan bg-slate-800 hover:bg-emerald-700 rounded px-3 py-1.5 font-bold">Simpan</button>
+            `;
+            row.querySelector('.btn-save-layanan').onclick = async () => {
+                const tipe = row.querySelector('.layanan-tipe-input').value;
+                const nilai = parseFloat(row.querySelector('.layanan-nilai-input').value) || 0;
+                const unit_label = row.querySelector('.layanan-unit-input').value;
+                await apiFetch('/api/tarif-layanan', { method: 'POST', body: JSON.stringify({ service_type: l.service_type, tipe, nilai, unit_label }) });
+                alert('Layanan ' + l.service_type + ' disimpan.');
+            };
+            layananContainer.appendChild(row);
+        });
+
+    } catch (e) {
+        content.innerHTML = `<div class="text-center py-16 text-red-400 font-mono text-sm">Gagal memuat: ${escapeHtml(e.message)}</div>`;
+    }
+}
+
+// ------------------ PANEL: MITRA & ANTREAN PENCAIRAN ------------------
+async function renderMitraPanel(content) {
+    content.innerHTML = `<div class="text-center py-10 font-mono text-sm text-slate-500">⏳ Memuat data mitra...</div>`;
+    try {
+        const [mitraList, payoutQueue] = await Promise.all([
+            apiFetch('/api/mitra'),
+            apiFetch('/api/payout-queue'),
+        ]);
+
+        content.innerHTML = `
+        <div class="space-y-6">
+            <div class="bg-[#0b0f17] border border-amber-800/40 rounded-xl p-5">
+                <h3 class="font-bold text-white mb-1">💸 Antrean Pencairan (T+1)</h3>
+                <p class="text-xs text-slate-500 mb-4">Layanan sudah SELESAI, menunggu ditransfer manual ke rekening mitra. Cek dispute_deadline sebelum transfer.</p>
+                <div id="payout-rows" class="space-y-2">${payoutQueue.length === 0 ? '<p class="text-xs text-slate-500">Tidak ada antrean pencairan saat ini.</p>' : ''}</div>
+            </div>
+            <div class="bg-[#0b0f17] border border-slate-800 rounded-xl p-5">
+                <h3 class="font-bold text-white mb-3">🚐 Daftar Mitra Transportasi</h3>
+                <div id="mitra-rows" class="space-y-3"></div>
+            </div>
+        </div>`;
+
+        const payoutContainer = document.getElementById('payout-rows');
+        payoutQueue.forEach(p => {
+            const deadline = new Date(p.dispute_deadline);
+            const belumLewatDeadline = deadline > new Date();
+            const row = document.createElement('div');
+            row.className = 'flex items-center justify-between text-xs bg-[#080c14] border border-slate-800 rounded-lg p-3';
+            row.innerHTML = `
+                <div>
+                    <p class="font-bold text-slate-200">${escapeHtml(p.id_transaksi)} — ${escapeHtml(p.nama_produk || '')}</p>
+                    <p class="text-slate-500 font-mono">Selesai: ${new Date(p.selesai_at).toLocaleString('id-ID')} | Batas sengketa: ${deadline.toLocaleString('id-ID')}
+                        ${belumLewatDeadline ? '<span class="text-amber-400">⚠ Belum lewat jendela sengketa</span>' : '<span class="text-emerald-400">✓ Aman dicairkan</span>'}
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="number" placeholder="Nominal payout" class="payout-amount-input w-32 bg-[#05070a] border border-slate-700 rounded px-2 py-1.5">
+                    <button class="btn-payout-selesai bg-emerald-600 hover:bg-emerald-500 rounded px-3 py-1.5 font-bold" ${belumLewatDeadline ? 'title="Masih dalam jendela sengketa, disarankan tunggu"' : ''}>
+                        ${belumLewatDeadline ? '⚠ Tandai Dibayar' : '✓ Tandai Dibayar'}
+                    </button>
+                </div>
+            `;
+            row.querySelector('.btn-payout-selesai').onclick = async () => {
+                const amount = parseInt(row.querySelector('.payout-amount-input').value) || 0;
+                if (!amount) { alert('Isi nominal yang benar-benar ditransfer.'); return; }
+                if (belumLewatDeadline && !confirm('Jendela sengketa 18 jam belum lewat. Tetap tandai sudah dibayar?')) return;
+                await apiFetch('/api/payout-selesai', { method: 'POST', body: JSON.stringify({ id_transaksi: p.id_transaksi, payout_amount: amount }) });
+                renderMitraPanel(content);
+            };
+            payoutContainer.appendChild(row);
+        });
+
+        const mitraContainer = document.getElementById('mitra-rows');
+        mitraList.forEach(m => {
+            const statusColor = m.status_verifikasi === 'TERVERIFIKASI' ? 'text-emerald-400' : m.status_verifikasi === 'DITOLAK' ? 'text-red-400' : 'text-amber-400';
+            const row = document.createElement('div');
+            row.className = 'bg-[#080c14] border border-slate-800 rounded-lg p-3 text-xs space-y-1';
+            row.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-slate-200">${escapeHtml(m.nama)} <span class="text-slate-500 font-normal">(${escapeHtml(m.jenis_mitra)})</span></span>
+                    <span class="font-mono ${statusColor}">${escapeHtml(m.status_verifikasi)}</span>
+                </div>
+                <p class="text-slate-500 font-mono">WA: ${escapeHtml(m.wa || '-')} | SIM: ${escapeHtml(m.no_sim || '-')} (${escapeHtml(m.kelas_sim || '-')}) | KIR s/d: ${escapeHtml(m.kir_berlaku_sampai || '-')}</p>
+                <p class="text-slate-500 font-mono">Rekening: ${escapeHtml(m.nama_bank || '-')} ${escapeHtml(m.no_rekening || '-')} a/n ${escapeHtml(m.nama_pemilik_rekening || '-')} | Komisi platform: ${m.komisi_platform_persen}%</p>
+                <div class="flex gap-2 pt-1">
+                    <button class="btn-verify text-emerald-400 hover:underline">Set Terverifikasi</button>
+                    <button class="btn-reject-mitra text-red-400 hover:underline">Set Ditolak</button>
+                </div>
+            `;
+            row.querySelector('.btn-verify').onclick = async () => {
+                await apiFetch('/api/mitra', { method: 'POST', body: JSON.stringify({ ...m, status_verifikasi: 'TERVERIFIKASI' }) });
+                renderMitraPanel(content);
+            };
+            row.querySelector('.btn-reject-mitra').onclick = async () => {
+                await apiFetch('/api/mitra', { method: 'POST', body: JSON.stringify({ ...m, status_verifikasi: 'DITOLAK' }) });
+                renderMitraPanel(content);
+            };
+            mitraContainer.appendChild(row);
+        });
+
+    } catch (e) {
+        content.innerHTML = `<div class="text-center py-16 text-red-400 font-mono text-sm">Gagal memuat: ${escapeHtml(e.message)}</div>`;
+    }
 }
 
 // ------------------ ITEM CARD (COL1: info + aksi | COL2: draft review) ------------------

@@ -15,28 +15,20 @@
     </style>
 
     <!--
-      INTEGRASI MIDTRANS UNTUK LANGGANAN BERULANG (RECURRING):
-      Snap.js (yang dipakai di pariwisata.html & monetisasi.html) HANYA untuk transaksi
-      sekali bayar. Untuk tagihan berulang tiap bulan, Midtrans mewajibkan kita
-      men-tokenisasi kartu kredit/debit lewat script "New 3DS" ini, lalu backend yang
-      membuat "Subscription" pakai token itu.
+      INTEGRASI PEMBAYARAN: iPaymu via Supabase Edge Function
+      (create-payment-layanan).
 
-      CATATAN JUJUR: metode auto-debit berulang Midtrans SAAT INI hanya mendukung kartu
-      kredit/debit (bukan e-wallet/QRIS/transfer bank untuk auto-charge bulanan). Kalau
-      target pasar Anda (petani/koperasi sawit) kebanyakan tidak punya kartu kredit,
-      pertimbangkan model alternatif: tagihan Snap manual tiap bulan + reminder WA
-      otomatis H-3 sebelum jatuh tempo (bukan auto-debit). Saya beri catatan TODO untuk
-      opsi ini juga di backend.
-
-      Ganti data-client-key dengan CLIENT KEY (bukan Server Key) dari dashboard Midtrans.
+      CATATAN JUJUR SOAL LANGGANAN OTOMATIS (AUTO-DEBIT KARTU):
+      Dokumentasi iPaymu yang tersedia saat kode ini ditulis belum
+      mencakup tokenisasi kartu/recurring billing seperti Midtrans New3DS
+      dulu. Jalur "Kartu Kredit/Debit" di bawah untuk sementara DINONAKTIFKAN
+      (bukan dihapus) sampai ada konfirmasi dukungan resminya dari iPaymu.
+      Semua langganan sementara lewat jalur manual (QRIS/Transfer/E-wallet),
+      sesuai catatan asli di file ini soal target pasar petani/koperasi yang
+      kebanyakan tidak punya kartu kredit.
     -->
-    <script src="https://api.sandbox.midtrans.com/v2/assets/js/midtrans-new-3ds.min.js"
-            data-environment="sandbox"
-            data-client-key="GANTI_DENGAN_CLIENT_KEY_SANDBOX_ANDA"></script>
-
-    <!-- Snap.js dipakai untuk jalur pembayaran MANUAL (QRIS/transfer/e-wallet) - metode
-         pembayaran yang lebih umum dipakai petani/koperasi dibanding kartu kredit. -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="GANTI_DENGAN_CLIENT_KEY_SANDBOX_ANDA"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/market/supabase.js"></script>
 </head>
 <body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
 
@@ -111,11 +103,14 @@
                                     <span class="text-[10px] text-slate-400 block">Bayar manual tiap bulan. Kami ingatkan via WhatsApp H-3 sebelum jatuh tempo. Tidak perlu kartu.</span>
                                 </span>
                             </label>
-                            <label class="cursor-pointer bg-[#05070a] border border-slate-800 rounded-lg p-3 flex items-start gap-2 hover:border-emerald-400/50 transition">
-                                <input type="radio" name="sawit-billing-mode" value="card" class="mt-0.5">
+                            <label class="cursor-not-allowed bg-[#05070a] border border-slate-800/50 rounded-lg p-3 flex items-start gap-2 opacity-50">
+                                <input type="radio" name="sawit-billing-mode" value="card" disabled class="mt-0.5">
                                 <span>
-                                    <span class="text-xs font-mono text-slate-200 block font-bold">Kartu Kredit/Debit</span>
-                                    <span class="text-[10px] text-slate-400 block">Auto-debit otomatis tiap bulan, tidak perlu bayar manual lagi.</span>
+                                    <span class="text-xs font-mono text-slate-400 flex items-center gap-1.5 font-bold">
+                                        Kartu Kredit/Debit
+                                        <span class="text-[8px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded-full">SEGERA HADIR</span>
+                                    </span>
+                                    <span class="text-[10px] text-slate-500 block">Auto-debit bulanan sedang kami siapkan integrasinya. Sementara pakai QRIS/Transfer manual dulu ya.</span>
                                 </span>
                             </label>
                         </div>
@@ -160,6 +155,12 @@
                         <input type="tel" id="ikn-wa" placeholder="Nomor WhatsApp PIC" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
                         <input type="email" id="ikn-email" placeholder="Email Perusahaan" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none sm:col-span-2">
                     </div>
+                    <div class="bg-amber-500/5 border border-amber-500/20 rounded-lg p-3">
+                        <p class="text-[10px] font-mono text-amber-400">
+                            💡 Pembayaran langganan IKN saat ini via QRIS/Transfer/E-wallet manual bulanan
+                            (auto-debit kartu sedang kami siapkan, menyusul).
+                        </p>
+                    </div>
                     <div id="ikn-card-fields"></div>
                     <div class="flex flex-col items-end gap-2 pt-2">
                         <p id="ikn-status-msg" class="hidden text-[11px] font-mono max-w-md text-right"></p>
@@ -172,7 +173,7 @@
         </div>
 
         <p class="text-center text-[11px] text-slate-500 font-mono max-w-lg mx-auto">
-            🔒 Nomor kartu Anda diproses langsung oleh sistem resmi Midtrans (tokenisasi), tidak pernah tersimpan atau melewati server BICH. Langganan bisa dibatalkan kapan saja lewat WhatsApp admin.
+            🔒 Pembayaran diproses langsung oleh iPaymu (payment gateway resmi), tidak pernah tersimpan atau melewati server BICH. Langganan bisa dibatalkan kapan saja lewat WhatsApp admin.
         </p>
     </main>
 
@@ -182,16 +183,18 @@
 
     <script>
         /*
-          ALUR LANGGANAN (RECURRING) YANG AMAN:
-          1. Pengguna isi data + kartu. Nomor kartu TIDAK PERNAH menyentuh server BICH -
-             langsung dikirim ke Midtrans lewat MidtransNew3ds.getCardToken() di browser,
-             dan yang kita terima balik hanya sebuah TOKEN (bukan nomor kartu asli).
-          2. Token itu (bukan harga) yang dikirim ke backend /api/create-subscription.
-          3. Backend mencocokkan planCode ke katalog resminya sendiri untuk menentukan
-             nominal & interval tagihan, lalu memanggil Midtrans Subscription API memakai
-             SERVER KEY (rahasia, hanya di server) untuk mendaftarkan langganan berulang.
-          4. Tiap kali siklus bulanan jatuh tempo, Midtrans OTOMATIS menagih kartu itu dan
-             mengirim notifikasi ke webhook backend - sama seperti transaksi Snap biasa.
+          ALUR LANGGANAN (RECURRING) — STATUS SAAT INI:
+          1. Jalur manual (QRIS/Transfer/E-wallet) SUDAH aktif via iPaymu: pengguna isi
+             data, backend membuat baris di user_subscriptions (billing_mode: 'manual'),
+             lalu redirect ke halaman bayar iPaymu. Status jadi 'active' setelah webhook
+             ipaymu-webhook mengonfirmasi pembayaran sukses.
+          2. Jalur kartu/auto-debit BELUM tersedia - dokumentasi iPaymu yang ada saat ini
+             belum mencakup tokenisasi kartu/recurring billing. UI-nya sengaja
+             ditampilkan "SEGERA HADIR", bukan dihapus, supaya gampang diaktifkan lagi
+             begitu integrasinya siap.
+          3. Perpanjangan bulanan (renewal) untuk jalur manual masih perlu sistem reminder
+             WA terjadwal terpisah (belum dibangun) yang mengarahkan pengguna balik ke
+             halaman ini dengan ?renew=SUB_ID - parameter ini sudah didukung backend.
         */
 
         function getInitialProduct() {
@@ -227,16 +230,9 @@
         switchProduct(getInitialProduct());
 
         // Render form kartu sederhana ke dalam kedua form (dipisah id agar tidak bentrok).
+        // SEMENTARA DINONAKTIFKAN - lihat catatan di <head> soal auto-debit iPaymu.
         function cardFieldsHtml(prefix) {
-            return `
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-800 mt-2">
-                    <input type="text" id="${prefix}-card-number" placeholder="Nomor Kartu" inputmode="numeric" maxlength="19" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none sm:col-span-3">
-                    <input type="text" id="${prefix}-card-exp-month" placeholder="Bulan (MM)" inputmode="numeric" maxlength="2" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
-                    <input type="text" id="${prefix}-card-exp-year" placeholder="Tahun (YYYY)" inputmode="numeric" maxlength="4" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
-                    <input type="text" id="${prefix}-card-cvv" placeholder="CVV" inputmode="numeric" maxlength="4" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-emerald-400 focus:outline-none">
-                </div>
-                <p class="text-[10px] text-slate-500 font-mono">* Kartu kredit/debit hanya untuk pendaftaran langganan otomatis. Data kartu langsung diproses oleh Midtrans, bukan disimpan di web ini.</p>
-            `;
+            return `<p class="text-[10px] font-mono text-slate-500 pt-2 border-t border-slate-800 mt-2">Pembayaran kartu auto-debit sedang kami siapkan integrasinya dengan gateway baru. Untuk saat ini silakan gunakan QRIS/Transfer manual.</p>`;
         }
         document.getElementById('sawit-card-fields').innerHTML = cardFieldsHtml('sawit');
         document.getElementById('ikn-card-fields').innerHTML = cardFieldsHtml('ikn');
@@ -277,22 +273,24 @@
                 return;
             }
 
-            // Produk 'sawit' punya 2 jalur: manual (Snap, tanpa kartu) atau kartu (auto-debit).
-            // Produk 'ikn' saat ini hanya jalur kartu.
+            // SEMENTARA: jalur kartu/auto-debit dinonaktifkan (lihat catatan di <head>).
+            // Semua langganan - termasuk IKN yang dulu selalu 'card' - sekarang manual.
             const billingModeInput = document.querySelector('input[name="sawit-billing-mode"]:checked');
-            const billingMode = (kind === 'sawit' && billingModeInput) ? billingModeInput.value : 'card';
+            const billingMode = (kind === 'sawit' && billingModeInput) ? billingModeInput.value : 'manual';
 
-            if (billingMode === 'manual') {
-                return handleManualCheckout({ btn, statusMsg, hpCheckId: `${kind}_hp_check`, kind, planCode, customer, formEl: e.target });
+            if (billingMode === 'card') {
+                showStatus(statusMsg, 'amber', 'Pembayaran kartu auto-debit belum tersedia saat ini. Silakan pilih QRIS/Transfer manual.');
+                return;
             }
 
-            return handleCardSubscribe({ btn, statusMsg, kind, planCode, customer, formEl: e.target });
+            return handleManualCheckout({ btn, statusMsg, hpCheckId: `${kind}_hp_check`, kind, planCode, customer, formEl: e.target });
         }
 
         // ------------------------------------------------------------------
-        // JALUR MANUAL: bayar sekali per bulan lewat Snap (QRIS/transfer/e-wallet),
-        // tanpa kartu, tanpa auto-debit. Reminder pembayaran berikutnya dikirim via
-        // WhatsApp oleh backend (lihat server-bich-payment.js: checkRenewalReminders).
+        // JALUR MANUAL: bayar sekali per bulan lewat iPaymu (QRIS/transfer/e-wallet),
+        // tanpa kartu, tanpa auto-debit. Reminder pembayaran berikutnya perlu
+        // dikirim via WhatsApp oleh sistem terjadwal terpisah (belum dibangun -
+        // ini scope lain di luar migrasi payment gateway).
         // ------------------------------------------------------------------
         async function handleManualCheckout({ btn, statusMsg, kind, planCode, customer, formEl }) {
             isSubInProgress = true;
@@ -306,42 +304,15 @@
                 const params = new URLSearchParams(window.location.search);
                 const renewId = params.get('renew') || null;
 
-                const response = await fetch('/api/create-transaction', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        service: kind,
-                        billingMode: 'manual',
-                        planCode,
-                        customer,
-                        manualSubId: renewId,
-                    }),
+                const { data, error } = await db.functions.invoke('create-payment-layanan', {
+                    body: { service: kind, billingMode: 'manual', planCode, customer, manualSubId: renewId }
                 });
 
-                if (!response.ok) {
-                    const errBody = await response.json().catch(() => ({}));
-                    throw new Error(errBody.error || ('Gagal membuat transaksi, status ' + response.status));
-                }
+                if (error) throw new Error(error.message || 'Gagal membuat transaksi.');
+                if (!data || !data.checkout_url) throw new Error(data?.error || 'Link pembayaran tidak diterima dari server.');
 
-                const data = await response.json();
-                if (!data.token) throw new Error('Token pembayaran tidak diterima dari server.');
-
-                showStatus(statusMsg, 'slate', 'Membuka jendela pembayaran...');
-
-                window.snap.pay(data.token, {
-                    onSuccess: function(result) {
-                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=${kind}&status=success`;
-                    },
-                    onPending: function(result) {
-                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(result.order_id)}&service=${kind}&status=pending`;
-                    },
-                    onError: function() {
-                        showStatus(statusMsg, 'red', 'Pembayaran gagal. Silakan coba lagi.');
-                    },
-                    onClose: function() {
-                        showStatus(statusMsg, 'slate', 'Anda menutup jendela pembayaran sebelum selesai.');
-                    },
-                });
+                showStatus(statusMsg, 'emerald', 'Mengarahkan ke halaman pembayaran...');
+                window.location.href = data.checkout_url;
 
             } catch (err) {
                 console.error(err);
@@ -351,75 +322,6 @@
                 btn.disabled = false;
                 btn.innerText = 'Mulai Langganan →';
             }
-        }
-
-        // ------------------------------------------------------------------
-        // JALUR KARTU: tokenisasi kartu + daftar subscription auto-debit (kode lama).
-        // ------------------------------------------------------------------
-        async function handleCardSubscribe({ btn, statusMsg, kind, planCode, customer, formEl }) {
-
-            const cardNumber = document.getElementById(`${kind}-card-number`).value.replace(/\s/g, '');
-            const cardExpMonth = document.getElementById(`${kind}-card-exp-month`).value.trim();
-            const cardExpYear = document.getElementById(`${kind}-card-exp-year`).value.trim();
-            const cardCvv = document.getElementById(`${kind}-card-cvv`).value.trim();
-            if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvv) {
-                showStatus(statusMsg, 'red', 'Mohon lengkapi data kartu untuk langganan otomatis.');
-                return;
-            }
-
-            isSubInProgress = true;
-            btn.disabled = true;
-            btn.innerText = 'Memproses...';
-            showStatus(statusMsg, 'slate', 'Memverifikasi kartu dengan Midtrans...');
-
-            // Langkah 1: tokenisasi kartu LANGSUNG ke Midtrans, tidak lewat server kita.
-            MidtransNew3ds.getCardToken({
-                card_number: cardNumber,
-                card_exp_month: cardExpMonth,
-                card_exp_year: cardExpYear,
-                card_cvv: cardCvv,
-            }, {
-                onSuccess: async function(response) {
-                    try {
-                        showStatus(statusMsg, 'slate', 'Mendaftarkan langganan ke server...');
-
-                        // Langkah 2: kirim TOKEN (bukan nomor kartu) + pilihan paket ke backend.
-                        const res = await fetch('/api/create-subscription', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                service: kind,          // 'sawit' | 'ikn'
-                                planCode,
-                                customer,
-                                cardTokenId: response.token_id,
-                            }),
-                        });
-
-                        if (!res.ok) {
-                            const errBody = await res.json().catch(() => ({}));
-                            throw new Error(errBody.error || ('Gagal mendaftar, status ' + res.status));
-                        }
-
-                        const data = await res.json();
-                        window.location.href = `../terima-kasih.html?order_id=${encodeURIComponent(data.subscriptionId)}&service=${kind}&status=success`;
-
-                    } catch (err) {
-                        console.error(err);
-                        showStatus(statusMsg, 'red', 'Gagal mendaftarkan langganan: ' + err.message + ' (endpoint /api/create-subscription mungkin belum tersambung - lihat server-bich-payment.js).');
-                    } finally {
-                        isSubInProgress = false;
-                        btn.disabled = false;
-                        btn.innerText = 'Mulai Langganan →';
-                    }
-                },
-                onFailure: function(response) {
-                    console.error(response);
-                    showStatus(statusMsg, 'red', 'Data kartu tidak valid atau ditolak Midtrans. Periksa kembali nomor kartu/CVV/masa berlaku.');
-                    isSubInProgress = false;
-                    btn.disabled = false;
-                    btn.innerText = 'Mulai Langganan →';
-                },
-            });
         }
 
         function showStatus(el, color, text) {
