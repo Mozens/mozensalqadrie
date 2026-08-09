@@ -78,7 +78,7 @@ Deno.serve(async (req) => {
       return json({ error: "Nomor WhatsApp wajib diisi." }, 400);
     }
 
-    const { error } = await supabaseAdmin.from("umrah_leads").insert([{
+    const { error } = await supabaseAdmin.from("bich_umrah_leads").insert([{
       nama: nama.trim().slice(0, 200),
       whatsapp: whatsapp.trim().slice(0, 30),
       paket: typeof paket === "string" ? paket.trim().slice(0, 200) : null,

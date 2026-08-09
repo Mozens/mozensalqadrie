@@ -873,6 +873,11 @@
                 statusMsg.classList.remove('hidden');
                 e.target.reset();
 
+                setTimeout(() => {
+                    statusMsg.innerText = "";
+                    statusMsg.classList.add('hidden');
+                }, 5000);
+                
             } catch (err) {
                 console.error(err);
                 statusMsg.className = "text-[11px] font-mono text-red-400";
