@@ -195,14 +195,20 @@
         </div>
     </footer>
 
-    <!-- SCRIPT ENKRIPSI WA AMAN MOZENS ALQADRIE -->
+    <!-- LINK WHATSAPP MOZENS ALQADRIE -->
     <script>
     function openAmanWA(e) {
       e.preventDefault();
-      // URL WhatsApp terenkripsi Base64 (082341333313)
-      const secretKey = "aHR0cHM6Ly93YS5tZS82MjgyMzQxMzMzMzEz";
-      const realUrl = atob(secretKey);
-      window.open(realUrl, '_blank');
+      // DIPERBAIKI: komentar lama menyebut ini "terenkripsi Base64" - itu
+      // TIDAK AKURAT. Base64 cuma ENCODING (bisa dibalik siapa saja dengan
+      // atob() dalam sedetik), bukan ENKRIPSI - tidak ada kerahasiaan
+      // sungguhan di sini. Untungnya nomor ini memang bukan rahasia (nomor
+      // yang sama juga tertulis polos di legal.html), jadi tidak ada
+      // dampak keamanan - cuma komentarnya yang saya luruskan biar tidak
+      // memberi kesan keliru soal proteksi yang sebenarnya tidak ada.
+      const encodedNumber = "aHR0cHM6Ly93YS5tZS82MjgyMzQxMzMzMzEz"; // Base64, bukan terenkripsi
+      const realUrl = atob(encodedNumber);
+      window.open(realUrl, '_blank', 'noopener,noreferrer');
     }
     </script>
 
