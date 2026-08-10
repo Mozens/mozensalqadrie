@@ -98,28 +98,28 @@
                 <h2 class="text-sm font-bold text-slate-100">Masuk / Daftar Sebagai Penjual</h2>
             </div>
             <p class="text-[11px] text-slate-400">
-                Toko & produk kamu terikat ke email ini — orang lain tidak bisa mengubah lapak kamu tanpa akses email tersebut.
+                Toko & produk kamu terikat ke nomor WhatsApp ini — orang lain tidak bisa mengubah lapak kamu tanpa akses WA tersebut.
             </p>
 
             <template x-if="!otpSent">
                 <form @submit.prevent="kirimOtp()" class="space-y-3">
-                    <input type="email" x-model="authEmail" required placeholder="Email kamu (untuk kode verifikasi)"
+                    <input type="tel" x-model="authPhone" required placeholder="Nomor WhatsApp kamu (mis. 0812xxxxxxx)"
                            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
                     <button type="submit" :disabled="loading" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition">
-                        <span x-text="loading ? 'Mengirim kode...' : 'Kirim Kode Verifikasi'"></span>
+                        <span x-text="loading ? 'Mengirim kode...' : 'Kirim Kode Verifikasi via WA'"></span>
                     </button>
                 </form>
             </template>
 
             <template x-if="otpSent">
                 <form @submit.prevent="verifikasiOtp()" class="space-y-3">
-                    <p class="text-[11px] text-emerald-400">✅ Kode 6-digit sudah dikirim ke <b x-text="authEmail"></b>, cek email kamu (termasuk folder spam).</p>
+                    <p class="text-[11px] text-emerald-400">✅ Kode 6-digit sudah dikirim via WhatsApp ke <b x-text="authPhone"></b>.</p>
                     <input type="text" x-model="otpCode" required maxlength="6" placeholder="Masukkan kode 6 digit"
                            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 tracking-widest text-center focus:outline-none focus:border-amber-500 transition">
                     <button type="submit" :disabled="loading" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition">
                         <span x-text="loading ? 'Memverifikasi...' : 'Verifikasi & Masuk'"></span>
                     </button>
-                    <button type="button" @click="otpSent = false" class="w-full text-slate-500 text-[11px] hover:text-slate-300">Ganti email / kirim ulang</button>
+                    <button type="button" @click="otpSent = false" class="w-full text-slate-500 text-[11px] hover:text-slate-300">Ganti nomor / kirim ulang</button>
                 </form>
             </template>
         </div>
@@ -135,7 +135,7 @@
                     <span x-show="isTokoSaved" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                         <i class="fa-solid fa-check"></i> Terdaftar
                     </span>
-                    <button @click="logout()" class="text-[10px] text-slate-500 hover:text-rose-400 font-bold">Keluar (<span x-text="authEmail"></span>)</button>
+                    <button @click="logout()" class="text-[10px] text-slate-500 hover:text-rose-400 font-bold">Keluar (<span x-text="authPhone"></span>)</button>
                 </div>
             </div>
 
@@ -262,7 +262,7 @@
             return {
                 // --- AUTH STATE ---
                 isLoggedIn: false,
-                authEmail: '',
+                authPhone: '',
                 otpSent: false,
                 otpCode: '',
                 userId: null,
@@ -298,7 +298,7 @@
                     const { data: { session } } = await db.auth.getSession();
                     if (session) {
                         this.userId = session.user.id;
-                        this.authEmail = session.user.email;
+                        this.authPhone = session.user.phone;
                         this.isLoggedIn = true;
                         await this.muatTokoSaya();
                     }
@@ -307,7 +307,12 @@
                         if (event === 'SIGNED_OUT') {
                             this.isLoggedIn = false;
                             this.userId = null;
-                            this.toko = { id: null, nama_toko: '', pemilik: '', wa: '', deskripsi: '' };
+                            // DIPERBAIKI: sebelumnya reset ini tidak menyertakan is_live/
+                            // live_url - jadi kalau seller A logout lalu di browser yang
+                            // sama seller B login, sisa state "is_live: true" milik A bisa
+                            // ketampil sesaat sebelum muatTokoSaya() menimpanya. Kecil, tapi
+                            // tetap potensi kebocoran tampilan antar sesi.
+                            this.toko = { id: null, nama_toko: '', pemilik: '', wa: '', deskripsi: '', is_live: false, live_url: '' };
                             this.isTokoSaved = false;
                         }
                     });
@@ -320,14 +325,36 @@
                     setTimeout(() => { this.toast.show = false; }, 4000);
                 },
 
-                // --- AUTH: kirim & verifikasi kode OTP email (Supabase Auth bawaan) ---
+                // DIPINDAH dari OTP email ke OTP WhatsApp - alasan: tidak semua penjual
+                // punya email yang aktif dicek, dan verifikasi email sempat kena rate
+                // limit bawaan Supabase (quota pengiriman email gratis cukup ketat).
+                // Pengiriman kode tetap lewat Supabase Auth (jadi auth.uid() & semua RLS
+                // yang sudah ada TIDAK PERLU diubah) - cuma "kurir" pengirim kodenya yang
+                // diganti dari email ke WhatsApp lewat Send SMS Hook + Fonnte. Lihat
+                // send-otp-whatsapp/index.ts untuk sisi server-nya.
+                normalizePhone(input) {
+                    let digits = String(input || '').replace(/[^\d]/g, '');
+                    if (digits.startsWith('0')) digits = '62' + digits.slice(1);
+                    else if (!digits.startsWith('62')) digits = '62' + digits;
+                    // Penjagaan: nomor Indonesia yang valid minimal ~10-13 digit total
+                    // (termasuk kode negara 62). Kalau lebih pendek dari itu, input
+                    // kemungkinan kosong/ngawur - lempar error yang jelas daripada
+                    // diam-diam hasilkan nomor rusak semacam "+62" doang.
+                    if (digits.length < 10 || digits.length > 15) {
+                        throw new Error('Nomor WhatsApp tidak valid: "' + input + '"');
+                    }
+                    return '+' + digits;
+                },
+
                 async kirimOtp() {
                     this.loading = true;
                     try {
-                        const { error } = await db.auth.signInWithOtp({ email: this.authEmail });
+                        const phoneE164 = this.normalizePhone(this.authPhone);
+                        const { error } = await db.auth.signInWithOtp({ phone: phoneE164 });
                         if (error) throw error;
+                        this.authPhone = phoneE164;
                         this.otpSent = true;
-                        this.showToast('Kode verifikasi terkirim, cek email kamu.');
+                        this.showToast('Kode verifikasi terkirim via WhatsApp.');
                     } catch (err) {
                         this.showToast('Gagal mengirim kode: ' + err.message, 'error');
                     } finally {
@@ -339,9 +366,11 @@
                     this.loading = true;
                     try {
                         const { data, error } = await db.auth.verifyOtp({
-                            email: this.authEmail,
+                            phone: this.authPhone,
                             token: this.otpCode,
-                            type: 'email',
+                            type: 'sms', // tetap 'sms' di sisi API Supabase walau pengirimannya lewat WA -
+                                         // ini nama tipe internal Supabase untuk jalur OTP nomor telepon,
+                                         // bukan penanda channel pengiriman (channel diatur oleh Send SMS Hook).
                         });
                         if (error) throw error;
                         this.userId = data.user.id;
@@ -359,7 +388,7 @@
                 async logout() {
                     await db.auth.signOut();
                     this.otpCode = '';
-                    this.authEmail = '';
+                    this.authPhone = '';
                 },
 
                 // --- Muat toko milik user yang sedang login (bukan dari localStorage) ---
@@ -387,12 +416,17 @@
                     }
                     this.loading = true;
                     try {
+                        // DITAMBAHKAN: nomor WA toko (beda dari nomor login) juga wajib
+                        // dinormalisasi - kalau tidak, link "Chat Penjual" di mart.html
+                        // bisa rusak kalau penjual ketik "0812..." apa adanya tanpa +62.
+                        const waTokoNormalized = this.normalizePhone(this.toko.wa);
+
                         const payload = {
                             ...(this.toko.id ? { id: this.toko.id } : {}),
                             owner_id: this.userId, // <-- kunci keamanan: RLS memastikan hanya owner_id = auth.uid() yang boleh insert/update
                             nama_toko: this.toko.nama_toko,
                             pemilik: this.toko.pemilik,
-                            wa: this.toko.wa,
+                            wa: waTokoNormalized,
                             deskripsi: this.toko.deskripsi,
                             is_live: this.toko.is_live,
                             live_url: this.toko.is_live ? this.toko.live_url : null,
@@ -426,8 +460,18 @@
                         const payload = {
                             toko_id: this.toko.id, // RLS akan menolak kalau toko_id ini bukan milik auth.uid()
                             nama_produk: this.produk.nama_produk,
-                            harga: parseInt(this.produk.harga) || 0,
-                            stok: parseInt(this.produk.stok) || 1,
+                            // DIPERBAIKI: sebelumnya harga/stok mentah dari input tanpa
+                            // penjagaan (bisa negatif/NaN kalau ada yang usil di DevTools).
+                            // Math.max(0, ...) menutup kemungkinan itu di sisi UI. Stok
+                            // SENGAJA dibolehkan 0 (bukan minimum 1) - itu representasi
+                            // wajar untuk "barang habis", bukan hal yang harus dicegah.
+                            // CATATAN: ini validasi client-side untuk UX saja - penjagaan
+                            // yang sesungguhnya harus ada di level database lewat CHECK
+                            // constraint (harga >= 0 AND stok >= 0), karena orang yang
+                            // manggil API langsung (bukan lewat form ini) tetap bisa
+                            // mengirim angka negatif kalau DB sendiri tidak menolaknya.
+                            harga: Math.max(0, parseInt(this.produk.harga) || 0),
+                            stok: Math.max(0, parseInt(this.produk.stok) || 0),
                             kategori: this.produk.kategori,
                             lokasi: this.produk.lokasi,
                             gambar_url: this.produk.gambar_url || 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart',
