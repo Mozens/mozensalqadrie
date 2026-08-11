@@ -89,7 +89,7 @@
             <button @click="toast.show = false" class="text-slate-400 hover:text-slate-100"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
-        <!-- STEP 0: LOGIN PENJUAL -->
+        <!-- STEP 0: LOGIN PENJUAL (WAJIB, supaya toko tidak bisa diklaim orang lain) -->
         <div x-show="!isLoggedIn" x-cloak class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
             <div class="flex items-center gap-2.5 border-b border-slate-800/80 pb-4">
                 <span class="w-7 h-7 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center font-black text-xs">
@@ -101,32 +101,30 @@
                 Toko & produk kamu terikat ke nomor WhatsApp ini — orang lain tidak bisa mengubah lapak kamu tanpa akses WA tersebut.
             </p>
 
-            <!-- FORM KIRIM NOMOR WA -->
-            <div x-show="!otpSent">
+            <template x-if="!otpSent">
                 <form @submit.prevent="kirimOtp()" class="space-y-3">
                     <input type="tel" x-model="authPhone" required placeholder="Nomor WhatsApp kamu (mis. 0812xxxxxxx)"
                            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
-                    <button type="submit" :disabled="loading" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition cursor-pointer">
+                    <button type="submit" :disabled="loading" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition">
                         <span x-text="loading ? 'Mengirim kode...' : 'Kirim Kode Verifikasi via WA'"></span>
                     </button>
                 </form>
-            </div>
+            </template>
 
-            <!-- FORM INPUT KODE OTP 6-DIGIT -->
-            <div x-show="otpSent" x-cloak>
+            <template x-if="otpSent">
                 <form @submit.prevent="verifikasiOtp()" class="space-y-3">
                     <p class="text-[11px] text-emerald-400">✅ Kode 6-digit sudah dikirim via WhatsApp ke <b x-text="authPhone"></b>.</p>
                     <input type="text" x-model="otpCode" required maxlength="6" placeholder="Masukkan kode 6 digit"
                            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 tracking-widest text-center focus:outline-none focus:border-amber-500 transition">
-                    <button type="submit" :disabled="loading" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition cursor-pointer">
+                    <button type="submit" :disabled="loading" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition">
                         <span x-text="loading ? 'Memverifikasi...' : 'Verifikasi & Masuk'"></span>
                     </button>
-                    <button type="button" @click="otpSent = false" class="w-full text-slate-500 text-[11px] hover:text-slate-300 mt-2">Ganti nomor / kirim ulang</button>
+                    <button type="button" @click="otpSent = false" class="w-full text-slate-500 text-[11px] hover:text-slate-300">Ganti nomor / kirim ulang</button>
                 </form>
-            </div>
+            </template>
         </div>
 
-        <!-- STEP 1: REGISTRASI TOKO -->
+        <!-- STEP 1: REGISTRASI TOKO (Jika Belum Daftarkan Toko) -->
         <div x-show="isLoggedIn" x-cloak class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5 relative overflow-hidden">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
                 <div class="flex items-center gap-2.5">
@@ -164,7 +162,7 @@
                     </div>
                 </div>
 
-                <!-- TOGGLE LIVE REAL-TIME -->
+                <!-- 🔴 TOGGLE LIVE REAL-TIME -->
                 <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-3">
                     <label class="flex items-center justify-between cursor-pointer">
                         <span class="flex items-center gap-2 text-xs font-bold text-slate-200">
@@ -181,7 +179,7 @@
                 </div>
 
                 <div class="pt-2 flex justify-end">
-                    <button type="submit" :disabled="loading" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition flex items-center gap-2 cursor-pointer">
+                    <button type="submit" :disabled="loading" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition flex items-center gap-2">
                         <i class="fa-solid fa-floppy-disk"></i>
                         <span x-text="isTokoSaved ? 'Perbarui Profil Lapak' : 'Simpan Profil Lapak'"></span>
                     </button>
@@ -194,12 +192,12 @@
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
                 <div class="flex items-center gap-2.5">
                     <span class="w-7 h-7 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center font-black text-xs">2</span>
-                    <h2 class="text-sm font-bold text-slate-100">Tambah Produk Baru</h2>
+                    <h2 class="text-sm font-bold text-slate-100" x-text="editingProdukId ? 'Edit Produk' : 'Tambah Produk Baru'"></h2>
                 </div>
-                <span class="text-[11px] text-slate-400">Pajang ke katalog BICH Mart</span>
+                <span class="text-[11px] text-slate-400" x-text="editingProdukId ? 'Mengubah produk yang sudah dipajang' : 'Pajang ke katalog BICH Mart'"></span>
             </div>
 
-            <form @submit.prevent="saveProduk()" class="space-y-4">
+            <form id="form-produk" @submit.prevent="saveProduk()" class="space-y-4">
                 <div>
                     <label class="block text-[11px] font-bold text-slate-400 mb-1.5">Nama Produk *</label>
                     <input type="text" x-model="produk.nama_produk" placeholder="Contoh: Madu Hutan Murni Borneo (500ml)" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition">
@@ -243,12 +241,61 @@
 
                 <div class="pt-3 flex items-center justify-between">
                     <p class="text-[10px] text-slate-500">* Produk yang di-submit akan langsung tampil di BICH Mart.</p>
-                    <button type="submit" :disabled="loading" class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs px-6 py-3 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-95 transition flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-plus-circle"></i>
-                        <span>Pajang Produk Sekarang</span>
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <!-- DITAMBAHKAN: tombol batal muncul cuma saat sedang mode edit -->
+                        <button type="button" x-show="editingProdukId" x-cloak @click="batalEditProduk()"
+                                class="text-slate-400 hover:text-slate-200 text-xs font-bold px-4 py-3">
+                            Batal
+                        </button>
+                        <button type="submit" :disabled="loading" class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-black text-xs px-6 py-3 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-95 transition flex items-center gap-2">
+                            <i class="fa-solid" :class="editingProdukId ? 'fa-floppy-disk' : 'fa-plus-circle'"></i>
+                            <span x-text="editingProdukId ? 'Simpan Perubahan' : 'Pajang Produk Sekarang'"></span>
+                        </button>
+                    </div>
                 </div>
             </form>
+        </div>
+
+        <!-- STEP 3: DAFTAR PRODUK SAYA (Edit / Hapus) -->
+        <div x-show="isLoggedIn && isTokoSaved" x-cloak class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center font-black text-xs">3</span>
+                    <h2 class="text-sm font-bold text-slate-100">Produk Saya</h2>
+                </div>
+                <span class="text-[11px] text-slate-400" x-text="daftarProduk.length + ' produk dipajang'"></span>
+            </div>
+
+            <div x-show="loadingProduk" x-cloak class="text-center py-8 text-xs text-slate-500">
+                <i class="fa-solid fa-spinner fa-spin"></i> Memuat produk...
+            </div>
+
+            <div x-show="!loadingProduk && daftarProduk.length === 0" x-cloak class="text-center py-8 text-xs text-slate-500">
+                Belum ada produk. Pajang produk pertamamu lewat form di atas.
+            </div>
+
+            <div class="space-y-2.5">
+                <template x-for="p in daftarProduk" :key="p.id">
+                    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 flex items-center gap-3">
+                        <img :src="p.gambar_url || 'https://placehold.co/100x100/020617/F59E0B?text=BICH'" class="w-14 h-14 rounded-xl object-cover border border-slate-800 flex-shrink-0">
+                        <div class="flex-grow min-w-0">
+                            <p class="text-xs font-bold text-slate-100 truncate" x-text="p.nama_produk"></p>
+                            <p class="text-[11px] text-amber-400 font-bold" x-text="'Rp ' + Number(p.harga).toLocaleString('id-ID')"></p>
+                            <p class="text-[10px]" :class="p.stok > 0 ? 'text-slate-500' : 'text-rose-400 font-bold'" x-text="p.stok > 0 ? ('Stok: ' + p.stok) : 'Stok habis'"></p>
+                        </div>
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            <button @click="mulaiEditProduk(p)" title="Edit produk"
+                                    class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-amber-500/20 hover:text-amber-400 text-slate-400 flex items-center justify-center transition">
+                                <i class="fa-solid fa-pen text-xs"></i>
+                            </button>
+                            <button @click="hapusProduk(p)" title="Hapus produk"
+                                    class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-rose-500/20 hover:text-rose-400 text-slate-400 flex items-center justify-center transition">
+                                <i class="fa-solid fa-trash text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
 
     </main>
@@ -289,6 +336,10 @@
                 },
                 isTokoSaved: false,
                 loading: false,
+                // DITAMBAHKAN: state untuk daftar produk + mode edit
+                daftarProduk: [],
+                loadingProduk: false,
+                editingProdukId: null,
                 toast: {
                     show: false,
                     message: '',
@@ -296,6 +347,7 @@
                 },
 
                 async initSeller() {
+                    // Cek sesi login yang masih aktif (Supabase Auth session, BUKAN localStorage manual)
                     const { data: { session } } = await db.auth.getSession();
                     if (session) {
                         this.userId = session.user.id;
@@ -308,6 +360,11 @@
                         if (event === 'SIGNED_OUT') {
                             this.isLoggedIn = false;
                             this.userId = null;
+                            // DIPERBAIKI: sebelumnya reset ini tidak menyertakan is_live/
+                            // live_url - jadi kalau seller A logout lalu di browser yang
+                            // sama seller B login, sisa state "is_live: true" milik A bisa
+                            // ketampil sesaat sebelum muatTokoSaya() menimpanya. Kecil, tapi
+                            // tetap potensi kebocoran tampilan antar sesi.
                             this.toko = { id: null, nama_toko: '', pemilik: '', wa: '', deskripsi: '', is_live: false, live_url: '' };
                             this.isTokoSaved = false;
                         }
@@ -321,11 +378,21 @@
                     setTimeout(() => { this.toast.show = false; }, 4000);
                 },
 
+                // DIPINDAH dari OTP email ke OTP WhatsApp - alasan: tidak semua penjual
+                // punya email yang aktif dicek, dan verifikasi email sempat kena rate
+                // limit bawaan Supabase (quota pengiriman email gratis cukup ketat).
+                // Pengiriman kode tetap lewat Supabase Auth (jadi auth.uid() & semua RLS
+                // yang sudah ada TIDAK PERLU diubah) - cuma "kurir" pengirim kodenya yang
+                // diganti dari email ke WhatsApp lewat Send SMS Hook + Fonnte. Lihat
+                // send-otp-whatsapp/index.ts untuk sisi server-nya.
                 normalizePhone(input) {
                     let digits = String(input || '').replace(/[^\d]/g, '');
                     if (digits.startsWith('0')) digits = '62' + digits.slice(1);
                     else if (!digits.startsWith('62')) digits = '62' + digits;
-                    
+                    // Penjagaan: nomor Indonesia yang valid minimal ~10-13 digit total
+                    // (termasuk kode negara 62). Kalau lebih pendek dari itu, input
+                    // kemungkinan kosong/ngawur - lempar error yang jelas daripada
+                    // diam-diam hasilkan nomor rusak semacam "+62" doang.
                     if (digits.length < 10 || digits.length > 15) {
                         throw new Error('Nomor WhatsApp tidak valid: "' + input + '"');
                     }
@@ -339,7 +406,7 @@
                         const { error } = await db.auth.signInWithOtp({ phone: phoneE164 });
                         if (error) throw error;
                         this.authPhone = phoneE164;
-                        this.otpSent = true; // Mengubah state agar form OTP muncul
+                        this.otpSent = true;
                         this.showToast('Kode verifikasi terkirim via WhatsApp.');
                     } catch (err) {
                         this.showToast('Gagal mengirim kode: ' + err.message, 'error');
@@ -354,7 +421,9 @@
                         const { data, error } = await db.auth.verifyOtp({
                             phone: this.authPhone,
                             token: this.otpCode,
-                            type: 'sms',
+                            type: 'sms', // tetap 'sms' di sisi API Supabase walau pengirimannya lewat WA -
+                                         // ini nama tipe internal Supabase untuk jalur OTP nomor telepon,
+                                         // bukan penanda channel pengiriman (channel diatur oleh Send SMS Hook).
                         });
                         if (error) throw error;
                         this.userId = data.user.id;
@@ -373,9 +442,9 @@
                     await db.auth.signOut();
                     this.otpCode = '';
                     this.authPhone = '';
-                    this.otpSent = false;
                 },
 
+                // --- Muat toko milik user yang sedang login (bukan dari localStorage) ---
                 async muatTokoSaya() {
                     try {
                         const { data, error } = await db
@@ -387,6 +456,7 @@
                         if (data) {
                             this.toko = data;
                             this.isTokoSaved = true;
+                            await this.muatProdukSaya();
                         }
                     } catch (err) {
                         console.error('Gagal memuat toko:', err.message);
@@ -400,11 +470,14 @@
                     }
                     this.loading = true;
                     try {
+                        // DITAMBAHKAN: nomor WA toko (beda dari nomor login) juga wajib
+                        // dinormalisasi - kalau tidak, link "Chat Penjual" di mart.html
+                        // bisa rusak kalau penjual ketik "0812..." apa adanya tanpa +62.
                         const waTokoNormalized = this.normalizePhone(this.toko.wa);
 
                         const payload = {
                             ...(this.toko.id ? { id: this.toko.id } : {}),
-                            owner_id: this.userId,
+                            owner_id: this.userId, // <-- kunci keamanan: RLS memastikan hanya owner_id = auth.uid() yang boleh insert/update
                             nama_toko: this.toko.nama_toko,
                             pemilik: this.toko.pemilik,
                             wa: waTokoNormalized,
@@ -439,8 +512,18 @@
                     this.loading = true;
                     try {
                         const payload = {
-                            toko_id: this.toko.id,
+                            toko_id: this.toko.id, // RLS akan menolak kalau toko_id ini bukan milik auth.uid()
                             nama_produk: this.produk.nama_produk,
+                            // DIPERBAIKI: sebelumnya harga/stok mentah dari input tanpa
+                            // penjagaan (bisa negatif/NaN kalau ada yang usil di DevTools).
+                            // Math.max(0, ...) menutup kemungkinan itu di sisi UI. Stok
+                            // SENGAJA dibolehkan 0 (bukan minimum 1) - itu representasi
+                            // wajar untuk "barang habis", bukan hal yang harus dicegah.
+                            // CATATAN: ini validasi client-side untuk UX saja - penjagaan
+                            // yang sesungguhnya harus ada di level database lewat CHECK
+                            // constraint (harga >= 0 AND stok >= 0), karena orang yang
+                            // manggil API langsung (bukan lewat form ini) tetap bisa
+                            // mengirim angka negatif kalau DB sendiri tidak menolaknya.
                             harga: Math.max(0, parseInt(this.produk.harga) || 0),
                             stok: Math.max(0, parseInt(this.produk.stok) || 0),
                             kategori: this.produk.kategori,
@@ -449,19 +532,112 @@
                             video_demo_url: this.produk.video_demo_url || null,
                         };
 
-                        const { error } = await db.from('bich_produk').insert([payload]);
-                        if (error) throw error;
+                        // DITAMBAHKAN: cabang UPDATE kalau sedang mode edit (editingProdukId
+                        // terisi), selain cabang INSERT untuk produk baru yang sudah ada.
+                        // .eq('toko_id', this.toko.id) di cabang update itu bukan sekadar
+                        // jaga-jaga - itu lapis pertahanan tambahan di SISI KLIEN supaya
+                        // permintaan update tidak pernah menyasar toko lain sama sekali,
+                        // di ATAS proteksi RLS yang sudah ada di database.
+                        if (this.editingProdukId) {
+                            const { error } = await db
+                                .from('bich_produk')
+                                .update(payload)
+                                .eq('id', this.editingProdukId)
+                                .eq('toko_id', this.toko.id);
+                            if (error) throw error;
+                            this.showToast('Produk berhasil diperbarui, Bolo! ✏️');
+                        } else {
+                            const { error } = await db.from('bich_produk').insert([payload]);
+                            if (error) throw error;
+                            this.showToast('Produk berhasil dipajang di BICH Mart! 🔥');
+                        }
 
-                        this.showToast('Produk berhasil dipajang di BICH Mart! 🔥');
-
-                        this.produk.nama_produk = '';
-                        this.produk.harga = '';
-                        this.produk.stok = '';
-                        this.produk.gambar_url = '';
-                        this.produk.video_demo_url = '';
+                        this.batalEditProduk(); // reset form & mode edit
+                        await this.muatProdukSaya();
 
                     } catch (err) {
                         this.showToast('Gagal memajang produk: ' + err.message, 'error');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                // DITAMBAHKAN: kelola daftar produk (muat/edit/hapus) - sebelumnya
+                // seller cuma bisa nambah produk lewat form, tidak ada cara melihat/
+                // mengubah/menghapus produk yang sudah dipajang sama sekali.
+                async muatProdukSaya() {
+                    this.loadingProduk = true;
+                    try {
+                        const { data, error } = await db
+                            .from('bich_produk')
+                            .select('*')
+                            .eq('toko_id', this.toko.id)
+                            .order('created_at', { ascending: false });
+                        if (error) throw error;
+                        this.daftarProduk = data || [];
+                    } catch (err) {
+                        console.error('Gagal memuat produk:', err.message);
+                        this.showToast('Gagal memuat daftar produk: ' + err.message, 'error');
+                    } finally {
+                        this.loadingProduk = false;
+                    }
+                },
+
+                mulaiEditProduk(p) {
+                    this.editingProdukId = p.id;
+                    this.produk = {
+                        nama_produk: p.nama_produk,
+                        harga: p.harga,
+                        stok: p.stok,
+                        kategori: p.kategori,
+                        lokasi: p.lokasi,
+                        gambar_url: p.gambar_url === 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart' ? '' : p.gambar_url,
+                        video_demo_url: p.video_demo_url || '',
+                    };
+                    // Bawa pengguna ke form-nya - di HP form ini biasanya sudah di luar
+                    // layar karena mereka baru scroll ke daftar produk di bawah.
+                    document.querySelector('#form-produk')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                },
+
+                batalEditProduk() {
+                    this.editingProdukId = null;
+                    this.produk = {
+                        nama_produk: '',
+                        harga: '',
+                        stok: '',
+                        kategori: 'Kuliner Banua',
+                        lokasi: 'Banjarmasin, Kalsel',
+                        gambar_url: '',
+                        video_demo_url: '',
+                    };
+                },
+
+                async hapusProduk(p) {
+                    // window.confirm() sederhana tapi efektif - mencegah kehapus tidak
+                    // sengaja gara-gara salah pencet di HP.
+                    if (!window.confirm('Hapus produk "' + p.nama_produk + '"? Tindakan ini tidak bisa dibatalkan.')) return;
+
+                    this.loading = true;
+                    try {
+                        // .eq('toko_id', this.toko.id) di sini bukan sekadar jaga-jaga -
+                        // itu lapis pertahanan tambahan di SISI KLIEN, di ATAS RLS yang
+                        // sudah ada di database (Penjual hapus produk sendiri), supaya
+                        // permintaan hapus tidak pernah menyasar produk toko lain sama
+                        // sekali walau ada bug di tempat lain.
+                        const { error } = await db
+                            .from('bich_produk')
+                            .delete()
+                            .eq('id', p.id)
+                            .eq('toko_id', this.toko.id);
+                        if (error) throw error;
+
+                        this.showToast('Produk "' + p.nama_produk + '" dihapus.');
+                        // Kalau kebetulan lagi mode edit produk yang baru dihapus ini,
+                        // batalkan mode edit-nya juga supaya tidak ada form "hantu".
+                        if (this.editingProdukId === p.id) this.batalEditProduk();
+                        await this.muatProdukSaya();
+                    } catch (err) {
+                        this.showToast('Gagal menghapus produk: ' + err.message, 'error');
                     } finally {
                         this.loading = false;
                     }
