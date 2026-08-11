@@ -159,8 +159,11 @@ Deno.serve(async (req) => {
 
     await kirimOtpViaFonnte(phone.startsWith("+") ? phone : `+${phone}`, otp);
 
-    // Sesuai kontrak Send SMS Hook: 200 kosong = sukses, tidak perlu body.
-    return new Response(null, { status: 200 });
+    // DIBERSIHKAN: Wajib kembalikan JSON {} & Header Content-Type agar Supabase Auth tidak Error 400
+    return new Response(JSON.stringify({}), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
 
   } catch (err) {
     console.error("[send-otp-whatsapp] Error:", err);
