@@ -64,6 +64,12 @@
                 MOZENS INC. • MOBILITY & TOURISM DESK
             </span>
         </div>
+        <div class="max-w-6xl mx-auto pt-2.5">
+            <a href="../index.html" class="text-[10px] font-mono text-emerald-400/90 hover:text-emerald-300 transition inline-flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                SUNGAI 05 · KAYAN — PERBATASAN & KORIDOR IKN
+            </a>
+        </div>
     </header>
 
     <!-- Main Container -->
@@ -94,7 +100,7 @@
                     Aku hendak ke mana? <span class="text-slate-500">Dan pakai apa yang paling bijak?</span>
                 </h2>
                 <p class="text-xs text-slate-400">
-                    Pilih titik keberangkatanmu — semua arah tujuan di Kalimantan langsung terlihat, dengan tarif standar yang relatif stabil. Tidak ada tebak-tebakan harga.
+                    Pilih titik keberangkatanmu, tujuan yang bisa dicapai langsung muncul lengkap dengan tarif standarnya. Tidak ada tebak-tebakan harga.
                 </p>
             </div>
 
@@ -102,6 +108,9 @@
             <div class="space-y-3">
                 <p class="text-[10px] font-mono text-slate-400 uppercase text-center">1. Mulai dari mana?</p>
                 <div id="hub-origin-row" class="flex flex-wrap justify-center gap-2.5"></div>
+                <p id="hub-empty-hint" class="text-center text-[11px] text-slate-500 pt-1">
+                    👆 Ketuk salah satu kota di atas — tujuan &amp; tarifnya langsung muncul di bawah sini.
+                </p>
             </div>
 
             <!-- STEP 2: FAN-OUT TUJUAN -->
@@ -379,9 +388,25 @@
                 <div class="space-y-3">
                     <span class="text-[10px] font-mono text-slate-400 uppercase block">Mitra Travel Umrah Terafiliasi BICH</span>
 
-                    <!-- TEMPLATE KARTU MITRA - isi dengan data mitra riil yang sudah
-                         diverifikasi & menandatangani Perjanjian Kerja Sama Afiliasi.
-                         JANGAN tayangkan mitra yang izin PPIU-nya belum dikonfirmasi aktif. -->
+                    <!--
+                      CATATAN PENTING: sebelumnya di sini ada 2 kartu contoh berisi teks
+                      placeholder ("[Nama Biro Travel Mitra 1]", dst) yang TAMPIL LANGSUNG
+                      ke pengunjung asli. Ini risiko kredibilitas - orang yang belum kenal
+                      BICH akan mengira situsnya belum jadi/asal-asalan.
+
+                      Ganti jadi empty state jujur dulu. Begitu ada mitra travel PPIU aktif
+                      yang sudah teken Perjanjian Kerja Sama Afiliasi, salin ulang struktur
+                      kartu ini (lihat versi lama di git history / komentar bawah) dan isi
+                      dengan data mitra riil.
+                    -->
+                    <div class="bg-[#05070a] border border-dashed border-slate-700 rounded-xl p-6 text-center space-y-2">
+                        <p class="text-xs text-slate-400">Belum ada mitra travel Umrah yang tayang di sini.</p>
+                        <p class="text-[11px] text-slate-500">Isi formulir konsultasi di bawah — tim BICH akan menghubungkan kamu langsung ke biro travel berlisensi PPIU begitu proses afiliasi mitra selesai.</p>
+                    </div>
+
+                    <!-- TEMPLATE KARTU MITRA (nonaktif, arsip) - isi dengan data mitra riil yang
+                         sudah diverifikasi & menandatangani Perjanjian Kerja Sama Afiliasi, lalu
+                         pindahkan keluar dari komentar ini untuk ditayangkan.
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="bg-[#05070a] border border-slate-800 rounded-xl p-5 space-y-2.5">
                             <div class="flex items-start justify-between">
@@ -392,19 +417,8 @@
                             <p class="text-[10px] text-slate-400">[Deskripsi singkat: tahun berdiri, jumlah jamaah diberangkatkan, keunggulan]</p>
                             <a href="#" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-amber-400 hover:text-amber-300 underline inline-block pt-1">Lihat Paket & Jadwal &rarr;</a>
                         </div>
-                        <div class="bg-[#05070a] border border-slate-800 rounded-xl p-5 space-y-2.5">
-                            <div class="flex items-start justify-between">
-                                <span class="text-sm font-serif font-bold text-white">[Nama Biro Travel Mitra 2]</span>
-                                <span class="text-[9px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">PPIU AKTIF</span>
-                            </div>
-                            <p class="text-[10px] font-mono text-slate-500">No. Izin PPIU: [ISI NOMOR SK KEMENAG]</p>
-                            <p class="text-[10px] text-slate-400">[Deskripsi singkat: tahun berdiri, jumlah jamaah diberangkatkan, keunggulan]</p>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-amber-400 hover:text-amber-300 underline inline-block pt-1">Lihat Paket & Jadwal &rarr;</a>
-                        </div>
                     </div>
-                    <p class="text-[10px] text-slate-600 font-mono text-center pt-1">
-                        Belum ada mitra terafiliasi ditampilkan di atas — ini placeholder template. Hubungi tim BICH untuk proses onboarding biro travel baru.
-                    </p>
+                    -->
                 </div>
 
                 <!-- Form Konsultasi Lead Umrah -->
@@ -428,6 +442,21 @@
                     </button>
                     <p id="umrah-status-msg" class="hidden text-[11px] font-mono"></p>
                 </form>
+            </div>
+        </div>
+
+        <!-- CROSS-SELL: OLEH-OLEH BICH MART (SUNGAI BARITO) -->
+        <div class="bg-gradient-to-b from-emerald-500/[0.04] to-transparent border border-emerald-500/10 rounded-3xl p-6 sm:p-8 space-y-5">
+            <div class="text-center space-y-1.5 max-w-lg mx-auto">
+                <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-[0.2em]">Sebelum Pulang, Mampir Dulu</span>
+                <h3 class="text-lg sm:text-xl font-serif font-bold text-white">Bawa Oleh-Oleh Asli Banua</h3>
+                <p class="text-xs text-slate-400">Langsung dari lapak UMKM Kalimantan di BICH Mart — bukan toko oleh-oleh generik di bandara.</p>
+            </div>
+            <div id="oleholeh-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <p class="col-span-4 text-center text-xs font-mono text-slate-500">Memuat produk UMKM...</p>
+            </div>
+            <div class="text-center">
+                <a href="../market/mart.html" class="text-[11px] font-mono text-emerald-400 hover:text-emerald-300 underline">Lihat Semua Lapak Barito &rarr;</a>
             </div>
         </div>
 
@@ -622,6 +651,7 @@
             }).join('');
 
             document.getElementById('hub-destination-wrap').classList.remove('hidden');
+            document.getElementById('hub-empty-hint').classList.add('hidden');
             document.getElementById('hub-destination-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
@@ -889,6 +919,45 @@
             }
         }
 
+        // Cross-sell BICH Mart: tarik produk asli UMKM (bukan link statis),
+        // supaya daftar oleh-oleh otomatis update kalau lapak baru buka —
+        // tidak perlu edit halaman ini setiap ada penjual baru.
+        // Data produk berasal dari input bebas penjual - wajib di-escape
+        // sebelum ditaruh ke innerHTML, supaya nama produk/toko tidak bisa
+        // dipakai untuk menyuntik HTML/script (XSS).
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str ?? '';
+            return div.innerHTML;
+        }
+
+        async function loadOlehOleh() {
+            const grid = document.getElementById('oleholeh-grid');
+            try {
+                const produk = await fetchSemuaProduk();
+                const pilihan = produk.slice(0, 4);
+
+                if (!pilihan.length) {
+                    grid.innerHTML = '<p class="col-span-4 text-center text-xs font-mono text-slate-500">Belum ada produk tayang. Cek langsung ke BICH Mart.</p>';
+                    return;
+                }
+
+                grid.innerHTML = pilihan.map(item => `
+                    <a href="../market/mart.html" class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/40 rounded-xl overflow-hidden transition group block">
+                        <div class="aspect-square bg-slate-900 overflow-hidden">
+                            <img src="${escapeHtml(item.gambar_url) || 'https://placehold.co/300x300/080c14/34d399?text=BICH+Mart'}" alt="${escapeHtml(item.nama_produk)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-2.5 space-y-0.5">
+                            <p class="text-[10px] text-emerald-400 font-mono truncate">${escapeHtml(item.bich_toko?.nama_toko || 'Lapak Banua')}</p>
+                            <p class="text-[11px] text-slate-200 font-semibold line-clamp-2 leading-snug">${escapeHtml(item.nama_produk)}</p>
+                        </div>
+                    </a>
+                `).join('');
+            } catch (err) {
+                grid.innerHTML = '<p class="col-span-4 text-center text-xs font-mono text-slate-500">Produk sedang tidak bisa dimuat.</p>';
+            }
+        }
+
         // Inisialisasi: muat tarif dari database DULU (async), baru render
         // Journey Hub - supaya harga yang tampil pertama kali sudah benar,
         // bukan kosong/salah lalu "berkedip" berubah setelah fetch selesai.
@@ -898,7 +967,10 @@
 
             await loadTarifFromSupabase();
             renderJourneyHub();
-            selectHubOrigin('BPN');
+            // Sengaja TIDAK auto-pilih origin di sini. Grid tujuan + harga baru
+            // muncul begitu pengunjung sendiri yang mengetuk salah satu kota -
+            // biar tampilan awal ringkas, bukan langsung penuh harga.
+            loadOlehOleh();
         });
     </script>
 </body>
