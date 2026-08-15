@@ -11,10 +11,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <!-- GOOGLE FONTS: Poppins, Plus Jakarta Sans, & Cinzel/Playfair -->
+    <!-- GOOGLE FONTS: Poppins, Plus Jakarta Sans, Cinzel/Playfair, & JetBrains Mono (konsisten dgn Muara Utama) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Playfair+Display:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Playfair+Display:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS, Alpine, FontAwesome & Supabase Client -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -47,6 +47,13 @@
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.9));
         }
+
+        /* --- JEMBATAN VISUAL KE EKOSISTEM 6 SUNGAI FILOSOFI --- */
+        .river-bridge-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950" x-data="bichMartApp()" x-init="initApp()">
@@ -63,6 +70,15 @@
             </button>
             <button @click="showPwaBanner = false" class="text-slate-950 hover:text-slate-900 text-sm px-1"><i class="fa-solid fa-xmark"></i></button>
         </div>
+    </div>
+
+    <!-- JEMBATAN EKOSISTEM: SUNGAI 03 BARITO -->
+    <div class="bg-slate-900/60 border-b border-slate-800/60 py-1.5 px-4 text-center">
+        <a href="../index.html" class="river-bridge-badge inline-flex items-center gap-2 text-cyan-400/90 hover:text-cyan-300 transition">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+            SUNGAI 03 · BARITO — JALUR DAGANG TERTUA
+            <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-60"></i>
+        </a>
     </div>
 
     <!-- HEADER / NAVBAR -->
@@ -115,34 +131,64 @@
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/20 via-slate-950 to-slate-950 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto text-center relative z-10 space-y-3">
             <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] px-3.5 py-1 rounded-full font-bold">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Langsung dari Lapak Pedagang Banua
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Langsung dari Lapak Pedagang Banua — Tanpa Perantara
             </span>
             
             <h1 class="text-3xl sm:text-5xl font-black text-slate-100 tracking-wide">
-                PASAR DIGITAL <span class="gold-gradient">RAKYAT BANUA</span>
+                DARI KAMPUNG HALAMAN, <span class="gold-gradient">UNTUK BANUA</span>
             </h1>
             
             <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto font-medium leading-relaxed tracking-wide pt-1">
-                Persembahan <b class="text-amber-400 font-bold">Putra Banua</b> Untuk Banua
+                Setiap belanja di sini <b class="text-amber-400 font-bold">langsung menghidupi UMKM Kalimantan</b> — bukan gudang, bukan perantara, tapi tetangga kampung sendiri.
             </p>
+            <p class="text-[11px] text-emerald-400 font-semibold max-w-xl mx-auto pt-1">
+                💛 Perantau Banua di Jakarta, Surabaya, mana pun kamu berada — rindu kampung? Belanja dari sini.
+            </p>
+
+            <button @click="bukaVideoPromo()"
+                    class="inline-flex items-center gap-2.5 bg-slate-900/80 hover:bg-slate-800 border border-amber-500/30 hover:border-amber-500/60 text-amber-300 text-xs font-bold px-5 py-2.5 rounded-full transition mt-3 cursor-pointer shadow-lg shadow-amber-500/5">
+                <span class="w-7 h-7 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center">
+                    <i class="fa-solid fa-play text-[10px]"></i>
+                </span>
+                Tonton Kisah Pasar Terapung Barito
+            </button>
         </div>
     </section>
 
     <!-- MAIN CONTENT -->
     <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
         <!-- Filter Bar -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-            <div class="flex flex-wrap gap-2">
-                <template x-for="cat in ['ALL', 'Hasil Tani', 'Kuliner Banua', 'Kerajinan']">
-                    <button @click="selectedCategory = cat" 
-                            :class="selectedCategory === cat ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/10' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'" 
-                            class="px-4 py-2 rounded-xl text-xs transition duration-200 cursor-pointer" 
-                            x-text="cat === 'ALL' ? '🔥 Semua Produk' : cat">
-                    </button>
-                </template>
+        <div class="flex flex-col gap-4 mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div class="flex flex-wrap gap-2">
+                    <template x-for="cat in ['ALL', 'Hasil Tani', 'Kuliner Banua', 'Kerajinan']">
+                        <button @click="selectedCategory = cat" 
+                                :class="selectedCategory === cat ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/10' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'" 
+                                class="px-4 py-2 rounded-xl text-xs transition duration-200 cursor-pointer" 
+                                x-text="cat === 'ALL' ? '🔥 Semua Produk' : cat">
+                        </button>
+                    </template>
+                </div>
+                <div class="text-xs text-slate-400 font-medium">
+                    Menampilkan <span class="text-amber-400 font-bold" x-text="filteredProducts.length"></span> produk
+                </div>
             </div>
-            <div class="text-xs text-slate-400 font-medium">
-                Menampilkan <span class="text-amber-400 font-bold" x-text="filteredProducts.length"></span> produk
+
+            <!-- FILTER "DUKUNG KAMPUNG HALAMAN" -->
+            <div x-show="uniqueLokasi.length > 1" x-cloak class="flex flex-wrap items-center gap-2 bg-slate-900/60 border border-slate-800/80 rounded-2xl px-3.5 py-2.5">
+                <span class="text-[11px] text-emerald-400 font-bold flex items-center gap-1.5 shrink-0">
+                    <i class="fa-solid fa-map-location-dot"></i> Dukung Kampung Halaman:
+                </span>
+                <div class="flex flex-wrap gap-1.5">
+                    <button @click="selectedLokasi = 'ALL'"
+                            :class="selectedLokasi === 'ALL' ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-950 text-slate-400 border border-slate-800 hover:text-slate-200'"
+                            class="px-3 py-1.5 rounded-lg text-[11px] transition cursor-pointer">Semua Daerah</button>
+                    <template x-for="loc in uniqueLokasi" :key="loc">
+                        <button @click="selectedLokasi = loc"
+                                :class="selectedLokasi === loc ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-950 text-slate-400 border border-slate-800 hover:text-slate-200'"
+                                class="px-3 py-1.5 rounded-lg text-[11px] transition cursor-pointer" x-text="loc"></button>
+                    </template>
+                </div>
             </div>
         </div>
 
@@ -155,6 +201,12 @@
                         <div class="aspect-square bg-slate-950 relative overflow-hidden">
                             <img :src="item.gambar_url || 'https://placehold.co/400x400/020617/F59E0B?text=BICH+Mart'" :alt="item.nama_produk" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <span class="absolute top-2.5 left-2.5 bg-slate-950/90 backdrop-blur-md text-amber-400 text-[10px] font-bold px-2 py-1 rounded-lg border border-amber-500/30" x-text="item.lokasi || 'Kalimantan'"></span>
+
+                            <!-- ⚡ BADGE STOK TERBATAS -->
+                            <span x-show="item.stok > 0 && item.stok <= 5" x-cloak
+                                  class="absolute bottom-2.5 left-2.5 bg-rose-600/90 backdrop-blur-md text-white text-[10px] font-black px-2 py-1 rounded-lg flex items-center gap-1">
+                                <i class="fa-solid fa-fire text-[9px]"></i> Sisa <span x-text="item.stok"></span>!
+                            </span>
 
                             <!-- 🔴 BADGE LIVE REAL-TIME -->
                             <a x-show="item.bich_toko?.is_live && item.bich_toko?.live_url"
@@ -170,7 +222,10 @@
                         
                         <!-- Details -->
                         <div class="p-4 space-y-1.5">
-                            <span class="text-[11px] text-emerald-400 font-semibold block" x-text="item.bich_toko?.nama_toko || 'Lapak Banua'"></span>
+                            <span class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                                <span x-text="item.bich_toko?.nama_toko || 'Lapak Banua'"></span>
+                                <i x-show="item.bich_toko?.status_verifikasi" x-cloak class="fa-solid fa-circle-check text-amber-400 text-[10px]" title="Lapak Terverifikasi"></i>
+                            </span>
                             <h3 class="text-xs font-bold text-slate-100 line-clamp-2 leading-snug group-hover:text-amber-400 transition" x-text="item.nama_produk"></h3>
                             <div class="text-base font-extrabold text-amber-400 pt-1" x-text="formatRupiah(item.harga)"></div>
                         </div>
@@ -188,9 +243,14 @@
                                 <i class="fa-solid fa-video text-[10px]"></i> Cek VC
                             </button>
                         </div>
-                        <button @click="addToCart(item)" class="w-full bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-extrabold py-2.5 rounded-xl border border-slate-700/80 hover:border-amber-500 transition duration-200 flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
-                            <i class="fa-solid fa-plus text-xs"></i> Keranjang Emas
-                        </button>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button @click="addToCart(item)" class="col-span-3 bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-200 text-xs font-extrabold py-2.5 rounded-xl border border-slate-700/80 hover:border-amber-500 transition duration-200 flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
+                                <i class="fa-solid fa-plus text-xs"></i> Keranjang Emas
+                            </button>
+                            <button @click.stop="shareProduk(item)" title="Bagikan ke WhatsApp" class="bg-slate-800 hover:bg-emerald-600 text-emerald-400 hover:text-white py-2.5 rounded-xl border border-slate-700/80 hover:border-emerald-500 transition duration-200 flex items-center justify-center active:scale-95 cursor-pointer">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -221,6 +281,10 @@
                 <span class="text-slate-700">•</span>
                 <a href="legal.html#kontak" class="hover:text-amber-400 transition flex items-center gap-1.5 font-bold text-amber-400">
                     <i class="fa-solid fa-headset"></i> Kontak Usaha & Legal
+                </a>
+                <span class="text-slate-700">•</span>
+                <a href="driver.html" class="hover:text-emerald-400 transition flex items-center gap-1.5 font-bold text-emerald-400">
+                    <i class="fa-solid fa-motorcycle"></i> Daftar Mitra Kurir
                 </a>
             </div>
 
@@ -313,6 +377,7 @@
                 cart: [],
                 searchQuery: '',
                 selectedCategory: 'ALL',
+                selectedLokasi: 'ALL',
                 isCartOpen: false,
                 showPwaBanner: false,
                 deferredPrompt: null,
@@ -341,9 +406,15 @@
                 get filteredProducts() {
                     return this.products.filter(p => {
                         const matchCat = this.selectedCategory === 'ALL' || p.kategori === this.selectedCategory;
+                        const matchLokasi = this.selectedLokasi === 'ALL' || p.lokasi === this.selectedLokasi;
                         const matchSearch = p.nama_produk.toLowerCase().includes(this.searchQuery.toLowerCase());
-                        return matchCat && matchSearch;
+                        return matchCat && matchLokasi && matchSearch;
                     });
+                },
+
+                get uniqueLokasi() {
+                    const semua = this.products.map(p => p.lokasi).filter(Boolean);
+                    return [...new Set(semua)].sort();
                 },
 
                 get totalCartCount() {
@@ -429,6 +500,23 @@
                     return match ? match[1] : null;
                 },
 
+                bukaVideoPromo() {
+                    this.videoModalTitle = 'Kisah Pasar Terapung Barito';
+                    this.isVideoModalOpen = true;
+
+                    this.$nextTick(() => {
+                        const container = this.$refs.videoContainer;
+                        container.innerHTML = '';
+
+                        const video = document.createElement('video');
+                        video.src = '/market/promo-barito.mp4';
+                        video.controls = true;
+                        video.autoplay = true;
+                        video.className = 'w-full h-full';
+                        container.appendChild(video);
+                    });
+                },
+
                 bukaVideoDemo(item) {
                     const url = item.video_demo_url;
                     if (!url || !this.isUrlAman(url)) {
@@ -490,6 +578,13 @@
                     this.isVideoModalOpen = false;
                     const container = this.$refs.videoContainer;
                     if (container) container.innerHTML = '';
+                },
+
+                shareProduk(item) {
+                    const namaToko = item.bich_toko?.nama_toko || 'Lapak Banua';
+                    const link = `${window.location.origin}/market/mart.html?produk=${item.id}`;
+                    const pesan = `Cakep nih, "${item.nama_produk}" dari ${namaToko} — ${this.formatRupiah(item.harga)} aja di BICH Mart. Yuk dukung UMKM Banua! ${link}`;
+                    window.open(`https://wa.me/?text=${encodeURIComponent(pesan)}`, '_blank');
                 },
 
                 cekVC(item) {

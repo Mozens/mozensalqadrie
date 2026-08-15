@@ -194,6 +194,42 @@
             </form>
         </div>
 
+        <!-- PROGRAM KADERISASI: LUMBUNG GENERASI SUNGAI BARITO -->
+        <div x-show="isLoggedIn && isTokoSaved" x-cloak class="bg-gradient-to-br from-amber-500/10 via-slate-900/90 to-slate-900/90 border border-amber-500/25 rounded-3xl p-6 shadow-xl space-y-3">
+            <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-seedling"></i>
+                </span>
+                <h2 class="text-sm font-bold text-slate-100">Program Kaderisasi Pedagang Muda Barito</h2>
+            </div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+                Lapak yang baru kamu buka ini bukan cuma etalase jualan — ini langkah pertamamu di jalur <b class="text-amber-400">Sungai Barito, Jalur Dagang Tertua Banua</b>. Kelola dengan jujur & konsisten, dan kamu sedang menempa dirimu jadi wirausahawan Banua generasi berikutnya.
+            </p>
+            <div class="grid grid-cols-3 gap-2 pt-1">
+                <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-center">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Tahap 1</p>
+                    <p class="text-[11px] text-slate-200 font-semibold mt-1">Perintis</p>
+                    <p class="text-[10px] text-slate-500 mt-1">Lapak dibuka</p>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-center">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Tahap 2</p>
+                    <p class="text-[11px] text-slate-200 font-semibold mt-1">Penjelajah</p>
+                    <p class="text-[10px] text-slate-500 mt-1">Jualan konsisten</p>
+                </div>
+                <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-center">
+                    <p class="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Tahap 3</p>
+                    <p class="text-[11px] text-amber-300 font-semibold mt-1">Pewaris Sungai</p>
+                    <p class="text-[10px] text-slate-500 mt-1">Lapak terverifikasi</p>
+                </div>
+            </div>
+            <p class="text-[10px] text-slate-500 pt-1">
+                Status "Pewaris Sungai" diberikan lewat verifikasi tim BICH — hubungi kami di halaman <a href="legal.html#kontak" class="text-amber-400 hover:underline">Kontak Usaha</a> setelah lapakmu aktif berjalan.
+            </p>
+            <p class="text-[10px] text-slate-500">
+                🛵 Butuh langganan kurir sendiri buat antar pesananmu? <a href="driver.html" class="text-emerald-400 hover:underline">Kenalkan tetangga/kenalanmu ke Program Mitra Kurir BICH</a>.
+            </p>
+        </div>
+
         <!-- STEP 2: FORM TAMBAH PRODUK BARU -->
         <div x-show="isLoggedIn" x-cloak class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5" :class="!isTokoSaved ? 'opacity-50 pointer-events-none' : ''">
             <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">

@@ -3,15 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamar Pariwisata & Mobilitas Multimoda — BICH</title>
+    
+    <!-- SEO Utama -->
+    <title>Pariwisata & Mobilitas Multimoda — BICH | Travel & Shuttle IKN Kalimantan</title>
+    <meta name="description" content="Layanan Agregator Pariwisata & Mobilitas Multimoda BICH Mozens Inc. Shuttle antar-kota IKN, Balikpapan, Banjarmasin, tour Tanjung Puting & wisata eksklusif Kalimantan.">
+    <meta name="keywords" content="shuttle IKN, travel Kalimantan, rental mobil Balikpapan, tour Tanjung Puting, wisata Loksado, travel umrah Kalimantan, BICH Mozens, kargo same day Kalimantan">
+    <meta name="author" content="Mozens Inc.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://bich.co.id/tourism/index.html">
+
+    <!-- Open Graph / Social Media (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="BICH Mozens Inc.">
+    <meta property="og:title" content="Pariwisata & Mobilitas Multimoda Kalimantan — BICH">
+    <meta property="og:description" content="Agregator Lintas Moda, Shuttle Antar-Kota & Transit Hub IKN, Experiential Tour & Outbound Gateway Kalimantan. Cek tarif resmi & jadwal sekarang.">
+    <meta property="og:url" content="https://bich.co.id/tourism/index.html">
+    <meta property="og:image" content="https://bich.co.id/tourism-icon-512.png">
+    <meta property="og:image:alt" content="BICH Tourism & Multimodal Mobility Hub">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pariwisata & Mobilitas Multimoda Kalimantan — BICH">
+    <meta name="twitter:description" content="Shuttle antar-kota IKN, Balikpapan, Banjarmasin, & paket tour eksklusif Kalimantan. Pintu pemesanan resmi BICH.">
+    <meta name="twitter:image" content="https://bich.co.id/tourism-icon-512.png">
+
+    <!-- Schema.org / Structured Data (JSON-LD) untuk Google Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TravelAgency",
+          "@id": "https://bich.co.id/#organization",
+          "name": "BICH Mobility & Tourism Desk",
+          "url": "https://bich.co.id/tourism/index.html",
+          "logo": "https://bich.co.id/tourism-icon-192.png",
+          "image": "https://bich.co.id/tourism-icon-512.png",
+          "description": "Agregator Lintas Moda, Shuttle Antar-Kota & Transit Hub IKN, Experiential Tour & Outbound Gateway Kalimantan.",
+          "priceRange": "Rp 175.000 - Rp 4.800.000",
+          "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "Kalimantan",
+            "addressCountry": "ID"
+          },
+          "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Kalimantan"
+          }
+        },
+        {
+          "@type": "Service",
+          "name": "Shuttle & Kargo Multimoda Inter-City IKN",
+          "provider": {
+            "@id": "https://bich.co.id/#organization"
+          },
+          "areaServed": "Kalimantan",
+          "description": "Shuttle travel antar-kota, drop-off bandara, charter VIP, dan pengiriman kargo same-day terintegrasi IKN."
+        },
+        {
+          "@type": "TouristAttraction",
+          "name": "Tanjung Puting National Park Excursion",
+          "description": "Pengalaman menginap di Klotok Luxury, menyusuri habitat Orangutan, dan reservasi pemandu lokal terverifikasi.",
+          "offers": {
+            "@type": "Offer",
+            "price": "4800000",
+            "priceCurrency": "IDR",
+            "availability": "https://schema.org/InStock"
+          }
+        },
+        {
+          "@type": "TouristAttraction",
+          "name": "Loksado Bamboo Rafting & Cultural Tour",
+          "description": "Eksplorasi Pegunungan Meratus, arung jeram bambu tradisional, dan kunjungan budaya Dayak Bukit.",
+          "offers": {
+            "@type": "Offer",
+            "price": "1950000",
+            "priceCurrency": "IDR",
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- PWA -->
+    <link rel="manifest" href="tourism-manifest.json">
+    <meta name="theme-color" content="#080c14">
+    <link rel="apple-touch-icon" href="tourism-icon-192.png">
+
+    <!-- Styles & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    <!--
-      INTEGRASI PEMBAYARAN: iPaymu via Supabase Edge Function
-      (create-payment-layanan). Tidak ada client key/token payment gateway
-      apa pun yang perlu ditaruh di frontend.
-    -->
+    <!-- Integrasi Supabase Edge Function -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/market/supabase.js"></script>
     <style>
@@ -76,24 +161,17 @@
     <main class="max-w-6xl mx-auto px-6 py-10 flex-grow w-full space-y-10">
 
         <!-- Hero Title -->
-        <div class="text-center space-y-3 max-w-3xl mx-auto">
+        <header class="text-center space-y-3 max-w-3xl mx-auto">
             <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white">
                 PARIWISATA & <span class="gold-gradient">MULTIMODA</span>
             </h1>
             <p class="text-xs sm:text-sm text-slate-400 font-mono">
                 Agregator Lintas Moda, Shuttle Antar-Kota & Transit Hub, Experiential Tour & Outbound Gateway
             </p>
-        </div>
+        </header>
 
-        <!-- ================================================================ -->
-        <!-- JOURNEY HUB: "Aku hendak ke mana, dan pakai apa yang paling bijak?" -->
-        <!-- Peta visual asal->tujuan dengan tarif standar, supaya pengunjung  -->
-        <!-- langsung "melihat" seluruh arah tujuan di Kalimantan sebelum      -->
-        <!-- dipaksa mengisi form. Data harga dihitung ulang dari tabel tarif di database yang  -->
-        <!-- sama dengan kalkulator booking di bawah - satu sumber kebenaran,  -->
-        <!-- bukan angka duplikat yang bisa jadi tidak sinkron.                -->
-        <!-- ================================================================ -->
-        <div class="bg-gradient-to-b from-amber-500/[0.04] to-transparent border border-amber-500/10 rounded-3xl p-6 sm:p-10 space-y-8">
+        <!-- JOURNEY HUB -->
+        <section class="bg-gradient-to-b from-amber-500/[0.04] to-transparent border border-amber-500/10 rounded-3xl p-6 sm:p-10 space-y-8" aria-label="Peta Perjalanan dan Rute Shuttle">
             <div class="text-center space-y-2 max-w-xl mx-auto">
                 <span class="text-[10px] font-mono text-amber-400 uppercase tracking-[0.2em]">Peta Perjalanan BICH</span>
                 <h2 class="text-xl sm:text-2xl font-serif font-bold text-white">
@@ -124,7 +202,7 @@
                 </p>
             </div>
 
-            <!-- PETA TARIF LENGKAP (transparansi penuh) -->
+            <!-- PETA TARIF LENGKAP -->
             <details class="group">
                 <summary class="cursor-pointer text-center text-[11px] font-mono text-amber-400/80 hover:text-amber-400 transition list-none flex items-center justify-center gap-1.5">
                     📋 Lihat Peta Tarif Standar Lengkap (Semua Rute)
@@ -132,10 +210,10 @@
                 </summary>
                 <div id="full-tariff-map" class="mt-5 space-y-4"></div>
             </details>
-        </div>
+        </section>
 
         <!-- Service Tab Selector -->
-        <div class="flex justify-center border-b border-slate-800 overflow-x-auto">
+        <nav class="flex justify-center border-b border-slate-800 overflow-x-auto" aria-label="Navigasi Layanan">
             <button id="tab-shuttle-btn" onclick="switchService('shuttle')" class="px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-amber-400 text-amber-400 transition whitespace-nowrap">
                 1. SHUTTLE & KARGO MULTIMODA
             </button>
@@ -145,10 +223,10 @@
             <button id="tab-umrah-btn" onclick="switchService('umrah')" class="px-5 py-3 font-mono text-xs sm:text-sm font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition whitespace-nowrap">
                 3. KONSORSIUM UMRAH & OUTBOUND
             </button>
-        </div>
+        </nav>
 
         <!-- SECTION 1: SHUTTLE & KARGO MULTIMODA -->
-        <div id="sec-shuttle" class="space-y-6">
+        <section id="sec-shuttle" class="space-y-6" aria-label="Layanan Shuttle dan Kargo">
             <!-- Widget Booking Ticket -->
             <div class="bg-[#080c14] border border-amber-500/20 rounded-2xl p-6 sm:p-8 space-y-6">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-4">
@@ -168,7 +246,7 @@
 
                     <!-- RUTE ASAL -->
                     <div>
-                        <label class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Rute Asal</label>
+                        <label for="origin-select" class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Rute Asal</label>
                         <select id="origin-select" class="w-full bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
                             <optgroup label="🏢 HUB UTAMA & IKN">
                                 <option value="IKN">IKN Nusantara (Kawasan Inti Sepaku)</option>
@@ -207,7 +285,7 @@
 
                     <!-- RUTE TUJUAN -->
                     <div>
-                        <label class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Rute Tujuan</label>
+                        <label for="destination-select" class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Rute Tujuan</label>
                         <select id="destination-select" class="w-full bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
                             <optgroup label="🏢 HUB UTAMA & IKN">
                                 <option value="IKN" selected>IKN Nusantara (Kawasan Inti Sepaku)</option>
@@ -244,7 +322,7 @@
 
                     <!-- LAYANAN MULTIMODA -->
                     <div>
-                        <label class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Layanan</label>
+                        <label for="service-select" class="text-[10px] font-mono text-slate-400 uppercase block mb-1">Layanan</label>
                         <select id="service-select" class="w-full bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
                             <option value="shuttle">Shuttle Travel Inter-City (Per Kursi)</option>
                             <option value="airport">Airport Shuttle / Drop-Off Dalam Kota</option>
@@ -267,7 +345,7 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-4 gap-2">
                         <div>
                             <span class="text-[10px] font-mono text-amber-400 uppercase tracking-wider block">ESTIMASI TARIF OFFICIAL BICH</span>
-                            <h4 id="res-route-title" class="text-base font-bold text-white font-serif">Rute: Balikpapan &rarr; IKN Nusantara</h4>
+                            <h3 id="res-route-title" class="text-base font-bold text-white font-serif">Rute: Balikpapan &rarr; IKN Nusantara</h3>
                         </div>
                         <div class="text-right">
                             <span id="res-price-tag" class="text-2xl font-mono font-bold gold-gradient">Rp 175.000</span>
@@ -294,7 +372,7 @@
                         </ul>
                     </div>
 
-                    <!-- DATA PEMESAN (WAJIB, dipakai untuk sesi pembayaran iPaymu) -->
+                    <!-- DATA PEMESAN -->
                     <div class="space-y-2 pt-2 border-t border-slate-800">
                         <span class="text-[10px] font-mono text-amber-400 uppercase font-bold block">Data Pemesan</span>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -317,64 +395,97 @@
 
             <!-- Value Proposition Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
-                    <span class="text-xs font-mono text-amber-400 font-bold block">🚀 SHUTTLE ANTAR KOTA & HUB</span>
+                <article class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <h3 class="text-xs font-mono text-amber-400 font-bold block">🚀 SHUTTLE ANTAR KOTA & HUB</h3>
                     <p class="text-xs text-slate-300">Penjemputan Door-to-Door dengan kepastian jadwal dan manifes digital terintegrasi.</p>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
-                    <span class="text-xs font-mono text-amber-400 font-bold block">📦 KARGO SAME-DAY</span>
+                </article>
+                <article class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <h3 class="text-xs font-mono text-amber-400 font-bold block">📦 KARGO SAME-DAY</h3>
                     <p class="text-xs text-slate-300">Optimalisasi bagasi armada untuk pengiriman paket kilat jam-hitungan antar provinsi.</p>
-                </div>
-                <div class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
-                    <span class="text-xs font-mono text-amber-400 font-bold block">🚤 INTERKONEKSI SUNGAI</span>
+                </article>
+                <article class="bg-[#080c14] border border-slate-800 rounded-xl p-5 space-y-2">
+                    <h3 class="text-xs font-mono text-amber-400 font-bold block">🚤 INTERKONEKSI SUNGAI</h3>
                     <p class="text-xs text-slate-300">Sambung moda darat ke speedboat/klotok VIP untuk akses wilayah dermaga & tambang.</p>
-                </div>
+                </article>
             </div>
-        </div>
+        </section>
 
         <!-- SECTION 2: DESTINASI & EXPERIENTIAL TOUR -->
-        <div id="sec-tour" class="space-y-6 hidden">
+        <section id="sec-tour" class="space-y-6 hidden" aria-label="Paket Destinasi Tour">
+            <div class="bg-amber-500/5 border border-amber-500/20 rounded-xl p-3.5 text-[11px] text-amber-300 leading-relaxed">
+                💬 WhatsApp di sini <b>hanya untuk tanya-tanya & kustomisasi paket</b> sebelum deal. Booking resmi &amp; pembayaran wajib lewat tombol <b>"Booking &amp; Bayar"</b> — QRIS/VA/transfer bank, bukan transfer manual lewat chat.
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <!-- Tour Card 1 -->
-                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/30 rounded-xl overflow-hidden transition group">
+                <article class="bg-[#080c14] border border-slate-800 hover:border-amber-500/30 rounded-xl overflow-hidden transition group">
                     <div class="p-6 space-y-3">
                         <span class="text-[10px] font-mono text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded uppercase">Eksklusif Kalteng</span>
-                        <h3 class="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition">Tanjung Puting National Park Excursion</h3>
+                        <h2 class="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition">Tanjung Puting National Park Excursion</h2>
                         <p class="text-slate-400 text-xs">Pengalaman menginap di Klotok Luxury, menyusuri habitat Orangutan, dan reservasi pemandu lokal terverifikasi.</p>
-                        <div class="pt-2 flex justify-between items-center border-t border-slate-800/80">
-                            <span class="text-xs font-mono text-amber-400 font-bold">Mulai Rp 4.800.000 / pax</span>
-                            <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20tertarik%20paket%20Tanjung%20Puting." target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-300 hover:text-white underline">Reservasi &rarr;</a>
+                        <div class="pt-2 flex flex-col gap-2 border-t border-slate-800/80 mt-1">
+                            <span class="text-xs font-mono text-amber-400 font-bold pt-2">Mulai Rp 4.800.000 / pax</span>
+                            <div class="flex items-center justify-between gap-2">
+                                <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20mau%20tanya-tanya%20soal%20paket%20Tanjung%20Puting%20(belum%20booking)." target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-slate-400 hover:text-slate-200 underline">💬 Tanya Dulu</a>
+                                <button onclick="bukaModalTour('tanjung-puting', 'Tanjung Puting National Park Excursion')" class="text-[11px] font-mono bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition">💳 Booking & Bayar</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </article>
 
                 <!-- Tour Card 2 -->
-                <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/30 rounded-xl overflow-hidden transition group">
+                <article class="bg-[#080c14] border border-slate-800 hover:border-amber-500/30 rounded-xl overflow-hidden transition group">
                     <div class="p-6 space-y-3">
                         <span class="text-[10px] font-mono text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded uppercase">Eksklusif Kalsel</span>
-                        <h3 class="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition">Loksado Bamboo Rafting & Cultural Tour</h3>
+                        <h2 class="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition">Loksado Bamboo Rafting & Cultural Tour</h2>
                         <p class="text-slate-400 text-xs">Eksplorasi Meratus, arung jeram bambu tradisional, serta kunjungan budaya Dayak Bukit dengan fasilitasi VIP.</p>
-                        <div class="pt-2 flex justify-between items-center border-t border-slate-800/80">
-                            <span class="text-xs font-mono text-amber-400 font-bold">Mulai Rp 1.950.000 / pax</span>
-                            <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20tertarik%20paket%20Loksado." target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-300 hover:text-white underline">Reservasi &rarr;</a>
+                        <div class="pt-2 flex flex-col gap-2 border-t border-slate-800/80 mt-1">
+                            <span class="text-xs font-mono text-amber-400 font-bold pt-2">Mulai Rp 1.950.000 / pax</span>
+                            <div class="flex items-center justify-between gap-2">
+                                <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20mau%20tanya-tanya%20soal%20paket%20Loksado%20(belum%20booking)." target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-slate-400 hover:text-slate-200 underline">💬 Tanya Dulu</a>
+                                <button onclick="bukaModalTour('loksado', 'Loksado Bamboo Rafting & Cultural Tour')" class="text-[11px] font-mono bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition">💳 Booking & Bayar</button>
+                            </div>
                         </div>
                     </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- MODAL BOOKING TOUR -->
+        <div id="modal-tour" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+            <div class="bg-[#0b0f17] border border-amber-500/20 rounded-2xl p-6 max-w-sm w-full space-y-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-[10px] font-mono text-amber-400 uppercase">Booking & Pembayaran</p>
+                        <h3 id="modal-tour-title" class="text-sm font-serif font-bold text-white pt-0.5"></h3>
+                    </div>
+                    <button onclick="tutupModalTour()" class="text-slate-500 hover:text-white text-lg leading-none">&times;</button>
                 </div>
+                <div class="space-y-2.5">
+                    <input type="text" id="tour-pemesan-nama" placeholder="Nama Lengkap" required class="w-full bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                    <input type="tel" id="tour-pemesan-wa" placeholder="Nomor WhatsApp" required class="w-full bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                    <input type="email" id="tour-pemesan-email" placeholder="Email" required class="w-full bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                    <input type="number" id="tour-pemesan-pax" placeholder="Jumlah Peserta (pax)" min="1" value="1" required class="w-full bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                </div>
+                <p id="modal-tour-status" class="text-[11px] font-mono text-slate-400 hidden"></p>
+                <button id="btn-pay-tour" onclick="proceedToTourPayment()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-3 rounded-xl transition">
+                    Lanjutkan ke Pembayaran (QRIS/VA) &rarr;
+                </button>
+                <p class="text-[10px] text-slate-500 text-center">Harga final &amp; nomor konfirmasi ditentukan server setelah data ini dikirim — bukan dari tampilan halaman ini.</p>
             </div>
         </div>
 
         <!-- SECTION 3: KONSORSIUM UMRAH & OUTBOUND -->
-        <div id="sec-umrah" class="space-y-6 hidden">
+        <section id="sec-umrah" class="space-y-6 hidden" aria-label="Konsorsium Umrah dan Travel Outbound">
             <div class="bg-[#080c14] border border-amber-500/20 rounded-2xl p-6 sm:p-8 space-y-6">
                 <div class="space-y-2">
                     <span class="text-xs font-mono text-amber-400 font-bold block">OFFICIAL REFERRAL & GATEWAY CONSORTIUM</span>
-                    <h3 class="text-xl sm:text-2xl font-serif font-bold text-white">Layanan Ibadah Umrah & Outbound Travel Kalimantan</h3>
+                    <h2 class="text-xl sm:text-2xl font-serif font-bold text-white">Layanan Ibadah Umrah & Outbound Travel Kalimantan</h2>
                     <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
                         BICH menghubungkan jamaah Banua dengan biro perjalanan Umrah <strong>berlisensi resmi PPIU (Kementerian Agama RI)</strong> yang sudah melalui proses verifikasi afiliasi kami.
                     </p>
                 </div>
 
-                <!-- DISCLAIMER POSISI HUKUM - PENTING -->
+                <!-- DISCLAIMER POSISI HUKUM -->
                 <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-4 space-y-1.5">
                     <p class="text-[11px] font-mono text-red-400 font-bold">⚠️ BICH ADALAH PLATFORM REFERRAL, BUKAN PENYELENGGARA UMRAH</p>
                     <p class="text-[11px] text-slate-400 leading-relaxed">
@@ -387,38 +498,10 @@
                 <!-- DAFTAR MITRA TERAFILIASI -->
                 <div class="space-y-3">
                     <span class="text-[10px] font-mono text-slate-400 uppercase block">Mitra Travel Umrah Terafiliasi BICH</span>
-
-                    <!--
-                      CATATAN PENTING: sebelumnya di sini ada 2 kartu contoh berisi teks
-                      placeholder ("[Nama Biro Travel Mitra 1]", dst) yang TAMPIL LANGSUNG
-                      ke pengunjung asli. Ini risiko kredibilitas - orang yang belum kenal
-                      BICH akan mengira situsnya belum jadi/asal-asalan.
-
-                      Ganti jadi empty state jujur dulu. Begitu ada mitra travel PPIU aktif
-                      yang sudah teken Perjanjian Kerja Sama Afiliasi, salin ulang struktur
-                      kartu ini (lihat versi lama di git history / komentar bawah) dan isi
-                      dengan data mitra riil.
-                    -->
                     <div class="bg-[#05070a] border border-dashed border-slate-700 rounded-xl p-6 text-center space-y-2">
                         <p class="text-xs text-slate-400">Belum ada mitra travel Umrah yang tayang di sini.</p>
                         <p class="text-[11px] text-slate-500">Isi formulir konsultasi di bawah — tim BICH akan menghubungkan kamu langsung ke biro travel berlisensi PPIU begitu proses afiliasi mitra selesai.</p>
                     </div>
-
-                    <!-- TEMPLATE KARTU MITRA (nonaktif, arsip) - isi dengan data mitra riil yang
-                         sudah diverifikasi & menandatangani Perjanjian Kerja Sama Afiliasi, lalu
-                         pindahkan keluar dari komentar ini untuk ditayangkan.
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-[#05070a] border border-slate-800 rounded-xl p-5 space-y-2.5">
-                            <div class="flex items-start justify-between">
-                                <span class="text-sm font-serif font-bold text-white">[Nama Biro Travel Mitra 1]</span>
-                                <span class="text-[9px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">PPIU AKTIF</span>
-                            </div>
-                            <p class="text-[10px] font-mono text-slate-500">No. Izin PPIU: [ISI NOMOR SK KEMENAG]</p>
-                            <p class="text-[10px] text-slate-400">[Deskripsi singkat: tahun berdiri, jumlah jamaah diberangkatkan, keunggulan]</p>
-                            <a href="#" target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-amber-400 hover:text-amber-300 underline inline-block pt-1">Lihat Paket & Jadwal &rarr;</a>
-                        </div>
-                    </div>
-                    -->
                 </div>
 
                 <!-- Form Konsultasi Lead Umrah -->
@@ -427,7 +510,7 @@
                     <div class="hp-trap-field" aria-hidden="true">
                         <input type="text" name="umrah_hp_check" id="umrah_hp_check" tabindex="-1" autocomplete="off">
                     </div>
-                    <h4 class="text-xs font-mono text-amber-400 font-bold uppercase">Belum yakin pilih mitra mana? Konsultasi Gratis</h4>
+                    <h3 class="text-xs font-mono text-amber-400 font-bold uppercase">Belum yakin pilih mitra mana? Konsultasi Gratis</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <input type="text" id="umrah-nama" placeholder="Nama Lengkap" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
                         <input type="tel" id="umrah-wa" placeholder="Nomor WhatsApp" required class="bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
@@ -443,13 +526,13 @@
                     <p id="umrah-status-msg" class="hidden text-[11px] font-mono"></p>
                 </form>
             </div>
-        </div>
+        </section>
 
-        <!-- CROSS-SELL: OLEH-OLEH BICH MART (SUNGAI BARITO) -->
-        <div class="bg-gradient-to-b from-emerald-500/[0.04] to-transparent border border-emerald-500/10 rounded-3xl p-6 sm:p-8 space-y-5">
+        <!-- CROSS-SELL: OLEH-OLEH BICH MART -->
+        <section class="bg-gradient-to-b from-emerald-500/[0.04] to-transparent border border-emerald-500/10 rounded-3xl p-6 sm:p-8 space-y-5" aria-label="Oleh-Oleh Asli Kalimantan">
             <div class="text-center space-y-1.5 max-w-lg mx-auto">
                 <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-[0.2em]">Sebelum Pulang, Mampir Dulu</span>
-                <h3 class="text-lg sm:text-xl font-serif font-bold text-white">Bawa Oleh-Oleh Asli Banua</h3>
+                <h2 class="text-lg sm:text-xl font-serif font-bold text-white">Bawa Oleh-Oleh Asli Banua</h2>
                 <p class="text-xs text-slate-400">Langsung dari lapak UMKM Kalimantan di BICH Mart — bukan toko oleh-oleh generik di bandara.</p>
             </div>
             <div id="oleholeh-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -458,7 +541,7 @@
             <div class="text-center">
                 <a href="../market/mart.html" class="text-[11px] font-mono text-emerald-400 hover:text-emerald-300 underline">Lihat Semua Lapak Barito &rarr;</a>
             </div>
-        </div>
+        </section>
 
     </main>
 
@@ -485,11 +568,6 @@
             }
 
             // LAYER 2: ANTI-INSPECT & SHORTCUT DISABLE
-            // CATATAN: Ini murni kosmetik/deterren ringan. Siapa pun yang cukup niat tetap bisa
-            // membuka DevTools (mis. dari menu browser, browser lain, atau proxy seperti
-            // Burp/Charles) untuk melihat/mengubah request yang dikirim halaman ini. JANGAN
-            // mengandalkan ini sebagai lapisan keamanan untuk transaksi pembayaran - keamanan
-            // sesungguhnya harus ada di backend (validasi harga, verifikasi webhook, dsb).
             document.addEventListener('contextmenu', e => e.preventDefault());
             document.addEventListener('keydown', e => {
                 if (e.key === 'F12' || 
@@ -501,34 +579,6 @@
             });
         })();
 
-        /*
-          CATATAN KEAMANAN PENTING - HARGA DI SISI KLIEN
-          ------------------------------------------------
-          Tabel harga di bawah ini (dan hasil kalkulasinya) HANYA untuk estimasi tampilan.
-          Encoding Base64 di sini BUKAN enkripsi/keamanan - siapa saja bisa membuka DevTools,
-          mengubah nilai TARIF_RUTE atau memanggil _dVal()/calculateAndDisplayPrice() secara manual
-          dari console, lalu mengirim harga hasil rekayasa ke server.
-
-          Sebelum go-live dengan payment gateway, WAJIB:
-          1. Simpan tabel tarif ini di backend (database/server), bukan di file HTML.
-          2. Saat "Lanjutkan Pembayaran" ditekan, kirim origin/destination/service ke backend,
-             lalu biarkan BACKEND yang menghitung ulang harga final dari tabel tarifnya sendiri.
-          3. JANGAN PERNAH mempercayai angka harga yang dikirim dari browser/klien untuk
-             menentukan jumlah yang ditagihkan ke iPaymu. Backend Anda yang menentukan nominal.
-          Nilai di sini tetap dipakai untuk estimasi cepat di layar sebelum booking dikonfirmasi.
-        */
-        /*
-          TARIF DINAMIS DARI DATABASE (bukan lagi hardcode di file ini)
-          ------------------------------------------------------------
-          Tarif sekarang disimpan di tabel tarif_travel_rute & tarif_travel_layanan
-          di Supabase, dan bisa diubah admin lewat redaksi.html kapan saja tanpa
-          perlu edit/deploy ulang file ini.
-
-          CATATAN KEAMANAN yang TETAP BERLAKU: angka yang tampil di sini hanya
-          untuk ESTIMASI TAMPILAN. Server (create-payment-layanan) menghitung
-          ulang harga final dari tabel yang SAMA saat transaksi dibuat - client
-          tidak pernah dipercaya untuk menentukan nominal tagihan.
-        */
         let TARIF_RUTE = {};
         let TARIF_LAYANAN = {};
         let tarifSudahDimuat = false;
@@ -548,8 +598,6 @@
                 tarifSudahDimuat = true;
             } catch (err) {
                 console.error('Gagal memuat tarif dari database, pakai fallback darurat:', err);
-                // Fallback darurat kalau koneksi database gagal - supaya halaman tidak
-                // blank total, tapi ini SEHARUSNYA tidak pernah kepakai di produksi.
                 TARIF_RUTE = { BPN_IKN: 175000, IKN_BPN: 175000, BDJ_IKN: 350000, IKN_BDJ: 350000, AIRPORT: 150000, DEFAULT: 250000 };
                 TARIF_LAYANAN = {
                     shuttle: { tipe: 'multiplier', nilai: 1, unit_label: '/ kursi (Door-to-Door)' },
@@ -573,11 +621,6 @@
             return { harga, unit: l.unit_label };
         }
 
-        // ================================================================
-        // JOURNEY HUB: dibangun dari <option> yang SUDAH ADA di dropdown asli
-        // (bukan data terpisah) supaya harga yang tampil di sini selalu sinkron
-        // dengan kalkulator booking - satu sumber kebenaran (tabel tarif_travel_rute di database).
-        // ================================================================
         const HUB_ICONS = {
             IKN: '🏛️', BPN: '🌇', BDJ: '🕌', SMD: '🌆', PKY: '🌳', PNK: '🌉', TRK: '🏝️',
         };
@@ -600,8 +643,6 @@
             const destOptions = getOptionList('destination-select');
             const destValueSet = new Set(destOptions.map(o => o.value));
 
-            // Origin picker: kota HUB UTAMA yang juga valid sebagai tujuan
-            // (supaya tiap origin yang dipilih dijamin punya fan-out tujuan).
             const hubOrigins = originOptions.filter(o => HUB_ICONS[o.value] && destValueSet.has(o.value));
 
             const originRow = document.getElementById('hub-origin-row');
@@ -620,7 +661,6 @@
             const destOptions = getOptionList('destination-select');
             const originLabel = (originOptions.find(o => o.value === originVal) || {}).label || originVal;
 
-            // Highlight chip terpilih
             document.querySelectorAll('.hub-origin-chip').forEach(btn => {
                 const active = btn.dataset.hubOrigin === originVal;
                 btn.className = 'hub-origin-chip px-4 py-2.5 rounded-xl border text-xs font-mono transition flex items-center gap-2 ' +
@@ -656,9 +696,6 @@
         }
 
         function pickJourney(originVal, destVal) {
-            // Isi dropdown form booking asli & jalankan kalkulator resmi yang
-            // sama (termasuk rate limiting & honeypot) - Journey Hub cuma
-            // lapisan visual, bukan jalur baru yang memotong pengamanan.
             document.getElementById('origin-select').value = originVal;
             document.getElementById('destination-select').value = destVal;
             calculateAndDisplayPrice(new Event('submit'));
@@ -684,7 +721,6 @@
             }).join('');
         }
 
-        // TAB SWITCHER
         function switchService(service) {
             const secShuttle = document.getElementById('sec-shuttle');
             const secTour = document.getElementById('sec-tour');
@@ -709,26 +745,17 @@
             }
         }
 
-        // LAYER 4: RATE LIMITING & HONEYPOT VERIFICATION ENGINE
-        // CATATAN: Ini hanya penghalang UX ringan (mencegah klik ganda / spam kasar), BUKAN
-        // proteksi keamanan sesungguhnya - variabel ini reset setiap kali halaman di-refresh
-        // dan mudah dilewati lewat console. Untuk proteksi nyata terhadap bot/abuse pada
-        // endpoint pembayaran, terapkan rate limiting di sisi SERVER/CDN (mis. Cloudflare,
-        // Nginx, atau middleware backend), dan pertimbangkan captcha nyata (hCaptcha/
-        // Cloudflare Turnstile) di form yang terhubung ke transaksi uang sungguhan.
         let lastCalcTimestamp = 0;
 
         function calculateAndDisplayPrice(e) {
             e.preventDefault();
             
-            // Honeypot Trap Check
             const hpValue = document.getElementById('bich_hp_check').value;
             if (hpValue !== "") {
                 console.warn("Spam Bot Detected via Honeypot.");
                 return false;
             }
 
-            // Rate Limiting (Maksimal 1 request per 1.2 detik)
             const now = Date.now();
             if (now - lastCalcTimestamp < 1200) {
                 alert("Aktivitas terlalu cepat! Harap tunggu sebentar, Boss.");
@@ -750,7 +777,6 @@
                 return;
             }
 
-            // Ambil tarif dari cache yang sudah dimuat dari database (bukan hardcode)
             let routeKey = `${originVal}_${destVal}`;
             let basePrice = _dVal(routeKey);
 
@@ -762,16 +788,12 @@
             basePrice = hasil.harga;
             const unitText = hasil.unit;
 
-            // Format Currency Output
             const formattedPrice = "Rp " + basePrice.toLocaleString('id-ID');
 
-            // Render Output
             document.getElementById('res-route-title').innerHTML = `${originName} &rarr; ${destName}`;
             document.getElementById('res-price-tag').innerText = formattedPrice;
             document.getElementById('res-unit-tag').innerText = unitText;
 
-            // Simpan detail order terakhir (dipakai saat submit ke backend, BUKAN sebagai
-            // sumber kebenaran harga - backend tetap wajib menghitung ulang).
             window._lastQuote = {
                 origin: originVal,
                 originName: originName,
@@ -782,31 +804,85 @@
                 unitText: unitText
             };
 
-            // Display Box
             document.getElementById('price-result-box').classList.remove('hidden');
             document.getElementById('price-result-box').scrollIntoView({ behavior: 'smooth' });
         }
 
-        /*
-          ALUR PEMBAYARAN YANG AMAN (ringkas):
-          1. Frontend kirim origin/destination/service (BUKAN harga) ke Edge Function
-             create-payment-layanan.
-          2. Edge Function menghitung ulang harga dari tabel tarifnya sendiri (replika PERSIS
-             dari tabel tarif di database), membuat order_id unik, lalu memanggil iPaymu API
-             menggunakan VA/API Key (rahasia, hanya di server) untuk membuat sesi bayar.
-          3. Backend mengembalikan checkout_url ke frontend.
-          4. Frontend redirect ke checkout_url - halaman resmi iPaymu, bukan popup di sini.
-          5. Status pembayaran final HARUS dikonfirmasi lewat webhook server-to-server dari
-             iPaymu ke backend (dengan verifikasi ulang ke API iPaymu), bukan dari redirect
-             URL saja - popup/redirect browser bisa dimanipulasi atau koneksi bisa putus.
-        */
         let isPaymentInProgress = false;
+        let currentTourId = null;
+        let isTourPaymentInProgress = false;
+
+        function bukaModalTour(tourId, tourName) {
+            currentTourId = tourId;
+            document.getElementById('modal-tour-title').innerText = tourName;
+            document.getElementById('modal-tour-status').classList.add('hidden');
+            document.getElementById('modal-tour').classList.remove('hidden');
+        }
+
+        function tutupModalTour() {
+            document.getElementById('modal-tour').classList.add('hidden');
+            currentTourId = null;
+        }
+
+        async function proceedToTourPayment() {
+            const btn = document.getElementById('btn-pay-tour');
+            const statusMsg = document.getElementById('modal-tour-status');
+
+            if (isTourPaymentInProgress) return;
+
+            const nama = document.getElementById('tour-pemesan-nama').value.trim();
+            const wa = document.getElementById('tour-pemesan-wa').value.trim();
+            const email = document.getElementById('tour-pemesan-email').value.trim();
+            const pax = document.getElementById('tour-pemesan-pax').value.trim();
+
+            if (!nama || !wa || !email || !pax) {
+                statusMsg.className = "text-[11px] font-mono text-red-400";
+                statusMsg.innerText = "Mohon lengkapi semua data pemesan.";
+                statusMsg.classList.remove('hidden');
+                return;
+            }
+
+            isTourPaymentInProgress = true;
+            btn.disabled = true;
+            btn.innerText = "Memproses...";
+            statusMsg.className = "text-[11px] font-mono text-slate-400";
+            statusMsg.innerText = "Menghubungi server untuk membuat transaksi aman...";
+            statusMsg.classList.remove('hidden');
+
+            try {
+                const { data, error } = await db.functions.invoke('create-payment-layanan', {
+                    body: {
+                        service: 'tour',
+                        tourId: currentTourId,
+                        pax: parseInt(pax, 10),
+                        customer: { nama, whatsapp: wa, email }
+                    }
+                });
+
+                if (error) throw new Error(error.message || 'Gagal membuat transaksi.');
+                if (!data || !data.checkout_url) throw new Error(data?.error || 'Link pembayaran tidak diterima dari server.');
+
+                statusMsg.className = "text-[11px] font-mono text-emerald-400";
+                statusMsg.innerText = "Mengarahkan ke halaman pembayaran...";
+                window.location.href = data.checkout_url;
+
+            } catch (err) {
+                console.error(err);
+                statusMsg.className = "text-[11px] font-mono text-red-400";
+                statusMsg.innerText = "Gagal membuat transaksi: " + err.message;
+                statusMsg.classList.remove('hidden');
+            } finally {
+                isTourPaymentInProgress = false;
+                btn.disabled = false;
+                btn.innerText = "Lanjutkan ke Pembayaran (QRIS/VA) →";
+            }
+        }
 
         async function proceedToPayment() {
             const btn = document.getElementById('btn-pay');
             const statusMsg = document.getElementById('payment-status-msg');
 
-            if (isPaymentInProgress) return; // cegah double-submit / double-charge
+            if (isPaymentInProgress) return;
             if (!window._lastQuote) {
                 alert("Silakan cek jadwal & tarif terlebih dahulu, Boss.");
                 return;
@@ -838,7 +914,6 @@
                         destination: window._lastQuote.destination,
                         serviceType: window._lastQuote.serviceType,
                         customer: { nama: namaPemesan, whatsapp: waPemesan, email: emailPemesan },
-                        // Sengaja TIDAK mengirim estimatedPrice - backend yang menentukan harga final.
                     }
                 });
 
@@ -867,7 +942,6 @@
             const statusMsg = document.getElementById('umrah-status-msg');
             const btn = document.getElementById('btn-umrah-submit');
 
-            // Honeypot: form bot biasanya ikut mengisi field tersembunyi ini.
             const hpUmrah = document.getElementById('umrah_hp_check').value;
             if (hpUmrah !== "") return false;
 
@@ -886,11 +960,6 @@
             btn.innerText = "Mengirim...";
 
             try {
-                // DIPERBAIKI: sebelumnya fetch('/api/umrah-lead') - path relatif yang cuma
-                // jalan kalau ada server Express di origin yang sama. Sejak arsitektur
-                // pindah ke Supabase Edge Functions, panggilan itu SELALU gagal (404) karena
-                // tidak ada lagi server di path itu. Sekarang pakai db.functions.invoke,
-                // konsisten dengan create-payment-layanan di halaman ini juga.
                 const { data, error } = await db.functions.invoke('umrah-lead', {
                     body: { nama, whatsapp: wa, paket }
                 });
@@ -919,12 +988,6 @@
             }
         }
 
-        // Cross-sell BICH Mart: tarik produk asli UMKM (bukan link statis),
-        // supaya daftar oleh-oleh otomatis update kalau lapak baru buka —
-        // tidak perlu edit halaman ini setiap ada penjual baru.
-        // Data produk berasal dari input bebas penjual - wajib di-escape
-        // sebelum ditaruh ke innerHTML, supaya nama produk/toko tidak bisa
-        // dipakai untuk menyuntik HTML/script (XSS).
         function escapeHtml(str) {
             const div = document.createElement('div');
             div.textContent = str ?? '';
@@ -945,7 +1008,7 @@
                 grid.innerHTML = pilihan.map(item => `
                     <a href="../market/mart.html" class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/40 rounded-xl overflow-hidden transition group block">
                         <div class="aspect-square bg-slate-900 overflow-hidden">
-                            <img src="${escapeHtml(item.gambar_url) || 'https://placehold.co/300x300/080c14/34d399?text=BICH+Mart'}" alt="${escapeHtml(item.nama_produk)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <img src="${escapeHtml(item.gambar_url) || 'https://placehold.co/300x300/080c14/34d399?text=BICH+Mart'}" alt="${escapeHtml(item.nama_produk)} oleh-oleh khas Banua Kalimantan" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                         </div>
                         <div class="p-2.5 space-y-0.5">
                             <p class="text-[10px] text-emerald-400 font-mono truncate">${escapeHtml(item.bich_toko?.nama_toko || 'Lapak Banua')}</p>
@@ -958,19 +1021,17 @@
             }
         }
 
-        // Inisialisasi: muat tarif dari database DULU (async), baru render
-        // Journey Hub - supaya harga yang tampil pertama kali sudah benar,
-        // bukan kosong/salah lalu "berkedip" berubah setelah fetch selesai.
         document.addEventListener('DOMContentLoaded', async () => {
             const originRow = document.getElementById('hub-origin-row');
             originRow.innerHTML = '<p class="text-xs font-mono text-slate-500">Memuat tarif terkini...</p>';
 
             await loadTarifFromSupabase();
             renderJourneyHub();
-            // Sengaja TIDAK auto-pilih origin di sini. Grid tujuan + harga baru
-            // muncul begitu pengunjung sendiri yang mengetuk salah satu kota -
-            // biar tampilan awal ringkas, bukan langsung penuh harga.
             loadOlehOleh();
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/bich/tourism-sw.js');
+            }
         });
     </script>
 </body>

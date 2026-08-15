@@ -1,0 +1,23 @@
+{
+  "name": "BICH Tourism & Mobility — Sungai Kayan",
+  "short_name": "BICH Tourism",
+  "start_url": "/bich/pariwisata.html",
+  "scope": "/bich/pariwisata.html",
+  "display": "standalone",
+  "background_color": "#080c14",
+  "theme_color": "#080c14",
+  "icons": [
+    {
+      "src": "/bich/tourism-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/bich/tourism-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
