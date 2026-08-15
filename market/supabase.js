@@ -4,7 +4,7 @@ const SUPABASE_URL = "https://gehbuhuevfxfjyytmrht.supabase.co";
 // dengan yang sudah dipakai di berita.html/ekonomi.html/politik.html/index.html.
 // PENTING: sebelumnya key ini PATAH (masih ada teks placeholder "YOUR_ACTUAL_ANON_KEY"
 // yang belum diganti) sehingga seluruh BICH Mart gagal konek ke database.
-const SUPABASE_ANON_KEY = "sb_publishable_yPGSsXXIoc_wfn_Kkq8xzA_lGi7zEEn";
+const SUPABASE_ANON_KEY = "sb_publishable_7MfD31f6Jpan5GJ_VP5vuw_ZBm_3oHZ";
 
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // Alias supaya konsisten dengan penamaan yang dipakai di seller.html (supabaseClient)

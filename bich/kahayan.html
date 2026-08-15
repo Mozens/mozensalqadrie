@@ -3,79 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sungai Kahayan — Pilih Kanal Politik | BICH</title>
-    <meta name="description" content="Pilih kanal politik BICH: Buletin Politik & Kebijakan Mingguan atau Panggung Tokoh.">
+    
+    <!-- SEO Utama -->
+    <title>Sungai 04 Kahayan Gateway — Politik & Kebijakan Publik Banua | Mozens Alqadrie</title>
+    <meta name="description" content="Portal utama Sungai Kahayan BICH. Pusat analisis kebijakan publik, buletin politik mingguan, geopolitik regional, dan Panggung Tokoh Kalimantan.">
+    <meta name="keywords" content="Sungai Kahayan, Politik Kalimantan, Kebijakan Publik Banua, Panggung Tokoh, BICH Political Desk, Mozens Alqadrie, Generasi Banua">
+    <meta name="author" content="Mozens Alqadrie">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mozensalqadrie.com/bich/kahayan.html">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mozensalqadrie.com/bich/kahayan.html">
+    <meta property="og:title" content="Sungai 04 Kahayan Gateway — Analisis Politik & Panggung Tokoh Banua">
+    <meta property="og:description" content="Melintasi Ibu Kota Provinsi: Pusat kajian kebijakan publik, buletin politik mingguan, dan potret kepemimpinan daerah.">
+    <meta property="og:image" content="https://mozensalqadrie.com/profile.jpg">
+    <meta property="og:site_name" content="Mozens Alqadrie Sovereign Hub">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sungai 04 Kahayan Gateway — Analisis Politik & Panggung Tokoh Banua">
+    <meta name="twitter:description" content="Melintasi Ibu Kota Provinsi: Pusat kajian kebijakan publik, buletin politik mingguan, dan potret kepemimpinan daerah.">
+    <meta name="twitter:image" content="https://mozensalqadrie.com/profile.jpg">
+
+    <!-- Preconnect Asset & Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": "https://mozensalqadrie.com/bich/kahayan.html",
+          "url": "https://mozensalqadrie.com/bich/kahayan.html",
+          "name": "Sungai Kahayan Gateway — BICH Political Desk",
+          "description": "Portal kajian politik dan kebijakan publik Kalimantan di bawah pilar Sungai 04 Kahayan.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "Mozens Alqadrie — Sovereign Hub",
+            "url": "https://mozensalqadrie.com/"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Muara Utama",
+              "item": "https://mozensalqadrie.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Sungai Kahayan",
+              "item": "https://mozensalqadrie.com/bich/kahayan.html"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #05070c; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        :root {
+            --bg-dark: #05070a;
+            --red-accent: #ef4444;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-dark);
+            color: #f8fafc;
+        }
+
+        .font-serif { font-family: var(--font-serif); }
+        .font-mono { font-family: var(--font-mono); }
+
         .gold-gradient {
             background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
-            background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .river-line {
-            background: repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(212,175,55,0.35) 6px, rgba(212,175,55,0.35) 12px);
-            height: 2px;
+            background: repeating-linear-gradient(90deg, rgba(239, 68, 68, 0.4) 0, rgba(239, 68, 68, 0.4) 8px, transparent 8px, transparent 16px);
+            height: 1px;
         }
-        .card-choice {
-            transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+        .channel-card {
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .card-choice:hover {
+        .channel-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px -20px rgba(5,150,105,0.35);
         }
     </style>
 </head>
-<body class="min-h-screen text-white flex flex-col">
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-red-500 selection:text-black">
 
-    <header class="py-6 border-b border-slate-900">
-        <div class="max-w-4xl mx-auto px-6 flex items-center justify-between">
-            <a href="index.html" class="text-xs font-mono text-emerald-400 hover:text-white transition">&larr; Portal Utama BICH</a>
-            <span class="text-[10px] font-mono text-amber-400/80 border border-amber-500/20 bg-amber-950/20 rounded-full px-3 py-1">SUNGAI KAHAYAN · KANAL POLITIK</span>
+    <!-- Header Sticky Nav -->
+    <header class="border-b border-red-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-3">
+            <a href="/index.html" class="text-xs font-mono text-red-400 hover:text-red-300 transition flex items-center gap-2">
+                <span>&larr;</span> Portal Utama BICH
+            </a>
+            <div class="flex items-center gap-2">
+                <a href="/bich/kaderisasi-kahayan.html" class="text-[10px] font-mono text-red-400 hover:text-red-300 border border-red-500/30 px-3 py-1 rounded-full bg-red-500/10 font-semibold transition">
+                    Daftar Kaderisasi Kahayan &rarr;
+                </a>
+                <span class="text-[10px] font-mono text-red-400/90 border border-red-500/30 px-3 py-1 rounded-full bg-red-500/10 font-semibold tracking-wide">
+                    SUNGAI 04 &middot; KAHAYAN &mdash; MELINTASI IBU KOTA PROVINSI
+                </span>
+            </div>
         </div>
     </header>
 
-    <main class="flex-1 flex items-center justify-center px-6 py-16">
-        <div class="max-w-4xl w-full text-center space-y-4">
-            <p class="font-mono text-[11px] tracking-[0.3em] text-emerald-400/80 uppercase">Muara Sungai Kahayan</p>
-            <h1 class="font-serif text-4xl sm:text-5xl font-extrabold leading-tight">
-                Mau baca yang mana, <span class="gold-gradient">bolo?</span>
-            </h1>
-            <p class="text-slate-400 text-sm max-w-xl mx-auto">
-                Dua kanal politik BICH punya sudut pandang berbeda — pilih sesuai kebutuhan Anda.
-            </p>
-            <div class="river-line w-24 mx-auto my-8"></div>
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-6 py-12 flex-grow w-full space-y-10">
 
-            <div class="grid sm:grid-cols-2 gap-6 text-left">
-                <a href="politik.html" class="card-choice block bg-[#080c14] border border-slate-800 hover:border-emerald-500/60 rounded-2xl p-8 space-y-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-2xl">🏛️</div>
-                    <h2 class="font-serif text-xl font-bold text-white">Buletin Politik & Kebijakan Mingguan</h2>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        Analisis mendalam per provinsi setiap pekan — peta kepentingan, risiko tata kelola, dan implikasinya bagi pengusaha lokal.
-                    </p>
-                    <span class="inline-flex items-center gap-1 text-emerald-400 text-xs font-mono font-bold">
-                        Buka Buletin &rarr;
-                    </span>
-                </a>
-
-                <a href="panggung_tokoh.html" class="card-choice block bg-[#080c14] border border-slate-800 hover:border-cyan-500/60 rounded-2xl p-8 space-y-4">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-2xl">🎤</div>
-                    <h2 class="font-serif text-xl font-bold text-white">Panggung Tokoh</h2>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        Rekam jejak tokoh publik dan pengambil kebijakan di Kalimantan — profil non-partisan berbasis fakta.
-                    </p>
-                    <span class="inline-flex items-center gap-1 text-cyan-400 text-xs font-mono font-bold">
-                        Buka Profil &rarr;
-                    </span>
-                </a>
+        <!-- Hero Title Header -->
+        <div class="text-center space-y-4 max-w-3xl mx-auto">
+            <div class="inline-flex items-center gap-2 border border-red-500/40 bg-red-950/60 px-4 py-1.5 rounded-full text-xs font-mono text-red-300 font-bold shadow-lg shadow-red-950/50">
+                <span class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
+                <span>SUNGAI KAHAYAN DESK &middot; EDISI MINGGUAN</span>
             </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold font-serif tracking-tight text-white leading-tight">
+                ANALISIS POLITIK &amp; <span class="gold-gradient">PANGGUNG TOKOH BANUA</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-300 font-mono max-w-2xl mx-auto leading-relaxed">
+                Pilih kanal analisis yang Anda butuhkan. Setiap kanal diperbarui mingguan oleh tim Analis Kebijakan Publik Muda BICH.
+            </p>
+            <p class="text-[11px] font-mono text-red-400/70 italic">Motto BICH: &quot;Perhatikan, Analisa, Eksekusi.&quot;</p>
         </div>
+
+        <div class="river-line"></div>
+
+        <!-- Channels Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <a href="/bich/politik.html" class="channel-card bg-[#080c14] border border-slate-800 hover:border-red-500/50 rounded-2xl p-8 space-y-5 group block">
+                <div class="flex items-center justify-between">
+                    <span class="bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] font-mono px-3 py-1 rounded-full font-bold uppercase tracking-wider">Kanal 01</span>
+                    <span class="text-2xl">🏛️</span>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-xl font-serif font-bold text-white group-hover:text-red-300 transition">Buletin Politik &amp; Kebijakan Mingguan</h2>
+                    <p class="text-sm text-slate-400 leading-relaxed">Dinamika kebijakan, peta politik nasional, dan geopolitik regional Kalimantan. Analisis dampak kebijakan terhadap putra daerah.</p>
+                </div>
+                <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono">
+                    <span class="text-slate-500">Kategori: Kebijakan &amp; Politik</span>
+                    <span class="text-red-400 font-bold group-hover:translate-x-1 transition-transform">Baca &rarr;</span>
+                </div>
+            </a>
+
+            <a href="/bich/panggung_tokoh.html" class="channel-card bg-[#080c14] border border-slate-800 hover:border-red-500/50 rounded-2xl p-8 space-y-5 group block">
+                <div class="flex items-center justify-between">
+                    <span class="bg-red-500/10 border border-red-500/30 text-red-400 text-[10px] font-mono px-3 py-1 rounded-full font-bold uppercase tracking-wider">Kanal 02</span>
+                    <span class="text-2xl">🎤</span>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-xl font-serif font-bold text-white group-hover:text-red-300 transition">Panggung Tokoh</h2>
+                    <p class="text-sm text-slate-400 leading-relaxed">Profil dan analisis tokoh politik, pejabat publik, dan pemimpin opini yang membentuk arah kebijakan di Kalimantan.</p>
+                </div>
+                <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono">
+                    <span class="text-slate-500">Kategori: Profil Tokoh Banua</span>
+                    <span class="text-red-400 font-bold group-hover:translate-x-1 transition-transform">Baca &rarr;</span>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="river-line"></div>
+
+        <!-- Tier-track Kaderisasi Banner -->
+        <div class="bg-[#080c14] border border-slate-800 rounded-2xl p-6 space-y-4">
+            <h3 class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">&bull; Jalur Kaderisasi: Analis Kebijakan Publik Muda</h3>
+            <div class="flex flex-col sm:flex-row items-center gap-3 text-[11px] font-mono">
+                <div class="flex items-center gap-2 text-slate-400">
+                    <span class="w-2 h-2 rounded-full bg-slate-600"></span> Perintis
+                </div>
+                <span class="text-slate-600">&rarr;</span>
+                <div class="flex items-center gap-2 text-slate-400">
+                    <span class="w-2 h-2 rounded-full bg-slate-600"></span> Penjelajah
+                </div>
+                <span class="text-slate-600">&rarr;</span>
+                <div class="flex items-center gap-2 text-red-400">
+                    <span class="w-2 h-2 rounded-full bg-red-400"></span> Pewaris Sungai
+                </div>
+                <span class="text-slate-500 text-[10px] ml-2">(Tim Kurasi Mozens Inc.)</span>
+            </div>
+            <a href="/bich/kaderisasi-kahayan.html" class="inline-block bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-mono font-bold px-5 py-2.5 rounded-xl transition">
+                Daftar Kaderisasi Kahayan &rarr;
+            </a>
+        </div>
+
     </main>
 
+    <!-- Footer -->
     <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">
-        © 2026 BICH Intelligence Desk • Mozens Inc. · "Perhatikan, Analisa. Eksekusi."
+        &copy; 2026 BICH Political Desk &bull; Mozens Inc. (<a href="https://mozensalqadrie.com" class="hover:underline text-slate-500">www.mozensalqadrie.com</a>)
     </footer>
 </body>
 </html>

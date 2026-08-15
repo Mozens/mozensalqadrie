@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Mitra Kurir BICH — Sungai Barito</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Playfair+Display:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="./supabase.js" defer></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #080c14; }
+        .gold-gradient {
+            font-family: 'Cinzel', 'Playfair Display', Georgia, serif !important;
+            font-weight: 900;
+            background: linear-gradient(180deg, #FFF1B0 0%, #F59E0B 45%, #B45309 100%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col" x-data="driverApp()" x-init="init()">
+
+    <!-- JEMBATAN EKOSISTEM -->
+    <div class="bg-slate-900/60 border-b border-slate-800/60 py-1.5 px-4 text-center">
+        <a href="../index.html" class="font-mono text-[0.68rem] inline-flex items-center gap-2 text-cyan-400/90 hover:text-cyan-300 transition">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+            SUNGAI 03 · BARITO — JALUR DAGANG TERTUA
+        </a>
+    </div>
+
+    <header class="bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-3.5">
+        <div class="max-w-lg mx-auto flex justify-between items-center">
+            <a href="mart.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 transition">&larr; BICH Mart</a>
+            <span class="text-[10px] font-mono text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 rounded-full">MITRA KURIR</span>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto w-full px-4 py-8 flex-grow space-y-6">
+
+        <div class="text-center space-y-2.5">
+            <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] px-3.5 py-1 rounded-full font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Fase 1 — Rekrutmen Kurir Lokal
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-black text-slate-100">
+                JADI <span class="gold-gradient">MITRA KURIR BICH</span>
+            </h1>
+            <p class="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+                Punya motor atau pickup? Antar paket UMKM Banua di kotamu sendiri, dapat komisi platform, dan jadi bagian dari jalur kaderisasi Sungai Barito.
+            </p>
+        </div>
+
+        <!-- INFO KOMISI & CARA KERJA -->
+        <div class="grid grid-cols-3 gap-2.5">
+            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
+                <p class="text-lg font-black text-amber-400">20%</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">Komisi Platform</p>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
+                <p class="text-lg font-black text-amber-400">Sameday</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">Estimasi Antar</p>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
+                <p class="text-lg font-black text-amber-400">Manual</p>
+                <p class="text-[10px] text-slate-500 mt-0.5">Verifikasi Tim</p>
+            </div>
+        </div>
+
+        <!-- FORM PENDAFTARAN -->
+        <form @submit.prevent="daftar()" x-show="!sukses" x-cloak class="bg-slate-900/40 border border-slate-800 rounded-3xl p-5 space-y-3.5">
+            <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap *</label>
+                <input type="text" x-model="form.nama" required placeholder="Sesuai KTP" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Nomor WhatsApp Aktif *</label>
+                <input type="tel" x-model="form.wa" required placeholder="08xxxxxxxxxx" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Jenis Kendaraan *</label>
+                    <select x-model="form.kendaraan" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        <option value="" disabled selected>Pilih</option>
+                        <option value="motor">Motor</option>
+                        <option value="mobil_box">Mobil Box</option>
+                        <option value="pickup">Pickup</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Kapasitas (kg) *</label>
+                    <input type="number" x-model="form.kapasitas_kg" required min="1" placeholder="20" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Kota/Kabupaten Domisili *</label>
+                <input type="text" x-model="form.kota_domisili" required placeholder="cth: Banjarmasin" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Radius Layanan (km) *</label>
+                <input type="number" x-model="form.radius_layanan_km" required min="1" placeholder="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                <p class="text-[10px] text-slate-500 mt-1">Seberapa jauh dari lokasimu kamu sanggup antar paket.</p>
+            </div>
+
+            <div class="border-t border-slate-800 pt-3.5 space-y-3.5">
+                <p class="text-[10px] font-mono text-slate-500 uppercase">Untuk Pencairan Komisi (opsional, bisa diisi belakangan)</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" x-model="form.nama_bank" placeholder="Nama Bank" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    <input type="text" x-model="form.no_rekening" placeholder="No. Rekening" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                </div>
+            </div>
+
+            <p x-show="errorMsg" x-cloak class="text-[11px] text-red-400 font-mono" x-text="errorMsg"></p>
+
+            <button type="submit" :disabled="loading" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-3.5 rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition flex items-center justify-center gap-2">
+                <span x-show="!loading">Daftar Jadi Mitra Kurir</span>
+                <span x-show="loading" x-cloak>Mengirim...</span>
+            </button>
+            <p class="text-[10px] text-slate-500 text-center leading-relaxed">
+                Pendaftaranmu berstatus <b class="text-slate-300">MENUNGGU</b> sampai diverifikasi manual tim BICH (cek KTP, no. kendaraan, dsb). Kamu akan dihubungi lewat WhatsApp.
+            </p>
+        </form>
+
+        <!-- STATE SUKSES -->
+        <div x-show="sukses" x-cloak class="bg-emerald-500/5 border border-emerald-500/20 rounded-3xl p-6 text-center space-y-3">
+            <span class="text-3xl">🛵</span>
+            <h3 class="text-sm font-bold text-emerald-300">Pendaftaran Terkirim!</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Tim BICH akan verifikasi data kamu dan menghubungi lewat WhatsApp di <b class="text-slate-200" x-text="form.wa"></b>. Begitu status berubah jadi TERVERIFIKASI, sistem otomatis memprioritaskan kamu untuk pesanan sekitar <span x-text="form.kota_domisili"></span>.
+            </p>
+        </div>
+
+        <!-- JALUR KADERISASI -->
+        <div class="bg-gradient-to-br from-amber-500/10 via-slate-900/90 to-slate-900/90 border border-amber-500/25 rounded-3xl p-5 space-y-2.5">
+            <h3 class="text-xs font-bold text-slate-100 flex items-center gap-2">
+                <i class="fa-solid fa-seedling text-amber-400"></i> Bagian dari Jalur Kaderisasi Barito
+            </h3>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+                Jadi mitra kurir aktif & terverifikasi adalah salah satu jalan menuju status <b class="text-amber-400">Pewaris Sungai Barito</b> — bukan cuma antar paket, ini bagian dari menempa wirausahawan muda Banua.
+            </p>
+        </div>
+
+    </main>
+
+    <script>
+        function driverApp() {
+            return {
+                loading: false,
+                sukses: false,
+                errorMsg: '',
+                form: {
+                    nama: '', wa: '', kendaraan: '', kapasitas_kg: '',
+                    kota_domisili: '', radius_layanan_km: '',
+                    nama_bank: '', no_rekening: ''
+                },
+
+                init() {},
+
+                async daftar() {
+                    this.errorMsg = '';
+                    this.loading = true;
+
+                    try {
+                        // CATATAN: tabel mitra_kurir belum tentu sudah dibuat di database -
+                        // lihat rancangan-kurir-ongkir.sql. Kalau insert ini gagal karena
+                        // tabel belum ada, itu bukan bug di form ini.
+                        const { error } = await supabaseClient
+                            .from('mitra_kurir')
+                            .insert({
+                                nama: this.form.nama,
+                                wa: this.form.wa,
+                                kendaraan: this.form.kendaraan,
+                                kapasitas_kg: Number(this.form.kapasitas_kg),
+                                kota_domisili: this.form.kota_domisili,
+                                radius_layanan_km: Number(this.form.radius_layanan_km),
+                                nama_bank: this.form.nama_bank || null,
+                                no_rekening: this.form.no_rekening || null,
+                                status_verifikasi: 'MENUNGGU'
+                            });
+
+                        if (error) throw new Error(error.message);
+                        this.sukses = true;
+
+                    } catch (err) {
+                        console.error(err);
+                        this.errorMsg = 'Gagal mengirim pendaftaran: ' + err.message + '. Coba lagi atau hubungi tim BICH lewat halaman Kontak Usaha.';
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</body>
+</html>

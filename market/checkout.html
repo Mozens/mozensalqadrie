@@ -72,28 +72,52 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-300 mb-1">Alamat Lengkap Pengiriman *</label>
-                        <textarea x-model="form.alamat" rows="2" required placeholder="Jl. Ahmad Yani Km..., No. Rumah, Kota/Kabupaten" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500"></textarea>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Kota/Kabupaten Tujuan *</label>
+                        <select x-model="form.kota_tujuan" @change="hitungOngkirDinamis()" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                            <option value="" disabled selected>Pilih kota/kabupaten</option>
+                            <template x-for="kota in daftarKota" :key="kota">
+                                <option :value="kota" x-text="kota"></option>
+                            </template>
+                        </select>
+                        <p class="text-[10px] text-slate-500 mt-1">Dipakai untuk menghitung ongkir & rekomendasi kurir otomatis — bukan cuma teks alamat.</p>
                     </div>
 
-                    <!-- OPSIONAL OPSI KURIR -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Alamat Lengkap Pengiriman *</label>
+                        <textarea x-model="form.alamat" rows="2" required placeholder="Jl. Ahmad Yani Km..., No. Rumah, Patokan" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-amber-500"></textarea>
+                    </div>
+
+                    <!-- OPSI KURIR — DINAMIS BERDASARKAN KOTA TUJUAN, BUKAN HARGA TETAP -->
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-2">Metode Pengiriman</label>
-                        <div class="space-y-2">
-                            <label class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-amber-500/50">
-                                <div class="flex items-center gap-2 text-xs">
-                                    <input type="radio" name="pengiriman" value="Kurir Lokal Banua" x-model="form.metode_pengiriman" @change="ongkir = 12000" class="accent-amber-500">
-                                    <span>Kurir Lokal Banua (Sameday)</span>
-                                </div>
-                                <span class="text-xs font-bold text-amber-400">Rp 12.000</span>
-                            </label>
-                            <label class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-amber-500/50">
-                                <div class="flex items-center gap-2 text-xs">
-                                    <input type="radio" name="pengiriman" value="Ekspedisi Reguler" x-model="form.metode_pengiriman" @change="ongkir = 22000" class="accent-amber-500">
-                                    <span>Ekspedisi Reguler (JNE/J&T)</span>
-                                </div>
-                                <span class="text-xs font-bold text-amber-400">Rp 22.000</span>
-                            </label>
+
+                        <p x-show="!form.kota_tujuan" class="text-[11px] text-slate-500 bg-slate-950 border border-dashed border-slate-800 rounded-xl p-3">
+                            Pilih kota/kabupaten tujuan dulu di atas — opsi kurir & ongkir baru muncul setelah itu.
+                        </p>
+
+                        <p x-show="form.kota_tujuan && isLoadingOngkir" x-cloak class="text-[11px] text-slate-500 font-mono">Menghitung ongkir & mencari kurir terbaik...</p>
+
+                        <div x-show="form.kota_tujuan && !isLoadingOngkir" x-cloak class="space-y-2">
+                            <template x-for="opsi in opsiKurir" :key="opsi.kode">
+                                <label class="flex items-center justify-between p-3 bg-slate-950 border rounded-xl cursor-pointer transition"
+                                       :class="form.metode_pengiriman === opsi.kode ? 'border-amber-500' : 'border-slate-800 hover:border-amber-500/50'">
+                                    <div class="flex items-center gap-2 text-xs">
+                                        <input type="radio" name="pengiriman" :value="opsi.kode" x-model="form.metode_pengiriman" @change="ongkir = opsi.harga" class="accent-amber-500">
+                                        <div>
+                                            <span x-text="opsi.label"></span>
+                                            <span x-show="opsi.rekomendasi" x-cloak class="ml-1.5 text-[9px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded-full font-bold">TERBAIK UTK TUJUAN INI</span>
+                                            <p class="text-[10px] text-slate-500" x-text="opsi.estimasi"></p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-amber-400" x-text="formatRupiah(opsi.harga)"></span>
+                                </label>
+                            </template>
+
+                            <p x-show="pesanOngkirKhusus" x-cloak class="text-[11px] text-amber-300 bg-amber-950/20 border border-amber-500/20 rounded-xl p-3 mb-2" x-text="pesanOngkirKhusus"></p>
+
+                        <p x-show="opsiKurir.length === 0 && !pesanOngkirKhusus" x-cloak class="text-[11px] text-amber-400 bg-amber-950/20 border border-amber-500/20 rounded-xl p-3">
+                                Sistem pengiriman sedang tidak bisa memberi opsi otomatis untuk kota ini. Kalau pesananmu barang besar/berat (mis. furnitur, hasil panen dalam jumlah besar), coba <a href="../bich/pariwisata.html" target="_blank" class="underline font-bold">Kargo Multimoda BICH</a>. Untuk paket biasa, muat ulang halaman atau hubungi tim BICH lewat <a href="legal.html#kontak" class="underline font-bold">Kontak Usaha</a>.
+                            </p>
                         </div>
                     </div>
 
@@ -158,14 +182,26 @@
         function checkoutApp() {
             return {
                 cart: [],
-                ongkir: 12000,
+                ongkir: 0,
                 loading: false,
+                isLoadingOngkir: false,
+                opsiKurir: [],
+                pesanOngkirKhusus: '',
+                // CATATAN: daftar kota ini sementara statis di frontend supaya dropdown
+                // langsung bisa dipakai. Idealnya diambil dari cakupan wilayah mitra_kurir
+                // aktif di database, supaya kota yang belum ada kurirnya tidak muncul di
+                // pilihan. Sesuaikan/ganti jadi fetch dinamis begitu tabel mitra_kurir ada.
+                daftarKota: [
+                    'Banjarmasin', 'Banjarbaru', 'Martapura', 'Palangka Raya',
+                    'Samarinda', 'Balikpapan', 'Pontianak', 'Tarakan'
+                ],
                 form: { 
                     name: '', 
                     email: '', 
                     phone: '', 
                     alamat: '', 
-                    metode_pengiriman: 'Kurir Lokal Banua',
+                    kota_tujuan: '',
+                    metode_pengiriman: '',
                     tipe_bayar: 'pg'
                 },
 
@@ -174,8 +210,67 @@
                     if (savedCart) this.cart = JSON.parse(savedCart);
                 },
 
+                // Hitung ongkir & rekomendasi kurir SETELAH kota tujuan dipilih.
+                // Harga akhir tetap ditentukan server saat prosesBayar() - nilai di
+                // sini hanya estimasi tampilan, sama seperti pola di pariwisata.html
+                // (jangan pernah percaya harga dari client untuk penagihan final).
+                async hitungOngkirDinamis() {
+                    if (!this.form.kota_tujuan || this.cart.length === 0) return;
+
+                    this.isLoadingOngkir = true;
+                    this.opsiKurir = [];
+                    this.form.metode_pengiriman = '';
+                    this.ongkir = 0;
+
+                    try {
+                        // BELUM ADA DI BACKEND - edge function 'hitung-ongkir' perlu dibuat.
+                        // Kontrak yang diharapkan:
+                        //   input : { kota_tujuan, items: [{ produk_id, qty }] }
+                        //   proses: ambil lokasi asal tiap produk dari bich_produk.lokasi,
+                        //           tentukan sekota (mitra_kurir) vs antar-kota (arahkan ke
+                        //           Kargo Multimoda Kayan), hitung ongkir dari tarif_kurir_zona
+                        //   output: { opsi: [{ kode, label, estimasi, harga, rekomendasi }] }
+                        const { data, error } = await db.functions.invoke('hitung-ongkir', {
+                            body: {
+                                kota_tujuan: this.form.kota_tujuan,
+                                items: this.cart.map(item => ({ produk_id: item.id, qty: 1 }))
+                            }
+                        });
+
+                        if (error) throw new Error(error.message);
+
+                        if (data?.error === 'MULTI_ORIGIN') {
+                            this.opsiKurir = [];
+                            this.pesanOngkirKhusus = data.message;
+                            return;
+                        }
+                        this.pesanOngkirKhusus = '';
+
+                        if (!data || !Array.isArray(data.opsi) || data.opsi.length === 0) {
+                            this.opsiKurir = [];
+                            return;
+                        }
+
+                        this.opsiKurir = data.opsi;
+                        const rekomendasi = data.opsi.find(o => o.rekomendasi) || data.opsi[0];
+                        this.form.metode_pengiriman = rekomendasi.kode;
+                        this.ongkir = rekomendasi.harga;
+
+                    } catch (err) {
+                        console.error('Gagal hitung ongkir:', err);
+                        // Fallback jujur - JANGAN diam-diam pasang harga tebakan.
+                        this.opsiKurir = [];
+                    } finally {
+                        this.isLoadingOngkir = false;
+                    }
+                },
+
                 get cartTotal() {
-                    return this.cart.reduce((sum, item) => sum + Number(item.harga), 0);
+                    if (!Array.isArray(this.cart)) return 0;
+                    return this.cart.reduce((sum, item) => {
+                        if (!item) return sum;
+                        return sum + (Number(item.harga) * Number(item.qty || 1));
+                    }, 0);
                 },
 
                 get feeBich() {
@@ -191,6 +286,14 @@
                         alert("Keranjang Emas kamu kosong!");
                         return;
                     }
+                    if (!this.form.kota_tujuan) {
+                        alert("Pilih kota/kabupaten tujuan dulu.");
+                        return;
+                    }
+                    if (!this.form.metode_pengiriman) {
+                        alert("Pilih metode pengiriman dulu - kalau tidak ada opsi kurir untuk kota ini, gunakan Kargo Multimoda BICH.");
+                        return;
+                    }
 
                     this.loading = true;
 
@@ -204,7 +307,7 @@
                                     customer_email: this.form.email,
                                     customer_phone: this.form.phone,
                                     shipping_address: this.form.alamat,
-                                    shipping_fee: this.ongkir,
+                                    kota_tujuan: this.form.kota_tujuan,
                                     shipping_method: this.form.metode_pengiriman,
                                     payment_method: 'gateway',
                                     // 🔴 Otomatis redirect ke success.html dengan service=mart
@@ -238,7 +341,7 @@
                                     customer_email: this.form.email,
                                     customer_phone: this.form.phone,
                                     shipping_address: this.form.alamat,
-                                    shipping_fee: this.ongkir,
+                                    kota_tujuan: this.form.kota_tujuan,
                                     shipping_method: this.form.metode_pengiriman,
                                     payment_method: 'manual',
                                 }

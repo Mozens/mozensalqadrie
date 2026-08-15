@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mozens Alqadrie — Inisiator & Kurator Utama | Muara Utama Ekosistem Digital & Generasi Banua</title>
-
-    <meta property="og:title" content="Mozens Alqadrie — Inisiator & Kurator Utama">
-    <meta property="og:description" content="Muara Utama Ekosistem Digital & Generasi Banua Kalimantan">
-    <meta property="og:image" content="profile.jpg">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="profile.jpg">
-
+    <meta name="robots" content="noindex, nofollow">
+    <title>Mozens Alqadrie | Sovereign Hub & 6 Rivers Ecosystem</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,7 +22,7 @@
             --text-muted: #94a3b8;
             --border-gold: rgba(212, 175, 55, 0.25);
             --font-serif: 'Playfair Display', Georgia, serif;
-            --font-sans: 'Plus Jakarta Jakarta Sans', sans-serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
@@ -35,7 +31,7 @@
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: var(--font-sans);
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -46,6 +42,7 @@
             padding: 0 24px;
         }
 
+        /* --- HEADER / NAVBAR --- */
         header {
             padding: 24px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -62,13 +59,6 @@
             align-items: center;
         }
 
-        .logo-lockup {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            text-decoration: none;
-        }
-
         .logo {
             font-family: var(--font-serif);
             font-size: 1.3rem;
@@ -76,17 +66,6 @@
             color: var(--gold-accent);
             text-decoration: none;
             letter-spacing: 1px;
-        }
-
-        .logo-role {
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            color: var(--text-muted);
-            letter-spacing: 0.2px;
-        }
-
-        @media (max-width: 640px) {
-            .logo-role { display: none; }
         }
 
         .nav-status {
@@ -117,6 +96,7 @@
             100% { opacity: 0.4; transform: scale(0.9); }
         }
 
+        /* --- HERO SECTION --- */
         .hero {
             padding: 60px 0 40px;
             text-align: center;
@@ -180,6 +160,7 @@
             margin: 0;
         }
 
+        /* --- WELCOME / SAMBUTAN MUARA --- */
         .welcome-box {
             max-width: 800px;
             margin: 0 auto 48px;
@@ -203,6 +184,7 @@
             line-height: 1.8;
         }
 
+        /* --- MAP CANVAS SECTION (GLOBAL CONNECTIVITY) --- */
         .map-section { margin-bottom: 72px; }
 
         .hero-visual-side {
@@ -248,6 +230,7 @@
 
         #geoCanvas { width: 100%; height: 100%; display: block; }
 
+        /* --- 6 RIVERS GRID SECTION --- */
         .rivers-section {
             padding: 48px 0 96px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -351,191 +334,6 @@
             color: #ffffff;
         }
 
-        .river-card-split { padding-bottom: 20px; }
-
-        .river-split-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 4px;
-        }
-
-        .river-split-btn {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 12px;
-            transition: color 0.25s ease;
-        }
-
-        .river-split-btn:hover { color: #ffffff; }
-
-        .river-split-btn-primary {
-            color: var(--gold-light);
-            background: rgba(212, 175, 55, 0.08);
-            border: 1px solid var(--border-gold);
-            border-top: 1px solid var(--border-gold);
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin-bottom: 2px;
-        }
-
-        .river-split-btn-primary:hover {
-            color: var(--gold-light);
-            background: rgba(212, 175, 55, 0.16);
-            border-color: var(--gold-accent);
-        }
-
-        .legacy-section {
-            margin-top: 80px;
-            padding: 48px 32px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 20px;
-        }
-
-        .legacy-header {
-            text-align: center;
-            max-width: 640px;
-            margin: 0 auto 44px auto;
-        }
-
-        .legacy-title {
-            font-family: 'Playfair Display', serif;
-            font-weight: 900;
-            font-size: 2rem;
-            color: var(--gold-light);
-            margin: 10px 0 14px 0;
-        }
-
-        .legacy-sub {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-            line-height: 1.7;
-        }
-
-        .tier-track {
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            gap: 0;
-            max-width: 780px;
-            margin: 0 auto 52px auto;
-            flex-wrap: wrap;
-        }
-
-        .tier-step {
-            text-align: center;
-            width: 200px;
-        }
-
-        .tier-num {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 1px solid var(--border-gold);
-            font-family: var(--font-mono);
-            color: var(--gold-accent);
-            font-size: 0.8rem;
-            margin-bottom: 12px;
-        }
-
-        .tier-step h4 {
-            font-family: 'Playfair Display', serif;
-            color: #ffffff;
-            font-size: 1.05rem;
-            margin-bottom: 6px;
-        }
-
-        .tier-step p {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            line-height: 1.6;
-        }
-
-        .tier-line {
-            height: 1px;
-            width: 60px;
-            background: var(--border-gold);
-            margin-top: 18px;
-        }
-
-        .legacy-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 14px;
-            max-width: 960px;
-            margin: 0 auto;
-        }
-
-        .legacy-item {
-            border: 1px solid var(--border-gold);
-            border-radius: 12px;
-            padding: 16px 14px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.015);
-            text-decoration: none;
-            display: block;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .legacy-item:hover {
-            transform: translateY(-2px);
-            border-color: var(--gold-accent);
-        }
-
-        .legacy-item span {
-            display: block;
-            font-family: var(--font-mono);
-            color: var(--cyan-tech);
-            font-size: 0.72rem;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .legacy-item p {
-            color: var(--text-muted);
-            font-size: 0.78rem;
-            line-height: 1.5;
-        }
-
-        .legacy-item-active {
-            border-color: var(--gold-accent);
-            background: rgba(212, 175, 55, 0.08);
-        }
-
-        .legacy-item-active span { color: var(--gold-light); }
-        .legacy-item-active p { color: #e2e8f0; }
-
-        .legacy-note {
-            text-align: center;
-            margin-top: 36px;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-        }
-
-        .legacy-note a {
-            color: var(--gold-accent);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .legacy-note a:hover { color: var(--gold-light); }
-
-        @media (max-width: 640px) {
-            .legacy-section { padding: 36px 20px; }
-            .tier-line { display: none; }
-        }
-
         footer {
             text-align: center;
             padding: 32px 0;
@@ -554,15 +352,13 @@
 </head>
 <body>
 
+    <!-- NAVBAR -->
     <header>
         <div class="container nav-wrapper">
-            <a href="/" class="logo-lockup">
-                <span class="logo">MOZENS ALQADRIE</span>
-                <span class="logo-role">Inisiator &amp; Kurator Utama · Muara Utama Ekosistem Digital &amp; Generasi Banua</span>
-            </a>
+            <a href="#" class="logo">MOZENS ALQADRIE</a>
             <div style="display:flex; align-items:center; gap:12px;">
-                <a href="/bich/langganan.html" style="font-family: var(--font-mono); font-size:0.75rem; color: var(--gold-accent); background: rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); padding:6px 14px; border-radius:20px; text-decoration:none;">
-                    Langganan Intelijen
+                <a href="bich/langganan.html" style="font-family: var(--font-mono); font-size:0.75rem; color: var(--gold-accent); background: rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3); padding:6px 14px; border-radius:20px; text-decoration:none;">
+                    💳 Langganan Intelijen
                 </a>
                 <div class="nav-status">
                     <span class="pulse-dot"></span>
@@ -573,6 +369,7 @@
     </header>
 
     <div class="container">
+        <!-- HERO SECTION -->
         <section class="hero">
             <div class="hero-portrait-frame">
                 <img src="profile.jpg" alt="Mozens Alqadrie" class="hero-portrait-img">
@@ -582,10 +379,11 @@
             <div class="gold-line"></div>
 
             <div class="quote-card">
-                <p>&ldquo;PERHATIKAN. ANALISA. EKSEKUSI.&rdquo;</p>
+                <p>“PERHATIKAN. ANALISA. EKSEKUSI.”</p>
             </div>
         </section>
 
+        <!-- SAMBUTAN MUARA -->
         <section class="welcome-box">
             <h2 class="welcome-title">Selamat Datang di Muara Utama Kalimantan</h2>
             <p class="welcome-desc">
@@ -593,6 +391,7 @@
             </p>
         </section>
 
+        <!-- PETA KONEKTIVITAS GLOBAL (ANIMATED CANVAS) -->
         <section class="map-section">
             <div class="hero-visual-side">
                 <div class="geo-badge">GLOBAL CONNECTIVITY // KALIMANTAN HUB</div>
@@ -601,6 +400,7 @@
             </div>
         </section>
 
+        <!-- 6 SUNGAI FILOSOFI GRID -->
         <section class="rivers-section">
             <div class="section-header">
                 <h2 class="section-title">6 Sungai Filosofi</h2>
@@ -608,7 +408,9 @@
             </div>
 
             <div class="rivers-grid">
-                <a href="/bich/berita.html" class="river-card">
+                
+                <!-- SUNGAI KAPUAS -->
+                <a href="bich/berita.html" class="river-card">
                     <div>
                         <span class="river-badge">SUNGAI 01</span>
                         <h3 class="river-name">Kapuas</h3>
@@ -621,39 +423,36 @@
                     </div>
                 </a>
 
-                <a href="/bich/mahakam.html" class="river-card">
+                <!-- SUNGAI MAHAKAM -->
+                <a href="bich/mahakam.html" class="river-card">
                     <div>
                         <span class="river-badge">SUNGAI 02</span>
                         <h3 class="river-name">Mahakam</h3>
-                        <div class="river-philosophy">Jalur Migas &amp; Tambang</div>
+                        <div class="river-philosophy">Jalur Migas & Tambang</div>
                         <p class="river-dest">Navigasi mendalam seputar Ekonomi, Analisis Pasar Modal, dan update harga komoditas.</p>
                     </div>
                     <div class="river-action">
-                        <span>EKONOMI &amp; PASAR MODAL</span>
+                        <span>EKONOMI & PASAR MODAL</span>
                         <span>&rarr;</span>
                     </div>
                 </a>
 
-                <div class="river-card river-card-split">
+                <!-- SUNGAI BARITO -->
+                <a href="bich/loker.html" class="river-card">
                     <div>
                         <span class="river-badge">SUNGAI 03</span>
                         <h3 class="river-name">Barito</h3>
                         <div class="river-philosophy">Jalur Dagang Tertua</div>
-                        <p class="river-dest">Dari Pasar Terapung Lok Baintan hingga ke genggaman Anda &mdash; arus dagang Barito kini mengalir digital. Jukung berganti server, tapi urat nadi ekonomi Banua tetap sama.</p>
+                        <p class="river-dest">Hub peluang bisnis, tender strategis, manajemen proyek, serta info Lowongan Kerja (Loker).</p>
                     </div>
-                    <div class="river-split-actions">
-                        <a href="/market/mart.html" class="river-split-btn river-split-btn-primary">
-                            <span>PASAR DIGITAL BANUA ( BICH Mart )</span>
-                            <span>&rarr;</span>
-                        </a>
-                        <a href="/bich/loker.html" class="river-split-btn">
-                            <span>PROYEK &amp; LOKER</span>
-                            <span>&rarr;</span>
-                        </a>
+                    <div class="river-action">
+                        <span>PROYEK & LOKER</span>
+                        <span>&rarr;</span>
                     </div>
-                </div>
+                </a>
 
-                <a href="/bich/kahayan.html" class="river-card">
+                <!-- SUNGAI KAHAYAN -->
+                <a href="bich/kahayan.html" class="river-card">
                     <div>
                         <span class="river-badge">SUNGAI 04</span>
                         <h3 class="river-name">Kahayan</h3>
@@ -666,20 +465,22 @@
                     </div>
                 </a>
 
-                <a href="/bich/pariwisata.html" class="river-card">
+                <!-- SUNGAI KAYAN -->
+                <a href="bich/pariwisata.html" class="river-card">
                     <div>
                         <span class="river-badge">SUNGAI 05</span>
                         <h3 class="river-name">Kayan</h3>
-                        <div class="river-philosophy">Perbatasan &amp; Koridor IKN</div>
+                        <div class="river-philosophy">Perbatasan & Koridor IKN</div>
                         <p class="river-dest">Destinasi wisata, termasuk teleportasi antarmoda orang dan barang terhubung regional Kalimantan.</p>
                     </div>
                     <div class="river-action">
-                        <span>PARIWISATA &amp; MOBILITAS</span>
+                        <span>PARIWISATA & MOBILITAS</span>
                         <span>&rarr;</span>
                     </div>
                 </a>
 
-                <a href="/bich/edukasi.html" class="river-card">
+                <!-- SUNGAI MELAWI -->
+                <a href="bich/edukasi.html" class="river-card">
                     <div>
                         <span class="river-badge">SUNGAI 06</span>
                         <h3 class="river-name">Melawi</h3>
@@ -691,53 +492,17 @@
                         <span>&rarr;</span>
                     </div>
                 </a>
-            </div>
-        </section>
 
-        <section class="legacy-section">
-            <div class="legacy-header">
-                <span class="river-badge">FASE BERIKUTNYA</span>
-                <h2 class="legacy-title">Lumbung Generasi Banua</h2>
-                <p class="legacy-sub">Enam sungai ini bukan hanya kanal informasi &amp; transaksi &mdash; tapi jalur kaderisasi. Setiap yang mengalir di dalamnya, sedang ditempa menjadi pengelola sumber daya Banua berikutnya.</p>
             </div>
-
-            <div class="tier-track">
-                <div class="tier-step">
-                    <span class="tier-num">01</span>
-                    <h4>Perintis</h4>
-                    <p>Mulai aktif di satu sungai &mdash; baca, transaksi, atau ikut program dasar.</p>
-                </div>
-                <div class="tier-line"></div>
-                <div class="tier-step">
-                    <span class="tier-num">02</span>
-                    <h4>Penjelajah</h4>
-                    <p>Kontribusi konsisten &amp; terverifikasi &mdash; bukan sekadar akun terdaftar.</p>
-                </div>
-                <div class="tier-line"></div>
-                <div class="tier-step">
-                    <span class="tier-num">03</span>
-                    <h4>Pewaris Sungai</h4>
-                    <p>Rekam jejak nyata teruji &mdash; siap memegang tanggung jawab pengelolaan.</p>
-                </div>
-            </div>
-
-            <div class="legacy-grid">
-                <a href="/bich/kaderisasi-kapuas.html" class="legacy-item"><span>Kapuas</span><p>Jurnalis Warga &amp; Penulis Analisis Muda</p></a>
-                <a href="/bich/kaderisasi-mahakam.html" class="legacy-item"><span>Mahakam</span><p>Analis Pasar &amp; Komoditas Muda</p></a>
-                <a href="/market/seller.html" class="legacy-item legacy-item-active"><span>Barito</span><p>Kurator Lapak &amp; Wirausahawan Muda</p></a>
-                <a href="/bich/kaderisasi-kahayan.html" class="legacy-item"><span>Kahayan</span><p>Analis Kebijakan Publik Muda</p></a>
-                <a href="/bich/kaderisasi-kayan.html" class="legacy-item"><span>Kayan</span><p>Kreator Konten &amp; Duta Wisata</p></a>
-                <a href="/bich/kaderisasi-melawi.html" class="legacy-item"><span>Melawi</span><p>Mentor Sebaya (Peer Teacher)</p></a>
-            </div>
-
-            <p class="legacy-note">Ketuk salah satu sungai di atas untuk mulai jalur kaderisasinya.</p>
         </section>
     </div>
 
+    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 Mozens Alqadrie &mdash; Inisiator &amp; Kurator Utama, Muara Utama Ekosistem Digital &amp; Generasi Banua.</p>
+        <p>&copy; 2026 Mozens Alqadrie Advisory. Sovereign Network Node Active.</p>
     </footer>
 
+    <!-- INTERACTIVE GLOBAL CANVAS ANIMATION -->
     <script>
         (function initGeoCanvas() {
             const canvas = document.getElementById('geoCanvas');
@@ -778,6 +543,7 @@
 
                 ctx.clearRect(0, 0, w, h);
 
+                // Grid background
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
                 ctx.lineWidth = 1;
                 const gridSize = 30;
@@ -791,6 +557,7 @@
                 const hX = hub.xRel * w;
                 const hY = hub.yRel * h;
 
+                // Pulsing ring on central hub
                 pulseRadius = (pulseRadius + 0.6) % 120;
                 ctx.beginPath();
                 ctx.arc(hX, hY, pulseRadius, 0, Math.PI * 2);
@@ -798,6 +565,7 @@
                 ctx.lineWidth = 1.5;
                 ctx.stroke();
 
+                // Connecting lines & animated particles
                 nodes.forEach((node, idx) => {
                     const nX = node.xRel * w;
                     const nY = node.yRel * h;
@@ -838,6 +606,7 @@
                     ctx.fillText(node.label, nX + 8, nY + 3);
                 });
 
+                // Draw Central Hub
                 ctx.beginPath();
                 ctx.arc(hX, hY, 7, 0, Math.PI * 2);
                 ctx.fillStyle = '#38bdf8';

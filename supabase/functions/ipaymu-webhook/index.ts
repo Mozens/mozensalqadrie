@@ -134,6 +134,48 @@ Deno.serve(async (req) => {
     const berhasilBayar = ["berhasil", "success", "1", "completed"].some((s) => statusResmi.includes(s));
 
     // ------------------------------------------------------------------
+    // VALIDASI SILANG referenceId — WAJIB, jangan dilewati.
+    //
+    // Verifikasi di atas cuma membuktikan "trx_id ini transaksi ASLI yang
+    // berhasil di iPaymu" - itu TIDAK sama dengan "transaksi ini untuk
+    // referenceId yang diklaim di notify". Tanpa cek ini, seseorang bisa
+    // bayar pesanan Rp1.000 beneran (dapat trx_id ASLI berstatus sukses),
+    // lalu kirim ulang notify manual ke endpoint ini dengan trx_id asli
+    // itu tapi referenceId dioplos ke pesanan lain yang jauh lebih mahal -
+    // lolos verifikasi karena trx_id-nya memang valid.
+    //
+    // iPaymu SEHARUSNYA mengembalikan referenceId yang didaftarkan saat
+    // transaksi dibuat (dikirim sebagai "referenceId" di create-payment).
+    // Nama field persis di response checkTransaction belum saya pastikan
+    // 100% dari dokumentasi (lihat catatan di kepala file) - coba
+    // beberapa variasi nama yang umum dipakai.
+    // ------------------------------------------------------------------
+    const refFromIpaymu = String(
+      dataObj.ReferenceId ?? dataObj.referenceId ?? dataObj.reference_id ?? ""
+    );
+
+    if (!refFromIpaymu) {
+      console.error(
+        "[ipaymu-webhook] TIDAK ADA field referenceId di response checkTransaction iPaymu.",
+        "Tidak bisa validasi silang - fail closed demi keamanan, transaksi TIDAK diproses.",
+        "WAJIB dicek manual: buka log ini, lihat 'response mentah' di atas, cari field yang berisi",
+        "referenceId asli, lalu update daftar nama field di refFromIpaymu.", "Data:", JSON.stringify(dataObj)
+      );
+      return json({
+        error: "Tidak bisa validasi silang referenceId dari iPaymu - transaksi TIDAK diproses (fail closed). Cek log function untuk field yang benar.",
+      }, 502);
+    }
+
+    if (refFromIpaymu !== referenceId) {
+      console.error(
+        "[ipaymu-webhook] referenceId TIDAK COCOK — kemungkinan notify palsu/dioplos.",
+        "referenceId di notify:", referenceId, "| referenceId asli dari iPaymu:", refFromIpaymu,
+        "| trxId:", trxId
+      );
+      return json({ error: "referenceId tidak cocok dengan data resmi iPaymu - transaksi TIDAK diproses (fail closed)." }, 400);
+    }
+
+    // ------------------------------------------------------------------
     // DISPATCH berdasarkan prefix referenceId — ditentukan saat pembuatan
     // transaksi di create-payment.ts (Mart, angka murni) vs
     // create-payment-layanan.ts (LK-/CV-/TR- -> transaksi_atm,
@@ -173,7 +215,20 @@ async function prosesPesananMart(referenceId: string, berhasilBayar: boolean, tr
   // biar tidak oversell kalau ada 2 pesanan konkuren.
   if (berhasilBayar && Array.isArray(pesanan.item_pesanan)) {
     for (const item of pesanan.item_pesanan) {
-      await supabaseAdmin.rpc("kurangi_stok_produk", { p_produk_id: item.id, p_qty: item.qty });
+      // RPC ini SELALU sukses di level pemanggilan (tidak melempar exception) -
+      // status gagal/berhasil ditandai di dalam JSON balikannya, bukan lewat
+      // `error`. Jangan cuma cek `error` di sini, itu tidak akan pernah terisi.
+      const { data: hasilStok, error: errStok } = await supabaseAdmin.rpc(
+        "kurangi_stok_produk", { p_produk_id: item.id, p_qty: item.qty }
+      );
+
+      if (errStok || !hasilStok?.success) {
+        console.error(
+          "[ipaymu-webhook] GAGAL kurangi stok produk", item.id, "qty", item.qty,
+          "- pesanan tetap ditandai Success, tapi stok TIDAK berkurang. Perlu koreksi manual.",
+          "error:", errStok?.message, "| hasil RPC:", JSON.stringify(hasilStok)
+        );
+      }
     }
   }
   return { table: "bich_pesanan", statusBaru };
