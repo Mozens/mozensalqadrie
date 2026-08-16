@@ -245,7 +245,10 @@
 
             const params = new URLSearchParams({
                 select: '*',
+                kategori: 'eq.Politik',
+                'jabatan_tokoh': 'not.is.null',
                 status: 'eq.Ready',
+                status_verifikasi: 'eq.TERVERIFIKASI',
                 order: 'created_at.desc'
             });
 

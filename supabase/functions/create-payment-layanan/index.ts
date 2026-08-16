@@ -46,6 +46,16 @@ const KATALOG: Record<string, { nama: string; harga: number }> = {
   IKN_PRIORITAS: { nama: "Briefing IKN Bisnis - Prioritas (1 bulan)", harga: 500_000 },
 };
 
+// BARU - sebelumnya service:'tour' dari pariwisata.html (proceedToTourPayment)
+// TIDAK PERNAH ditangani function ini sama sekali. tourId yang dikirim client
+// dicocokkan ke sini per pax (harga per pax, dikalikan qty server-side -
+// JANGAN percaya total dari client). Sesuaikan/pindah ke tabel
+// pariwisata_charter kalau paket tour sudah dikelola dinamis dari database.
+const TOUR_KATALOG: Record<string, { nama: string; hargaPerPax: number }> = {
+  "tanjung-puting": { nama: "Tanjung Puting National Park Excursion", hargaPerPax: 4_800_000 },
+  "loksado": { nama: "Loksado Bamboo Rafting & Cultural Tour", hargaPerPax: 1_950_000 },
+};
+
 // Tarif travel SEKARANG diambil dari tabel tarif_travel_rute &
 // tarif_travel_layanan (admin-editable lewat redaksi.html), BUKAN
 // hardcode di sini. Ini memastikan harga yang ditagihkan ke pembeli
@@ -95,7 +105,7 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { service, planCode, customer, origin, destination, serviceType, billingMode, manualSubId } = body;
+    const { service, planCode, customer, origin, destination, serviceType, billingMode, manualSubId, tourId, pax } = body;
 
     if (!service || !customer) {
       return json({ error: "Data tidak lengkap." }, 400);
@@ -111,6 +121,12 @@ Deno.serve(async (req) => {
       const hasil = await hitungHargaTravel(origin, destination, serviceType);
       harga = hasil.harga;
       nama_produk = `Travel/Shuttle: ${origin} -> ${destination} (${serviceType})`;
+    } else if (service === "tour") {
+      const paket = TOUR_KATALOG[tourId];
+      if (!paket) return json({ error: `Paket tour "${tourId}" tidak dikenal.` }, 400);
+      const jumlahPax = Math.max(1, parseInt(pax, 10) || 1);
+      harga = paket.hargaPerPax * jumlahPax;
+      nama_produk = `Tour: ${paket.nama} (${jumlahPax} pax)`;
     } else {
       const item = KATALOG[planCode];
       if (!item) return json({ error: `Kode paket "${planCode}" tidak dikenal.` }, 400);
@@ -216,7 +232,7 @@ Deno.serve(async (req) => {
       amount: harga,
       notifyUrl: `${SUPABASE_URL}/functions/v1/ipaymu-webhook`,
       returnUrl: `https://mozensalqadrie.com/success.html?order_id=${encodeURIComponent(refId)}&service=${encodeURIComponent(service)}&status=pending`,
-      cancelUrl: `https://mozensalqadrie.com/bich/${service === "travel" ? "pariwisata" : isLangganan ? "langganan" : "monetisasi"}.html`,
+      cancelUrl: `https://mozensalqadrie.com/bich/${service === "travel" || service === "tour" ? "pariwisata" : isLangganan ? "langganan" : "monetisasi"}.html`,
       expired: 24,
       expiredType: "hours",
       comments: `${nama_produk} - Ref ${refId}`,

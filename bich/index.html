@@ -1,218 +1,254 @@
 <!DOCTYPE html>
-<html lang="id" class="h-screen overflow-hidden">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BICH — Borneo Insight & Career Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>BICH — Borneo Insight & Career Hub | Mozens Inc.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandDark: '#080C14',
-                        brandCard: '#0F172A',
-                        brandGold: '#D4AF37',
-                        brandEmerald: '#059669',
-                    },
-                    fontFamily: {
-                        serif: ['Playfair Display', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0b0f17;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --gold-accent: #d4af37;
+            --gold-light: #f3e5ab;
+            --cyan-tech: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-gold: rgba(212, 175, 55, 0.25);
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
-    </script>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-sans); line-height: 1.6; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        header { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; background: rgba(11,15,23,0.9); backdrop-filter: blur(10px); z-index: 100; }
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 900; color: var(--gold-accent); text-decoration: none; letter-spacing: 1px; }
+        .logo-role { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-muted); }
+        .nav-back { font-family: var(--font-mono); font-size: 0.75rem; color: var(--cyan-tech); text-decoration: none; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); padding: 6px 14px; border-radius: 20px; }
+        .hero { padding: 60px 0 40px; text-align: center; }
+        .hero-title { font-family: var(--font-serif); font-size: 2.8rem; font-weight: 900; color: #fff; margin-bottom: 12px; }
+        .hero-sub { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 32px; }
+        .gold-line { width: 70px; height: 3px; background: var(--gold-accent); margin: 0 auto 32px; border-radius: 2px; box-shadow: 0 0 12px rgba(212,175,55,0.6); }
+        .rivers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; padding: 48px 0 96px; }
+        .river-card { background: var(--bg-card); border: 1px solid var(--border-gold); border-radius: 12px; padding: 28px; text-decoration: none; color: inherit; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.35s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden; }
+        .river-card:hover { transform: translateY(-6px); border-color: var(--gold-accent); box-shadow: 0 12px 30px rgba(212,175,55,0.2); background: rgba(20,30,50,0.9); }
+        .river-badge { font-family: var(--font-mono); font-size: 0.72rem; color: var(--cyan-tech); background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); padding: 4px 10px; border-radius: 4px; display: inline-block; margin-bottom: 16px; width: fit-content; }
+        .river-name { font-family: var(--font-serif); font-size: 1.6rem; color: #fff; margin-bottom: 6px; }
+        .river-philosophy { font-family: var(--font-mono); font-size: 0.78rem; color: var(--gold-accent); margin-bottom: 14px; text-transform: uppercase; }
+        .river-dest { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px; }
+        .river-action { font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold-light); display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; font-weight: 600; }
+        .river-card:hover .river-action { color: #fff; }
+        .river-card-split { padding-bottom: 20px; }
+        .river-split-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+        .river-split-btn { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; transition: color 0.25s ease; }
+        .river-split-btn:hover { color: #fff; }
+        .river-split-btn-primary { color: var(--gold-light); background: rgba(212,175,55,0.08); border: 1px solid var(--border-gold); border-top: 1px solid var(--border-gold); border-radius: 8px; padding: 10px 12px; margin-bottom: 2px; }
+        .river-split-btn-primary:hover { color: var(--gold-light); background: rgba(212,175,55,0.16); border-color: var(--gold-accent); }
+        footer { text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.05); font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
+        @media (max-width: 768px) { .hero-title { font-size: 2rem; } .rivers-grid { grid-template-columns: 1fr; } }
+
+        /* --- TICKER LIVE + PRESENCE (diadopsi dari versi sebelumnya) --- */
+        .ticker-bar {
+            background: #05070c;
+            border-bottom: 1px solid var(--border-gold);
+            padding: 6px 0;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+        }
+        .ticker-bar .live-badge {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(56,189,248,0.1);
+            border: 1px solid rgba(56,189,248,0.3);
+            color: var(--cyan-tech);
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.62rem;
+            margin-left: 24px;
+        }
+        .ticker-bar .live-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan-tech); animation: pulse 1.8s infinite; }
+        .ticker-bar marquee { flex: 1; }
+        .ticker-bar .online-badge {
+            flex-shrink: 0;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.66rem;
+            margin-right: 24px;
+        }
+        .ticker-bar .online-badge b { color: var(--gold-accent); }
+        @media (max-width: 640px) { .ticker-bar .online-badge { display: none; } }
+
+        /* --- PANEL LAYANAN B2B/ATS (diadopsi dari versi sebelumnya) --- */
+        .b2b-section { padding: 0 0 64px; }
+        .b2b-title { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; text-align: center; }
+        .b2b-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        .b2b-card { background: var(--bg-card); border: 1px solid var(--border-gold); border-radius: 12px; padding: 16px 18px; text-decoration: none; color: inherit; display: flex; align-items: center; justify-content: space-between; gap: 12px; transition: border-color 0.25s ease, transform 0.25s ease; }
+        .b2b-card:hover { transform: translateY(-3px); }
+        .b2b-card.loker:hover { border-color: var(--gold-accent); }
+        .b2b-card.cv:hover { border-color: #34d399; }
+        .b2b-card .icon { font-size: 1.1rem; background: rgba(212,175,55,0.1); border: 1px solid var(--border-gold); border-radius: 8px; padding: 8px 10px; }
+        .b2b-card.cv .icon { background: rgba(52,211,153,0.1); border-color: rgba(52,211,153,0.3); }
+        .b2b-card h3 { font-family: var(--font-serif); font-size: 0.9rem; color: #fff; margin-bottom: 2px; }
+        .b2b-card p { font-size: 0.72rem; color: var(--text-muted); }
+        .b2b-card .arrow { font-family: var(--font-mono); font-weight: 700; color: var(--gold-light); }
+        .b2b-card.cv .arrow { color: #34d399; }
+    </style>
 </head>
-<body class="bg-brandDark text-slate-100 font-sans antialiased h-screen overflow-hidden flex flex-col justify-between p-2.5 sm:p-4">
+<body>
 
-    <!-- 1. TICKER RUNNING -->
-    <div class="shrink-0 bg-slate-950 border border-emerald-900/40 rounded-lg py-1 px-3 text-[11px] font-mono text-slate-300 flex items-center justify-between gap-2 mb-1.5">
-        <div class="flex items-center gap-2 overflow-hidden w-full">
-            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-400 font-bold shrink-0 text-[9px]">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                LIVE INTEL
-            </span>
-            <marquee id="ticker-marquee" behavior="scroll" direction="left" scrollamount="4" class="text-slate-300 w-full">
-                <span id="ticker-content">Memuat data harga terkini...</span>
-            </marquee>
-        </div>
-        <span class="shrink-0 text-[10px] bg-slate-900 px-2 py-0.5 rounded text-slate-400 border border-slate-800 hidden md:inline">
-            👤 <span id="online-count" class="text-brandGold font-bold font-mono">–</span> online
-        </span>
+    <!-- TICKER LIVE (harga_komoditas) + PENGHITUNG ONLINE (Supabase Realtime Presence) -->
+    <div class="ticker-bar">
+        <span class="live-badge"><span class="dot"></span> LIVE INTEL</span>
+        <marquee id="ticker-marquee" behavior="scroll" direction="left" scrollamount="4">
+            <span id="ticker-content">Memuat data harga terkini...</span>
+        </marquee>
+        <span class="online-badge">👤 <b id="online-count">–</b> online</span>
     </div>
 
-    <!-- 2. NAVBAR LOGO BICH + KEMBALI KE MOZENS ALQADRIE -->
-    <nav class="shrink-0 flex items-center justify-between px-1 mb-1.5">
-        <a href="index.html" class="flex items-center gap-2">
-            <span class="text-lg sm:text-xl font-bold tracking-tight text-white font-serif flex items-center gap-2">
-                <span class="text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2 py-0.5 rounded-md">BICH</span>
-                <span class="text-xs sm:text-sm font-sans font-medium text-slate-300 hidden sm:inline">Borneo Insight & Career Hub</span>
-            </span>
-        </a>
+    <header>
+        <div class="container nav-wrapper">
+            <a href="/" class="logo">BICH &mdash; Mozens Inc.</a>
+            <a href="/" class="nav-back">&larr; Muara Utama</a>
+        </div>
+    </header>
 
-        <!-- Posisikan di Navigasi Utama BICH -->
-        <a href="../market/mart.html" class="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-extrabold text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-2 hover:brightness-110 transition shadow-md shadow-amber-500/20">
-            <i class="fa-solid fa-shop"></i> BICH Mart
-        </a>
+    <div class="container">
+        <section class="hero">
+            <h1 class="hero-title">Borneo Insight &amp; Career Hub</h1>
+            <div class="gold-line"></div>
+            <p class="hero-sub">6 Sungai Filosofi &mdash; Pilih alur destinasi yang anda butuhkan.</p>
+        </section>
 
-        <a href="../index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-white bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-lg transition-all shadow-sm">
-            <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-            <span>Kembali ke Mozens Alqadrie</span>
-        </a>
-    </nav>
+        <div class="rivers-grid">
+            <a href="/bich/berita.html" class="river-card">
+                <div>
+                    <span class="river-badge">SUNGAI 01</span>
+                    <h3 class="river-name">Kapuas</h3>
+                    <div class="river-philosophy">Arteri Terpanjang</div>
+                    <p class="river-dest">Pusat aliran informasi faktual dan terpercaya regional Kalimantan.</p>
+                </div>
+                <div class="river-action"><span>MENUJU BERITA HARIAN</span><span>&rarr;</span></div>
+            </a>
 
-    <!-- 3. HEADER TITLE BICH -->
-    <div class="shrink-0 text-center my-auto py-0.5">
-        <span class="text-emerald-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest block">
-            Gerbang Digital Intelijen Faktual Strategis Kalimantan
-        </span>
-        <h1 class="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-white mt-0.5">
-            Borneo Insight & Career Hub
-        </h1>
-        <p class="text-slate-300 text-[11px] sm:text-xs max-w-2xl mx-auto mt-0.5 leading-snug">
-            Menerangi jalan karir, mengawal investasi, dan menghubungkan talenta terbaik dengan ekosistem bisnis strategis kalimantan.
+            <a href="/bich/mahakam.html" class="river-card">
+                <div>
+                    <span class="river-badge">SUNGAI 02</span>
+                    <h3 class="river-name">Mahakam</h3>
+                    <div class="river-philosophy">Jalur Migas &amp; Tambang</div>
+                    <p class="river-dest">Navigasi mendalam seputar Ekonomi, Analisis Pasar Modal, dan update harga komoditas.</p>
+                </div>
+                <div class="river-action"><span>EKONOMI &amp; PASAR MODAL</span><span>&rarr;</span></div>
+            </a>
+
+            <div class="river-card river-card-split">
+                <div>
+                    <span class="river-badge">SUNGAI 03</span>
+                    <h3 class="river-name">Barito</h3>
+                    <div class="river-philosophy">Jalur Dagang Tertua</div>
+                    <p class="river-dest">Dari Pasar Terapung Lok Baintan hingga ke genggaman Anda &mdash; arus dagang Barito kini mengalir digital.</p>
+                </div>
+                <div class="river-split-actions">
+                    <a href="/market/mart.html" class="river-split-btn river-split-btn-primary"><span>PASAR DIGITAL BARITO</span><span>&rarr;</span></a>
+                    <a href="/bich/loker.html" class="river-split-btn"><span>PROYEK &amp; LOKER</span><span>&rarr;</span></a>
+                </div>
+            </div>
+
+            <a href="/bich/kahayan.html" class="river-card">
+                <div>
+                    <span class="river-badge">SUNGAI 04</span>
+                    <h3 class="river-name">Kahayan</h3>
+                    <div class="river-philosophy">Melintasi Ibu Kota Provinsi</div>
+                    <p class="river-dest">Dinamika kebijakan, analisis peta Politik nasional, serta geopolitik regional Kalimantan.</p>
+                </div>
+                <div class="river-action"><span>ANALISIS POLITIK</span><span>&rarr;</span></div>
+            </a>
+
+            <a href="/bich/pariwisata.html" class="river-card">
+                <div>
+                    <span class="river-badge">SUNGAI 05</span>
+                    <h3 class="river-name">Kayan</h3>
+                    <div class="river-philosophy">Perbatasan &amp; Koridor IKN</div>
+                    <p class="river-dest">Destinasi wisata, termasuk teleportasi antarmoda orang dan barang terhubung regional Kalimantan.</p>
+                </div>
+                <div class="river-action"><span>PARIWISATA &amp; MOBILITAS</span><span>&rarr;</span></div>
+            </a>
+
+            <a href="/bich/edukasi.html" class="river-card">
+                <div>
+                    <span class="river-badge">SUNGAI 06</span>
+                    <h3 class="river-name">Melawi</h3>
+                    <div class="river-philosophy">Anak Sungai Menuju Pedalaman</div>
+                    <p class="river-dest">Pusat Edukasi, literasi finansial, playbook eksekusi, serta modul pembelajaran taktis.</p>
+                </div>
+                <div class="river-action"><span>PORTAL EDUKASI</span><span>&rarr;</span></div>
+            </a>
+        </div>
+    </div>
+
+    <!-- PANEL LAYANAN MITRA & KARIR BICH (B2B/ATS) -->
+    <div class="container b2b-section">
+        <p class="b2b-title">💳 Panel Layanan Mitra & Karir BICH</p>
+        <div class="b2b-grid">
+            <a href="monetisasi.html?service=loker" class="b2b-card loker">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="icon">💼</span>
+                    <div>
+                        <h3>Pasang Loker Premium</h3>
+                        <p>Publikasi khusus mitra perusahaan — jangkau talenta Kalimantan</p>
+                    </div>
+                </div>
+                <span class="arrow">&rarr;</span>
+            </a>
+            <a href="monetisasi.html?service=cv" class="b2b-card cv">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="icon">🤖</span>
+                    <div>
+                        <h3>Assessment CV AI</h3>
+                        <p>Pindaian CV standar industri untuk pencari kerja</p>
+                    </div>
+                </div>
+                <span class="arrow">&rarr;</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 BICH &mdash; Mozens Inc. &middot; Muara Utama Ekosistem Digital &amp; Generasi Banua.</p>
+        <p style="margin-top:6px;">
+            <a href="/" style="color:var(--cyan-tech); text-decoration:none;">Mozens Portal</a>
+            &middot;
+            <a href="#" onclick="openAmanWA(event)" style="color:#34d399; text-decoration:none; font-weight:700;">💬 COMMAND CENTER WA</a>
         </p>
-    </div>
-
-    <!-- 4. 6 KAMAR (GRID 2 x 3) -->
-    <div class="shrink-0 grid grid-cols-2 gap-2 sm:gap-2.5 max-w-3xl mx-auto w-full my-auto">
-        <a href="loker.html" class="group bg-brandCard border border-slate-800 hover:border-emerald-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
-            <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Proyek & Loker">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-            <div class="relative z-10 flex items-center gap-1.5">
-                <span class="text-xs">💼</span>
-                <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Proyek & Loker</h2>
-            </div>
-        </a>
-
-        <a href="berita.html" class="group bg-brandCard border border-slate-800 hover:border-blue-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
-            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Berita & Intel">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-            <div class="relative z-10 flex items-center gap-1.5">
-                <span class="text-xs">📰</span>
-                <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-blue-400 transition-colors">Berita & Intel</h2>
-            </div>
-        </a>
-
-        <a href="edukasi.html" class="group bg-brandCard border border-slate-800 hover:border-purple-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
-            <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Edukasi & Podcast">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-            <div class="relative z-10 flex items-center gap-1.5">
-                <span class="text-xs">📚</span>
-                <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-purple-400 transition-colors">Edukasi & Podcast</h2>
-            </div>
-        </a>
-
-        <a href="ekonomi.html" class="group bg-brandCard border border-slate-800 hover:border-orange-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
-            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Ekonomi Riset">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-            <div class="relative z-10 flex items-center justify-between w-full">
-                <div class="flex items-center gap-1.5">
-                    <span class="text-xs">📈</span>
-                    <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-orange-400 transition-colors">Ekonomi Riset</h2>
-                </div>
-                <span class="text-[9px] bg-orange-950 text-orange-400 border border-orange-800 px-1.5 py-0.5 rounded font-mono">AI ENGINE</span>
-            </div>
-        </a>
-
-        <a href="pariwisata.html" class="group bg-brandCard border border-slate-800 hover:border-teal-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
-            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Pariwisata & Charter">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-            <div class="relative z-10 flex items-center gap-1.5">
-                <span class="text-xs">🏖️</span>
-                <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-teal-400 transition-colors">Pariwisata & Charter</h2>
-            </div>
-        </a>
-
-        <a href="politik.html" class="group bg-brandCard border border-slate-800 hover:border-amber-500 rounded-xl overflow-hidden transition-all duration-300 shadow-md relative aspect-[2.6/1] flex items-end p-2.5 sm:p-3">
-            <img src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?auto=format&fit=crop&w=500&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-55" alt="Politik & Tokoh">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-            <div class="relative z-10 flex items-center justify-between w-full">
-                <div class="flex items-center gap-1.5">
-                    <span class="text-xs">🏛️</span>
-                    <h2 class="font-serif text-xs sm:text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Politik & Tokoh</h2>
-                </div>
-                <span class="text-[9px] bg-amber-950 text-amber-400 border border-amber-800 px-1.5 py-0.5 rounded font-mono">AI ENGINE</span>
-            </div>
-        </a>
-    </div>
-
-    <!-- 5. PANEL LAYANAN BICH (BAHASA ELEGAN & DUA PINTU SPESIFIK) -->
-    <div class="shrink-0 max-w-3xl mx-auto w-full my-auto space-y-1">
-        <span class="text-[10px] text-slate-400 font-bold font-mono uppercase tracking-wider block text-center sm:text-left">
-            💳 PANEL LAYANAN MITRA & KARIR BICH
-        </span>
-        <div class="grid sm:grid-cols-2 gap-2">
-            <!-- LAYANAN 1: LOKER PREMIUM -->
-            <a href="monetisasi.html?service=loker" class="group bg-slate-900 border border-slate-800 hover:border-amber-500/60 rounded-xl p-2.5 transition-all flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <span class="text-base p-1.5 bg-amber-500/10 border border-amber-500/30 rounded-lg">💼</span>
-                    <div>
-                        <div class="flex items-center gap-1.5">
-                            <h3 class="font-serif text-xs font-bold text-white group-hover:text-brandGold transition-colors">Pasang Loker Premium</h3>
-                            <span class="bg-amber-500/20 text-brandGold text-[8px] font-bold px-1 rounded">B2B</span>
-                        </div>
-                        <p class="text-[10px] text-slate-400">Publikasi Khusus Mitra Perusahaan</p>
-                    </div>
-                </div>
-                <span class="text-[11px] font-bold text-brandGold">&rarr;</span>
-            </a>
-
-            <!-- LAYANAN 2: SCAN CV AI -->
-            <a href="monetisasi.html?service=cv" class="group bg-slate-900 border border-slate-800 hover:border-emerald-500/60 rounded-xl p-2.5 transition-all flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <span class="text-base p-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">🤖</span>
-                    <div>
-                        <div class="flex items-center gap-1.5">
-                            <h3 class="font-serif text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">Assessment CV AI</h3>
-                            <span class="bg-emerald-500/20 text-emerald-400 text-[8px] font-bold px-1 rounded">ATS</span>
-                        </div>
-                        <p class="text-[10px] text-slate-400">Pindaian Berkas Standar Industri</p>
-                    </div>
-                </div>
-                <span class="text-[11px] font-bold text-emerald-400">&rarr;</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 6. FOOTER -->
-    <footer class="shrink-0 bg-slate-950 border border-slate-900 rounded-lg py-1 px-3 text-center text-[10px] text-slate-400 font-mono mt-1">
-        <div class="max-w-3xl mx-auto flex items-center justify-between gap-2">
-            <div>
-                <span class="text-emerald-400 font-bold">🦅 BICH</span> — Borneo Insight & Career Hub &copy; 2026.
-            </div>
-            <div class="flex items-center gap-3">
-                <a href="../index.html" class="hover:text-white transition-colors">Mozens Portal</a>
-                <span>•</span>
-                <a href="#" onclick="openAmanWA(event)" class="text-emerald-400 hover:text-emerald-300 font-bold transition-colors flex items-center gap-1">
-                    💬 <span>COMMAND CENTER WA</span>
-                </a>
-            </div>
-        </div>
     </footer>
 
-    <!-- LINK WHATSAPP MOZENS ALQADRIE -->
     <script>
     function openAmanWA(e) {
       e.preventDefault();
-      // DIPERBAIKI: komentar lama menyebut ini "terenkripsi Base64" - itu
-      // TIDAK AKURAT. Base64 cuma ENCODING (bisa dibalik siapa saja dengan
-      // atob() dalam sedetik), bukan ENKRIPSI - tidak ada kerahasiaan
-      // sungguhan di sini. Untungnya nomor ini memang bukan rahasia (nomor
-      // yang sama juga tertulis polos di legal.html), jadi tidak ada
-      // dampak keamanan - cuma komentarnya yang saya luruskan biar tidak
-      // memberi kesan keliru soal proteksi yang sebenarnya tidak ada.
-      const encodedNumber = "aHR0cHM6Ly93YS5tZS82MjgyMzQxMzMzMzEz"; // Base64, bukan terenkripsi
+      // Base64 di sini cuma ENCODING (bisa dibalik siapa saja dengan atob()
+      // dalam sedetik), BUKAN enkripsi - tidak ada kerahasiaan sungguhan.
+      // Nomornya memang bukan rahasia (tertulis polos juga di legal.html),
+      // jadi tidak ada dampak keamanan, ini cuma cara menyingkat link saja.
+      const encodedNumber = "aHR0cHM6Ly93YS5tZS82MjgyMzQxMzMzMzEz";
       const realUrl = atob(encodedNumber);
       window.open(realUrl, '_blank', 'noopener,noreferrer');
     }
     </script>
 
-    <!-- PENGHITUNG ONLINE RIIL (Supabase Realtime Presence, bukan angka dummy) -->
+    <!-- PENGHITUNG ONLINE RIIL (Supabase Realtime Presence) + TICKER LIVE (harga_komoditas) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script>
     (function () {
@@ -238,9 +274,12 @@
                 }
             });
 
-        // ------------------------------------------------------------
-        // TICKER LIVE dari tabel harga_komoditas (bukan angka hardcode)
-        // ------------------------------------------------------------
+        function escapeHtmlIndex(str) {
+            const div = document.createElement('div');
+            div.textContent = str ?? '';
+            return div.innerHTML;
+        }
+
         async function muatTickerHarga() {
             const tickerEl = document.getElementById('ticker-content');
             try {
@@ -260,27 +299,20 @@
 
                 tickerEl.innerHTML = data.map(item => {
                     const naik = Number(item.selisih_persen) >= 0;
-                    const warna = naik ? 'text-emerald-400' : 'text-red-400';
+                    const warna = naik ? 'style="color:#34d399"' : 'style="color:#f87171"';
                     const panah = naik ? '▲' : '▼';
                     const emoji = naik ? '🟢' : '🔴';
-                    return `<span class="${warna} font-bold">${emoji} ${escapeHtmlIndex(item.nama_komoditas)}:</span> Rp ${formatRupiah(item.harga)} ${panah} ${Math.abs(item.selisih_persen)}%`;
-                }).join(' &nbsp;•&nbsp; ') + ' &nbsp;•&nbsp; <span class="text-blue-400 font-bold">💼 Update Loker:</span> Terintegrasi Supabase Feed';
+                    return `<span ${warna}><b>${emoji} ${escapeHtmlIndex(item.nama_komoditas)}:</b></span> Rp ${formatRupiah(item.harga)} ${panah} ${Math.abs(item.selisih_persen)}%`;
+                }).join(' &nbsp;•&nbsp; ') + ' &nbsp;•&nbsp; <span style="color:var(--cyan-tech)"><b>💼 Update Loker:</b></span> Terintegrasi Supabase Feed';
             } catch (err) {
                 console.error('Gagal memuat ticker harga:', err.message);
                 tickerEl.textContent = '💼 BICH Intelligence — Terintegrasi Supabase Feed';
             }
         }
 
-        function escapeHtmlIndex(str) {
-            const div = document.createElement('div');
-            div.textContent = str ?? '';
-            return div.innerHTML;
-        }
-
         muatTickerHarga();
-        setInterval(muatTickerHarga, 5 * 60 * 1000); // refresh tiap 5 menit
+        setInterval(muatTickerHarga, 5 * 60 * 1000);
     })();
     </script>
-
 </body>
 </html>
