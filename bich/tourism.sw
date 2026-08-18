@@ -1,6 +1,6 @@
 // Service worker untuk PWA Sungai Kayan (Pariwisata & Mobilitas)
 // Pola sama seperti market/sw.js - naikkan versi kalau ada perubahan aset.
-const CACHE_NAME = 'bich-tourism-v1';
+const CACHE_NAME = 'bich-tourism-v2'; // v2: ikon-192/512 diganti (file lama JPEG salah label PNG)
 
 const ASSETS_TO_CACHE = [
   '/bich/pariwisata.html',

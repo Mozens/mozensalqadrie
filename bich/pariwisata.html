@@ -75,6 +75,12 @@
                 </span>
             </div>
         </div>
+        <div class="max-w-6xl mx-auto pt-2.5">
+            <a href="../index.html" class="text-[10px] font-mono text-emerald-400/90 hover:text-emerald-300 transition inline-flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                SUNGAI 05 · KAYAN — PERBATASAN & KORIDOR IKN
+            </a>
+        </div>
     </header>
 
     <!-- Main Container -->
@@ -89,6 +95,20 @@
                 Agregator Lintas Moda, Shuttle Antar-Kota & Transit Hub, Experiential Tour & Outbound Gateway
             </p>
         </div>
+
+        <!-- BANNER JELAS: PINTU MASUK KE WISATA.HTML (artikel destinasi) -->
+        <a href="wisata.html" class="block max-w-3xl mx-auto bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/30 hover:border-emerald-500/60 rounded-2xl p-5 transition group">
+            <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <span class="text-2xl">📖</span>
+                    <div>
+                        <p class="text-sm font-bold text-emerald-300 group-hover:text-emerald-200 transition">Belum tahu mau ke mana? Jelajah Wisata Kalimantan dulu</p>
+                        <p class="text-[11px] text-slate-400">Kumpulan destinasi terkurasi — taman nasional, susur sungai, budaya lokal. Baru pesan transportasinya di sini.</p>
+                    </div>
+                </div>
+                <span class="text-emerald-400 text-lg group-hover:translate-x-1 transition flex-shrink-0">&rarr;</span>
+            </div>
+        </a>
 
         <!-- ================================================================ -->
         <!-- JOURNEY HUB: "Aku hendak ke mana, dan pakai apa yang paling bijak?" -->
@@ -342,6 +362,9 @@
 
         <!-- SECTION 2: DESTINASI & EXPERIENTIAL TOUR -->
         <div id="sec-tour" class="space-y-6 hidden">
+            <div class="bg-amber-500/5 border border-amber-500/20 rounded-xl p-3.5 text-[11px] text-amber-300 leading-relaxed">
+                💬 WhatsApp di sini <b>hanya untuk tanya-tanya & kustomisasi paket</b> sebelum deal. Booking resmi &amp; pembayaran wajib lewat tombol <b>"Booking &amp; Bayar"</b> — QRIS/VA/transfer bank, bukan transfer manual lewat chat.
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <!-- Tour Card 1 -->
                 <div class="bg-[#080c14] border border-slate-800 hover:border-amber-500/30 rounded-xl overflow-hidden transition group">
@@ -349,9 +372,12 @@
                         <span class="text-[10px] font-mono text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded uppercase">Eksklusif Kalteng</span>
                         <h3 class="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition">Tanjung Puting National Park Excursion</h3>
                         <p class="text-slate-400 text-xs">Pengalaman menginap di Klotok Luxury, menyusuri habitat Orangutan, dan reservasi pemandu lokal terverifikasi.</p>
-                        <div class="pt-2 flex justify-between items-center border-t border-slate-800/80">
-                            <span class="text-xs font-mono text-amber-400 font-bold">Mulai Rp 4.800.000 / pax</span>
-                            <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20tertarik%20paket%20Tanjung%20Puting." target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-300 hover:text-white underline">Reservasi &rarr;</a>
+                        <div class="pt-2 flex flex-col gap-2 border-t border-slate-800/80 mt-1">
+                            <span class="text-xs font-mono text-amber-400 font-bold pt-2">Mulai Rp 4.800.000 / pax</span>
+                            <div class="flex items-center justify-between gap-2">
+                                <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20mau%20tanya-tanya%20soal%20paket%20Tanjung%20Puting%20(belum%20booking)." target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-slate-400 hover:text-slate-200 underline">💬 Tanya Dulu</a>
+                                <button onclick="bukaModalTour('tanjung-puting', 'Tanjung Puting National Park Excursion')" class="text-[11px] font-mono bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition">💳 Booking & Bayar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -362,12 +388,39 @@
                         <span class="text-[10px] font-mono text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded uppercase">Eksklusif Kalsel</span>
                         <h3 class="text-lg font-serif font-bold text-white group-hover:text-amber-300 transition">Loksado Bamboo Rafting & Cultural Tour</h3>
                         <p class="text-slate-400 text-xs">Eksplorasi Meratus, arung jeram bambu tradisional, serta kunjungan budaya Dayak Bukit dengan fasilitasi VIP.</p>
-                        <div class="pt-2 flex justify-between items-center border-t border-slate-800/80">
-                            <span class="text-xs font-mono text-amber-400 font-bold">Mulai Rp 1.950.000 / pax</span>
-                            <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20tertarik%20paket%20Loksado." target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-300 hover:text-white underline">Reservasi &rarr;</a>
+                        <div class="pt-2 flex flex-col gap-2 border-t border-slate-800/80 mt-1">
+                            <span class="text-xs font-mono text-amber-400 font-bold pt-2">Mulai Rp 1.950.000 / pax</span>
+                            <div class="flex items-center justify-between gap-2">
+                                <a href="https://wa.me/6282341333313?text=Halo%20BICH%20Tourism%2C%20saya%20mau%20tanya-tanya%20soal%20paket%20Loksado%20(belum%20booking)." target="_blank" rel="noopener noreferrer" class="text-[11px] font-mono text-slate-400 hover:text-slate-200 underline">💬 Tanya Dulu</a>
+                                <button onclick="bukaModalTour('loksado', 'Loksado Bamboo Rafting & Cultural Tour')" class="text-[11px] font-mono bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition">💳 Booking & Bayar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- MODAL BOOKING TOUR (pembayaran wajib lewat gateway, WA tidak dipakai untuk transaksi) -->
+        <div id="modal-tour" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+            <div class="bg-[#0b0f17] border border-amber-500/20 rounded-2xl p-6 max-w-sm w-full space-y-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-[10px] font-mono text-amber-400 uppercase">Booking & Pembayaran</p>
+                        <h4 id="modal-tour-title" class="text-sm font-serif font-bold text-white pt-0.5"></h4>
+                    </div>
+                    <button onclick="tutupModalTour()" class="text-slate-500 hover:text-white text-lg leading-none">&times;</button>
+                </div>
+                <div class="space-y-2.5">
+                    <input type="text" id="tour-pemesan-nama" placeholder="Nama Lengkap" required class="w-full bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                    <input type="tel" id="tour-pemesan-wa" placeholder="Nomor WhatsApp" required class="w-full bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                    <input type="email" id="tour-pemesan-email" placeholder="Email" required class="w-full bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                    <input type="number" id="tour-pemesan-pax" placeholder="Jumlah Peserta (pax)" min="1" value="1" required class="w-full bg-[#080c14] border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:border-amber-400 focus:outline-none">
+                </div>
+                <p id="modal-tour-status" class="text-[11px] font-mono text-slate-400 hidden"></p>
+                <button id="btn-pay-tour" onclick="proceedToTourPayment()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-3 rounded-xl transition">
+                    Lanjutkan ke Pembayaran (QRIS/VA) &rarr;
+                </button>
+                <p class="text-[10px] text-slate-500 text-center">Harga final &amp; nomor konfirmasi ditentukan server setelah data ini dikirim — bukan dari tampilan halaman ini.</p>
             </div>
         </div>
 
@@ -445,6 +498,21 @@
                     </button>
                     <p id="umrah-status-msg" class="hidden text-[11px] font-mono"></p>
                 </form>
+            </div>
+        </div>
+
+        <!-- CROSS-SELL: OLEH-OLEH BICH MART (SUNGAI BARITO) -->
+        <div class="bg-gradient-to-b from-emerald-500/[0.04] to-transparent border border-emerald-500/10 rounded-3xl p-6 sm:p-8 space-y-5">
+            <div class="text-center space-y-1.5 max-w-lg mx-auto">
+                <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-[0.2em]">Sebelum Pulang, Mampir Dulu</span>
+                <h3 class="text-lg sm:text-xl font-serif font-bold text-white">Bawa Oleh-Oleh Asli Banua</h3>
+                <p class="text-xs text-slate-400">Langsung dari lapak UMKM Kalimantan di BICH Mart — bukan toko oleh-oleh generik di bandara.</p>
+            </div>
+            <div id="oleholeh-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <p class="col-span-4 text-center text-xs font-mono text-slate-500">Memuat produk UMKM...</p>
+            </div>
+            <div class="text-center">
+                <a href="../market/mart.html" class="text-[11px] font-mono text-emerald-400 hover:text-emerald-300 underline">Lihat Semua Lapak Barito &rarr;</a>
             </div>
         </div>
 
@@ -831,6 +899,123 @@
         */
         let isPaymentInProgress = false;
 
+        // Data produk berasal dari input bebas penjual - wajib di-escape
+        // sebelum ditaruh ke innerHTML, supaya nama produk/toko tidak bisa
+        // dipakai untuk menyuntik HTML/script (XSS).
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str ?? '';
+            return div.innerHTML;
+        }
+
+        // Cross-sell BICH Mart: tarik produk asli UMKM (bukan link statis),
+        // supaya daftar oleh-oleh otomatis update kalau lapak baru buka.
+        async function loadOlehOleh() {
+            const grid = document.getElementById('oleholeh-grid');
+            try {
+                const { data: produk, error } = await supabaseClient
+                    .from('bich_produk')
+                    .select('*, bich_toko(nama_toko)')
+                    .order('created_at', { ascending: false })
+                    .limit(4);
+
+                if (error) throw error;
+                const pilihan = produk || [];
+
+                if (!pilihan.length) {
+                    grid.innerHTML = '<p class="col-span-4 text-center text-xs font-mono text-slate-500">Belum ada produk tayang. Cek langsung ke BICH Mart.</p>';
+                    return;
+                }
+
+                grid.innerHTML = pilihan.map(item => `
+                    <a href="../market/mart.html" class="bg-[#080c14] border border-slate-800 hover:border-emerald-500/40 rounded-xl overflow-hidden transition group block">
+                        <div class="aspect-square bg-slate-900 overflow-hidden">
+                            <img src="${escapeHtml(item.gambar_url) || 'https://placehold.co/300x300/080c14/34d399?text=BICH+Mart'}" alt="${escapeHtml(item.nama_produk)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-2.5 space-y-0.5">
+                            <p class="text-[10px] text-emerald-400 font-mono truncate">${escapeHtml(item.bich_toko?.nama_toko || 'Lapak Banua')}</p>
+                            <p class="text-[11px] text-slate-200 font-semibold line-clamp-2 leading-snug">${escapeHtml(item.nama_produk)}</p>
+                        </div>
+                    </a>
+                `).join('');
+            } catch (err) {
+                console.error('Gagal muat oleh-oleh:', err);
+                grid.innerHTML = '<p class="col-span-4 text-center text-xs font-mono text-slate-500">Produk sedang tidak bisa dimuat.</p>';
+            }
+        }
+
+        // --- BOOKING TOUR: WA hanya untuk chat pra-deal, pembayaran WAJIB via
+        // gateway (create-payment-layanan) - semua transaksi dikunci ke
+        // QRIS/VA/transfer bank, bukan WA.
+        let currentTourId = null;
+        let isTourPaymentInProgress = false;
+
+        function bukaModalTour(tourId, tourName) {
+            currentTourId = tourId;
+            document.getElementById('modal-tour-title').innerText = tourName;
+            document.getElementById('modal-tour-status').classList.add('hidden');
+            document.getElementById('modal-tour').classList.remove('hidden');
+        }
+
+        function tutupModalTour() {
+            document.getElementById('modal-tour').classList.add('hidden');
+            currentTourId = null;
+        }
+
+        async function proceedToTourPayment() {
+            const btn = document.getElementById('btn-pay-tour');
+            const statusMsg = document.getElementById('modal-tour-status');
+
+            if (isTourPaymentInProgress) return;
+
+            const nama = document.getElementById('tour-pemesan-nama').value.trim();
+            const wa = document.getElementById('tour-pemesan-wa').value.trim();
+            const email = document.getElementById('tour-pemesan-email').value.trim();
+            const pax = document.getElementById('tour-pemesan-pax').value.trim();
+
+            if (!nama || !wa || !email || !pax) {
+                statusMsg.className = "text-[11px] font-mono text-red-400";
+                statusMsg.innerText = "Mohon lengkapi semua data pemesan.";
+                statusMsg.classList.remove('hidden');
+                return;
+            }
+
+            isTourPaymentInProgress = true;
+            btn.disabled = true;
+            btn.innerText = "Memproses...";
+            statusMsg.className = "text-[11px] font-mono text-slate-400";
+            statusMsg.innerText = "Menghubungi server untuk membuat transaksi aman...";
+            statusMsg.classList.remove('hidden');
+
+            try {
+                const { data, error } = await supabaseClient.functions.invoke('create-payment-layanan', {
+                    body: {
+                        service: 'tour',
+                        tourId: currentTourId,
+                        pax: parseInt(pax, 10),
+                        customer: { nama, whatsapp: wa, email }
+                    }
+                });
+
+                if (error) throw new Error(error.message || 'Gagal membuat transaksi.');
+                if (!data || !data.checkout_url) throw new Error(data?.error || 'Link pembayaran tidak diterima dari server.');
+
+                statusMsg.className = "text-[11px] font-mono text-emerald-400";
+                statusMsg.innerText = "Mengarahkan ke halaman pembayaran...";
+                window.location.href = data.checkout_url;
+
+            } catch (err) {
+                console.error(err);
+                statusMsg.className = "text-[11px] font-mono text-red-400";
+                statusMsg.innerText = "Gagal membuat transaksi: " + err.message;
+                statusMsg.classList.remove('hidden');
+            } finally {
+                isTourPaymentInProgress = false;
+                btn.disabled = false;
+                btn.innerText = "Lanjutkan ke Pembayaran (QRIS/VA) →";
+            }
+        }
+
         async function proceedToPayment() {
             const btn = document.getElementById('btn-pay');
             const statusMsg = document.getElementById('payment-status-msg');
@@ -992,6 +1177,7 @@
             // Sengaja TIDAK auto-pilih origin di sini. Step 2 (ketik tujuan)
             // baru muncul begitu pengunjung sendiri yang mengetuk salah satu
             // kota asal - biar tampilan awal ringkas.
+            loadOlehOleh();
 
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/bich/tourism-sw.js');

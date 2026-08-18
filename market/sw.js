@@ -1,5 +1,5 @@
 // Naikkan versi jika ada perubahan file di web
-const CACHE_NAME = 'bich-mart-v2'; 
+const CACHE_NAME = 'bich-mart-v3'; // v3: ikon-192/512 diganti (file lama JPEG salah label PNG)
 
 const ASSETS_TO_CACHE = [
   '/market/mart.html',
