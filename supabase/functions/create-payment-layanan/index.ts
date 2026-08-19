@@ -44,6 +44,8 @@ const KATALOG: Record<string, { nama: string; harga: number }> = {
   SAWIT_PLUS: { nama: "Alert Harga Sawit - Plus (1 bulan)", harga: 35_000 },
   IKN_BASIC: { nama: "Briefing IKN Bisnis - Basic (1 bulan)", harga: 300_000 },
   IKN_PRIORITAS: { nama: "Briefing IKN Bisnis - Prioritas (1 bulan)", harga: 500_000 },
+  RISK_BASIC: { nama: "Kahayan Political Risk Briefing - Basic (1 bulan)", harga: 750_000 },
+  RISK_PRIORITAS: { nama: "Kahayan Political Risk Briefing - Prioritas (1 bulan)", harga: 1_500_000 },
 };
 
 // BARU - sebelumnya service:'tour' dari pariwisata.html (proceedToTourPayment)
@@ -136,7 +138,7 @@ Deno.serve(async (req) => {
 
     // 'sawit' dan 'ikn' -> masuk tabel user_subscriptions (recurring, tapi
     // untuk sekarang billing_mode dipaksa 'manual' - lihat catatan di atas).
-    const isLangganan = service === "sawit" || service === "ikn";
+    const isLangganan = service === "sawit" || service === "ikn" || service === "risk";
 
     let refId: string;
 
@@ -232,7 +234,12 @@ Deno.serve(async (req) => {
       amount: harga,
       notifyUrl: `${SUPABASE_URL}/functions/v1/ipaymu-webhook`,
       returnUrl: `https://mozensalqadrie.com/success.html?order_id=${encodeURIComponent(refId)}&service=${encodeURIComponent(service)}&status=pending`,
-      cancelUrl: `https://mozensalqadrie.com/bich/${service === "travel" || service === "tour" ? "pariwisata" : isLangganan ? "langganan" : "monetisasi"}.html`,
+      cancelUrl: `https://mozensalqadrie.com/bich/${
+        service === "travel" || service === "tour" ? "pariwisata"
+        : service === "risk" ? "langganan-risk"
+        : isLangganan ? "langganan"
+        : "monetisasi"
+      }.html`,
       expired: 24,
       expiredType: "hours",
       comments: `${nama_produk} - Ref ${refId}`,

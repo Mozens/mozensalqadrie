@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Langganan Kahayan Political Risk Briefing — BICH | Mozens Inc.</title>
+    <meta name="description" content="Laporan intelijen politik & kebijakan mingguan untuk korporat dan investor — analisis risiko, peta relasi elit, red-flag birokrasi seluruh Kalimantan.">
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #aa771c 100%);
+            background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hp-trap-field { opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1; overflow: hidden; }
+    </style>
+
+    <!--
+      INTEGRASI PEMBAYARAN: iPaymu via Supabase Edge Function
+      (create-payment-layanan) - pola sama persis dengan langganan.html
+      (sawit/ikn), cuma service:'risk'. Semua langganan lewat jalur manual
+      (QRIS/Transfer/E-wallet) - auto-debit kartu belum didukung iPaymu,
+      lihat catatan yang sama di langganan.html.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/market/supabase.js"></script>
+</head>
+<body class="bg-[#05070a] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-red-500 selection:text-black">
+
+    <header class="border-b border-red-500/10 bg-[#080c14]/90 backdrop-blur-md px-6 py-4 sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto flex justify-between items-center">
+            <a href="panggung_tokoh.html" class="text-xs font-mono text-red-400 hover:text-red-300 transition flex items-center gap-2">
+                <span>&larr;</span> Kembali ke Panggung Tokoh
+            </a>
+            <span class="text-[11px] font-mono text-red-400/80 border border-red-500/20 px-3 py-1 rounded-full bg-red-500/5">
+                MOZENS INC. • KAHAYAN POLITICAL RISK DESK
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-6 py-10 flex-grow w-full space-y-8">
+
+        <div class="text-center space-y-3 max-w-xl mx-auto">
+            <h1 class="text-2xl sm:text-4xl font-extrabold font-serif tracking-tight text-white">
+                KAHAYAN <span class="gold-gradient">POLITICAL RISK BRIEFING</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400 font-mono">
+                Laporan intelijen tertutup mingguan — analisis dampak kebijakan daerah, peta relasi elit, dan <i>red-flag</i> birokrasi untuk kepastian proyek pengusaha/investor di seluruh Kalimantan.
+            </p>
+        </div>
+
+        <div class="bg-[#080c14] border border-red-500/20 rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <span class="text-xs font-mono text-red-400 font-bold block">PILIH PAKET BRIEFING</span>
+                <p class="text-xs text-slate-400 mt-1">Laporan dikirim ke email/WhatsApp Anda setiap minggu.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="risk-plan-cards">
+                <label class="plan-card cursor-pointer bg-[#05070a] border border-slate-800 rounded-xl p-4 space-y-2 block hover:border-red-400/50 transition">
+                    <input type="radio" name="risk-plan" value="RISK_BASIC" class="hidden" checked>
+                    <span class="text-[10px] font-mono text-slate-400 uppercase block">Basic</span>
+                    <span class="text-lg font-mono font-bold text-white block">Rp 750rb <span class="text-xs text-slate-500">/bulan</span></span>
+                    <p class="text-[11px] text-slate-400">1x laporan mingguan (PDF) — ringkasan kebijakan & profil tokoh terverifikasi.</p>
+                </label>
+                <label class="plan-card cursor-pointer bg-[#05070a] border border-amber-500/40 rounded-xl p-4 space-y-2 block hover:border-amber-400 transition">
+                    <input type="radio" name="risk-plan" value="RISK_PRIORITAS" class="hidden">
+                    <span class="text-[10px] font-mono text-amber-400 uppercase block">⭐ Prioritas</span>
+                    <span class="text-lg font-mono font-bold text-white block">Rp 1,5jt <span class="text-xs text-slate-500">/bulan</span></span>
+                    <p class="text-[11px] text-slate-400">Laporan mingguan + peta relasi elit & red-flag birokrasi + konsultasi WA prioritas.</p>
+                </label>
+            </div>
+
+            <form id="risk-form" onsubmit="handleSubscribe(event)" class="space-y-4 pt-2 relative">
+                <div class="hp-trap-field" aria-hidden="true"><input type="text" id="risk_hp_check" tabindex="-1" autocomplete="off"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input type="text" id="risk-nama" placeholder="Nama Perusahaan / Nama Lengkap" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-red-400 focus:outline-none sm:col-span-2">
+                    <input type="tel" id="risk-wa" placeholder="Nomor WhatsApp Aktif" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-red-400 focus:outline-none">
+                    <input type="email" id="risk-email" placeholder="Email (untuk laporan & bukti tagihan)" required class="bg-[#05070a] border border-slate-800 rounded-lg px-3 py-2.5 text-xs text-slate-200 focus:border-red-400 focus:outline-none">
+                </div>
+
+                <div class="pt-2 border-t border-slate-800 space-y-2">
+                    <span class="text-[10px] font-mono text-slate-400 uppercase block">Metode Pembayaran</span>
+                    <label class="cursor-pointer bg-[#05070a] border border-slate-800 rounded-lg p-3 flex items-start gap-2 hover:border-red-400/50 transition block">
+                        <input type="radio" name="risk-billing-mode" value="manual" checked class="mt-0.5">
+                        <span>
+                            <span class="text-xs font-mono text-slate-200 block font-bold">QRIS / Transfer / E-wallet</span>
+                            <span class="text-[10px] text-slate-400 block">Bayar manual tiap bulan. Kami ingatkan via WhatsApp H-3 sebelum jatuh tempo.</span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="flex flex-col items-end gap-2 pt-2">
+                    <p id="risk-status-msg" class="hidden text-[11px] font-mono max-w-md text-right"></p>
+                    <button id="btn-sub-risk" type="submit" class="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-6 py-3 rounded-lg transition font-mono shadow-lg shadow-red-900/20">
+                        Mulai Langganan &rarr;
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <p class="text-[10px] font-mono text-slate-600 text-center max-w-lg mx-auto leading-relaxed">
+            Disclaimer: Laporan ini analisis independen redaksi BICH berdasarkan data & rekam jejak publik — bukan nasihat hukum/investasi resmi. BICH tidak bertanggung jawab atas keputusan bisnis pihak ketiga yang timbul dari interpretasi laporan ini.
+        </p>
+
+    </main>
+
+    <footer class="border-t border-slate-900 py-6 text-center text-xs font-mono text-slate-600">© 2026 BICH Kahayan Political Risk Desk · Mozens Inc.</footer>
+
+    <script>
+        document.querySelectorAll('#risk-plan-cards input[type=radio]').forEach(input => {
+            input.addEventListener('change', () => {
+                document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => {
+                    r.closest('label').classList.toggle('ring-2', r.checked);
+                    r.closest('label').classList.toggle('ring-red-400', r.checked);
+                });
+            });
+        });
+
+        let isSubInProgress = false;
+
+        async function handleSubscribe(e) {
+            e.preventDefault();
+            if (isSubInProgress) return;
+
+            const btn = document.getElementById('btn-sub-risk');
+            const statusMsg = document.getElementById('risk-status-msg');
+            const hpValue = document.getElementById('risk_hp_check').value;
+            if (hpValue !== "") { console.warn('Spam bot terdeteksi via honeypot.'); return; }
+
+            const planCode = document.querySelector('input[name="risk-plan"]:checked').value;
+            const customer = {
+                nama: document.getElementById('risk-nama').value.trim(),
+                whatsapp: document.getElementById('risk-wa').value.trim(),
+                email: document.getElementById('risk-email').value.trim(),
+            };
+            if (!customer.nama || !customer.whatsapp || !customer.email) {
+                showStatus(statusMsg, 'red', 'Mohon lengkapi semua data.');
+                return;
+            }
+
+            isSubInProgress = true;
+            btn.disabled = true;
+            btn.innerText = 'Memproses...';
+            showStatus(statusMsg, 'slate', 'Menghubungi server untuk membuat transaksi...');
+
+            try {
+                // Cek apakah ini perpanjangan dari langganan manual yang sudah ada
+                // (dikirim lewat query string ?renew=ID dari link reminder WhatsApp).
+                const params = new URLSearchParams(window.location.search);
+                const renewId = params.get('renew') || null;
+
+                const { data, error } = await db.functions.invoke('create-payment-layanan', {
+                    body: { service: 'risk', billingMode: 'manual', planCode, customer, manualSubId: renewId }
+                });
+
+                if (error) throw new Error(error.message || 'Gagal membuat transaksi.');
+                if (!data || !data.checkout_url) throw new Error(data?.error || 'Link pembayaran tidak diterima dari server.');
+
+                showStatus(statusMsg, 'emerald', 'Mengarahkan ke halaman pembayaran...');
+                window.location.href = data.checkout_url;
+
+            } catch (err) {
+                console.error(err);
+                showStatus(statusMsg, 'red', 'Gagal terhubung ke server pembayaran: ' + err.message);
+            } finally {
+                isSubInProgress = false;
+                btn.disabled = false;
+                btn.innerText = 'Mulai Langganan →';
+            }
+        }
+
+        function showStatus(el, color, text) {
+            const colorMap = { slate: 'text-slate-400', emerald: 'text-emerald-400', red: 'text-red-400', amber: 'text-amber-400' };
+            el.className = `text-[11px] font-mono max-w-md text-right ${colorMap[color]}`;
+            el.innerText = text;
+            el.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
