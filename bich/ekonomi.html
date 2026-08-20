@@ -346,6 +346,7 @@
                 select: '*',
                 kategori: `eq.${BERITA_KATEGORI_VALUE}`,
                 status: 'eq.Ready',
+                status_verifikasi: 'eq.TERVERIFIKASI',
                 artikel_ai: 'not.is.null',
                 order: 'created_at.desc',
                 limit: String(PAGE_SIZE),
