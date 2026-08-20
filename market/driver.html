@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Mitra Kurir BICH — Sungai Barito</title>
+    <title>Halaman Mitra Kurir BICH — Sungai Barito</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Playfair+Display:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="./supabase.js" defer></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./supabase.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #080c14; }
         .gold-gradient {
@@ -23,7 +25,6 @@
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col" x-data="driverApp()" x-init="init()">
 
-    <!-- JEMBATAN EKOSISTEM -->
     <div class="bg-slate-900/60 border-b border-slate-800/60 py-1.5 px-4 text-center">
         <a href="../index.html" class="font-mono text-[0.68rem] inline-flex items-center gap-2 text-cyan-400/90 hover:text-cyan-300 transition">
             <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -34,142 +35,316 @@
     <header class="bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-40 px-4 py-3.5">
         <div class="max-w-lg mx-auto flex justify-between items-center">
             <a href="mart.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 transition">&larr; BICH Mart</a>
-            <span class="text-[10px] font-mono text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 rounded-full">MITRA KURIR</span>
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] font-mono text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 rounded-full">MITRA KURIR</span>
+                <button x-show="isLoggedIn" x-cloak @click="logout()" class="text-[10px] text-slate-500 hover:text-rose-400 font-bold">Keluar</button>
+            </div>
         </div>
     </header>
 
     <main class="max-w-lg mx-auto w-full px-4 py-8 flex-grow space-y-6">
 
-        <div class="text-center space-y-2.5">
-            <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] px-3.5 py-1 rounded-full font-bold">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Fase 1 — Rekrutmen Kurir Lokal
-            </span>
-            <h1 class="text-2xl sm:text-3xl font-black text-slate-100">
-                JADI <span class="gold-gradient">MITRA KURIR BICH</span>
-            </h1>
-            <p class="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
-                Punya motor atau pickup? Antar paket UMKM Banua di kotamu sendiri, dapat komisi platform, dan jadi bagian dari jalur kaderisasi Sungai Barito.
-            </p>
+        <!-- STEP 0: LOGIN / DAFTAR PAKAI WA OTP -->
+        <div x-show="!isLoggedIn" x-cloak class="space-y-6">
+            <div class="text-center space-y-2.5">
+                <span class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] px-3.5 py-1 rounded-full font-bold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Fase 1 — Rekrutmen Kurir Lokal
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-black text-slate-100">
+                    JADI <span class="gold-gradient">MITRA KURIR BICH</span>
+                </h1>
+                <p class="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+                    Masuk pakai nomor WhatsApp kamu — dipakai untuk daftar pertama kali, atau untuk buka halaman profilmu kalau sudah pernah daftar.
+                </p>
+            </div>
+
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                <p class="text-[11px] text-slate-400">
+                    Profil & data rekeningmu terikat ke nomor WhatsApp ini — orang lain tidak bisa lihat atau ubah datamu tanpa akses WhatsApp tersebut.
+                </p>
+
+                <template x-if="!otpSent">
+                    <form @submit.prevent="kirimOtp()" class="space-y-3">
+                        <input type="tel" x-model="authPhone" required placeholder="Nomor WhatsApp kamu (mis. 0812xxxxxxx)"
+                               class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition">
+                        <button type="submit" :disabled="loading" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition">
+                            <span x-text="loading ? 'Mengirim kode...' : 'Kirim Kode Verifikasi'"></span>
+                        </button>
+                    </form>
+                </template>
+
+                <template x-if="otpSent">
+                    <form @submit.prevent="verifikasiOtp()" class="space-y-3">
+                        <p class="text-[11px] text-emerald-400">✅ Kode 6-digit sudah dikirim via WhatsApp ke <b x-text="authPhone"></b>.</p>
+                        <input type="text" x-model="otpCode" required maxlength="6" placeholder="Masukkan kode 6 digit"
+                               class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 tracking-widest text-center focus:outline-none focus:border-emerald-500 transition">
+                        <button type="submit" :disabled="loading" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-2.5 rounded-xl transition">
+                            <span x-text="loading ? 'Memverifikasi...' : 'Verifikasi & Masuk'"></span>
+                        </button>
+                        <button type="button" @click="otpSent = false" class="w-full text-slate-500 text-[11px] hover:text-slate-300">Ganti nomor / kirim ulang</button>
+                    </form>
+                </template>
+
+                <p x-show="errorMsg" x-cloak class="text-[11px] text-red-400 font-mono" x-text="errorMsg"></p>
+            </div>
         </div>
 
-        <!-- INFO KOMISI & CARA KERJA -->
-        <div class="grid grid-cols-3 gap-2.5">
-            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
-                <p class="text-lg font-black text-amber-400">20%</p>
-                <p class="text-[10px] text-slate-500 mt-0.5">Komisi Platform</p>
-            </div>
-            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
-                <p class="text-lg font-black text-amber-400">Sameday</p>
-                <p class="text-[10px] text-slate-500 mt-0.5">Estimasi Antar</p>
-            </div>
-            <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
-                <p class="text-lg font-black text-amber-400">Manual</p>
-                <p class="text-[10px] text-slate-500 mt-0.5">Verifikasi Tim</p>
-            </div>
-        </div>
-
-        <!-- FORM PENDAFTARAN -->
-        <form @submit.prevent="daftar()" x-show="!sukses" x-cloak class="bg-slate-900/40 border border-slate-800 rounded-3xl p-5 space-y-3.5">
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap *</label>
-                <input type="text" x-model="form.nama" required placeholder="Sesuai KTP" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">Nomor WhatsApp Aktif *</label>
-                <input type="tel" x-model="form.wa" required placeholder="08xxxxxxxxxx" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Jenis Kendaraan *</label>
-                    <select x-model="form.kendaraan" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-                        <option value="" disabled selected>Pilih</option>
-                        <option value="motor">Motor</option>
-                        <option value="mobil_box">Mobil Box</option>
-                        <option value="pickup">Pickup</option>
-                    </select>
+        <!-- STEP 1: BELUM PUNYA PROFIL -> FORM DAFTAR -->
+        <template x-if="isLoggedIn && !isProfilLoading && !profil">
+            <div class="space-y-5">
+                <div class="grid grid-cols-3 gap-2.5">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
+                        <p class="text-lg font-black text-amber-400">20%</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Komisi Platform</p>
+                    </div>
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
+                        <p class="text-lg font-black text-amber-400">Sameday</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Estimasi Antar</p>
+                    </div>
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center">
+                        <p class="text-lg font-black text-amber-400">Manual</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Verifikasi Tim</p>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Kapasitas (kg) *</label>
-                    <input type="number" x-model="form.kapasitas_kg" required min="1" placeholder="20" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+
+                <form @submit.prevent="daftar()" class="bg-slate-900/40 border border-slate-800 rounded-3xl p-5 space-y-3.5">
+                    <h2 class="text-sm font-bold text-slate-100">Lengkapi Data Pendaftaran</h2>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap *</label>
+                        <input type="text" x-model="form.nama" required placeholder="Sesuai KTP" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Jenis Kendaraan *</label>
+                            <select x-model="form.kendaraan" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                                <option value="" disabled selected>Pilih</option>
+                                <option value="motor">Motor</option>
+                                <option value="mobil_box">Mobil Box</option>
+                                <option value="pickup">Pickup</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Kapasitas (kg) *</label>
+                            <input type="number" x-model="form.kapasitas_kg" required min="1" placeholder="20" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Kota/Kabupaten Domisili *</label>
+                        <input type="text" x-model="form.kota_domisili" required placeholder="cth: Banjarmasin" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Radius Layanan (km) *</label>
+                        <input type="number" x-model="form.radius_layanan_km" required min="1" placeholder="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div class="border-t border-slate-800 pt-3.5 space-y-3.5">
+                        <p class="text-[10px] font-mono text-slate-500 uppercase">Untuk Pencairan Komisi (opsional, bisa diisi belakangan)</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" x-model="form.nama_bank" placeholder="Nama Bank" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                            <input type="text" x-model="form.no_rekening" placeholder="No. Rekening" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+                    <p x-show="errorMsg" x-cloak class="text-[11px] text-red-400 font-mono" x-text="errorMsg"></p>
+                    <button type="submit" :disabled="loading" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-3.5 rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition">
+                        <span x-text="loading ? 'Mengirim...' : 'Daftar Jadi Mitra Kurir'"></span>
+                    </button>
+                </form>
+            </div>
+        </template>
+
+        <!-- STEP 2: SUDAH PUNYA PROFIL -> HALAMAN SENDIRI -->
+        <template x-if="isLoggedIn && !isProfilLoading && profil">
+            <div class="space-y-5">
+                <!-- STATUS CARD -->
+                <div class="bg-slate-900/90 border rounded-3xl p-6 text-center space-y-2"
+                     :class="profil.status_verifikasi === 'TERVERIFIKASI' ? 'border-emerald-500/30' : profil.status_verifikasi === 'DITOLAK' ? 'border-rose-500/30' : 'border-amber-500/30'">
+                    <span class="text-3xl" x-text="profil.status_verifikasi === 'TERVERIFIKASI' ? '✅' : profil.status_verifikasi === 'DITOLAK' ? '❌' : '⏳'"></span>
+                    <h2 class="text-sm font-bold" x-text="profil.nama"></h2>
+                    <span class="inline-block text-[10px] font-mono px-3 py-1 rounded-full font-bold"
+                          :class="profil.status_verifikasi === 'TERVERIFIKASI' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : profil.status_verifikasi === 'DITOLAK' ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'"
+                          x-text="profil.status_verifikasi"></span>
+                    <p x-show="profil.status_verifikasi === 'MENUNGGU'" x-cloak class="text-[11px] text-slate-400">Tim BICH sedang verifikasi datamu. Kamu akan dihubungi via WhatsApp.</p>
+                    <p x-show="profil.status_verifikasi === 'DITOLAK' && profil.catatan_verifikasi" x-cloak class="text-[11px] text-rose-300" x-text="'Catatan: ' + profil.catatan_verifikasi"></p>
+                    <p x-show="profil.status_verifikasi === 'TERVERIFIKASI'" x-cloak class="text-[11px] text-emerald-300">Kamu aktif jadi kurir lokal BICH di <span x-text="profil.kota_domisili"></span>.</p>
                 </div>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">Kota/Kabupaten Domisili *</label>
-                <input type="text" x-model="form.kota_domisili" required placeholder="cth: Banjarmasin" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-1">Radius Layanan (km) *</label>
-                <input type="number" x-model="form.radius_layanan_km" required min="1" placeholder="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-                <p class="text-[10px] text-slate-500 mt-1">Seberapa jauh dari lokasimu kamu sanggup antar paket.</p>
-            </div>
 
-            <div class="border-t border-slate-800 pt-3.5 space-y-3.5">
-                <p class="text-[10px] font-mono text-slate-500 uppercase">Untuk Pencairan Komisi (opsional, bisa diisi belakangan)</p>
-                <div class="grid grid-cols-2 gap-3">
-                    <input type="text" x-model="form.nama_bank" placeholder="Nama Bank" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
-                    <input type="text" x-model="form.no_rekening" placeholder="No. Rekening" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                <!-- FITUR OPERASIONAL - JUJUR BELUM ADA, BUKAN DEKORASI PALSU -->
+                <div class="bg-slate-900/40 border border-dashed border-slate-700 rounded-2xl p-5 text-center space-y-1.5">
+                    <p class="text-xs text-slate-400 font-bold">📦 Antrean Pengiriman & 💰 Dompet Komisi</p>
+                    <p class="text-[11px] text-slate-500">Fitur ini menyusul setelah sistem penugasan order otomatis aktif. Untuk sekarang, pesanan dikoordinasikan tim BICH lewat WhatsApp.</p>
                 </div>
+
+                <!-- EDIT PROFIL -->
+                <details class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden">
+                    <summary class="cursor-pointer p-5 text-xs font-bold text-slate-200 flex items-center justify-between">
+                        <span>✏️ Edit Profil & Data Rekening</span>
+                        <span class="text-slate-500">▾</span>
+                    </summary>
+                    <form @submit.prevent="simpanProfil()" class="p-5 pt-0 space-y-3.5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap</label>
+                            <input type="text" x-model="form.nama" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-1">Kendaraan</label>
+                                <select x-model="form.kendaraan" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                                    <option value="motor">Motor</option>
+                                    <option value="mobil_box">Mobil Box</option>
+                                    <option value="pickup">Pickup</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-300 mb-1">Kapasitas (kg)</label>
+                                <input type="number" x-model="form.kapasitas_kg" min="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Kota Domisili</label>
+                            <input type="text" x-model="form.kota_domisili" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">Radius Layanan (km)</label>
+                            <input type="number" x-model="form.radius_layanan_km" min="1" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" x-model="form.nama_bank" placeholder="Nama Bank" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                            <input type="text" x-model="form.no_rekening" placeholder="No. Rekening" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                        <p x-show="errorMsg" x-cloak class="text-[11px] text-red-400 font-mono" x-text="errorMsg"></p>
+                        <p x-show="successMsg" x-cloak class="text-[11px] text-emerald-400 font-mono" x-text="successMsg"></p>
+                        <button type="submit" :disabled="loading" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs py-2.5 rounded-xl transition">
+                            <span x-text="loading ? 'Menyimpan...' : 'Simpan Perubahan'"></span>
+                        </button>
+                    </form>
+                </details>
             </div>
+        </template>
 
-            <p x-show="errorMsg" x-cloak class="text-[11px] text-red-400 font-mono" x-text="errorMsg"></p>
-
-            <button type="submit" :disabled="loading" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs py-3.5 rounded-xl shadow-lg shadow-amber-500/20 active:scale-95 transition flex items-center justify-center gap-2">
-                <span x-show="!loading">Daftar Jadi Mitra Kurir</span>
-                <span x-show="loading" x-cloak>Mengirim...</span>
-            </button>
-            <p class="text-[10px] text-slate-500 text-center leading-relaxed">
-                Pendaftaranmu berstatus <b class="text-slate-300">MENUNGGU</b> sampai diverifikasi manual tim BICH (cek KTP, no. kendaraan, dsb). Kamu akan dihubungi lewat WhatsApp.
-            </p>
-        </form>
-
-        <!-- STATE SUKSES -->
-        <div x-show="sukses" x-cloak class="bg-emerald-500/5 border border-emerald-500/20 rounded-3xl p-6 text-center space-y-3">
-            <span class="text-3xl">🛵</span>
-            <h3 class="text-sm font-bold text-emerald-300">Pendaftaran Terkirim!</h3>
-            <p class="text-xs text-slate-400 leading-relaxed">
-                Tim BICH akan verifikasi data kamu dan menghubungi lewat WhatsApp di <b class="text-slate-200" x-text="form.wa"></b>. Begitu status berubah jadi TERVERIFIKASI, sistem otomatis memprioritaskan kamu untuk pesanan sekitar <span x-text="form.kota_domisili"></span>.
-            </p>
-        </div>
-
-        <!-- JALUR KADERISASI -->
-        <div class="bg-gradient-to-br from-amber-500/10 via-slate-900/90 to-slate-900/90 border border-amber-500/25 rounded-3xl p-5 space-y-2.5">
-            <h3 class="text-xs font-bold text-slate-100 flex items-center gap-2">
-                <i class="fa-solid fa-seedling text-amber-400"></i> Bagian dari Jalur Kaderisasi Barito
-            </h3>
-            <p class="text-[11px] text-slate-400 leading-relaxed">
-                Jadi mitra kurir aktif & terverifikasi adalah salah satu jalan menuju status <b class="text-amber-400">Pewaris Sungai Barito</b> — bukan cuma antar paket, ini bagian dari menempa wirausahawan muda Banua.
-            </p>
-        </div>
+        <p x-show="isLoggedIn && isProfilLoading" x-cloak class="text-center text-xs text-slate-500 font-mono py-10">Memuat profilmu...</p>
 
     </main>
 
     <script>
         function driverApp() {
             return {
+                isLoggedIn: false,
+                authPhone: '',
+                otpSent: false,
+                otpCode: '',
+                userId: null,
                 loading: false,
-                sukses: false,
+                isProfilLoading: false,
                 errorMsg: '',
+                successMsg: '',
+                profil: null,
                 form: {
-                    nama: '', wa: '', kendaraan: '', kapasitas_kg: '',
+                    nama: '', kendaraan: '', kapasitas_kg: '',
                     kota_domisili: '', radius_layanan_km: '',
                     nama_bank: '', no_rekening: ''
                 },
 
-                init() {},
+                async init() {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    if (session) {
+                        this.userId = session.user.id;
+                        this.authPhone = session.user.phone;
+                        this.isLoggedIn = true;
+                        await this.muatProfilSaya();
+                    }
+                    supabaseClient.auth.onAuthStateChange((event) => {
+                        if (event === 'SIGNED_OUT') {
+                            this.isLoggedIn = false;
+                            this.userId = null;
+                            this.profil = null;
+                        }
+                    });
+                },
+
+                normalizePhone(input) {
+                    let digits = String(input || '').replace(/[^\d]/g, '');
+                    if (digits.startsWith('0')) digits = '62' + digits.slice(1);
+                    else if (!digits.startsWith('62')) digits = '62' + digits;
+                    if (digits.length < 10 || digits.length > 15) {
+                        throw new Error('Nomor WhatsApp tidak valid: "' + input + '"');
+                    }
+                    return '+' + digits;
+                },
+
+                async kirimOtp() {
+                    this.loading = true;
+                    this.errorMsg = '';
+                    try {
+                        const phoneE164 = this.normalizePhone(this.authPhone);
+                        const { error } = await supabaseClient.auth.signInWithOtp({ phone: phoneE164 });
+                        if (error) throw error;
+                        this.authPhone = phoneE164;
+                        this.otpSent = true;
+                    } catch (err) {
+                        this.errorMsg = 'Gagal mengirim kode: ' + err.message;
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async verifikasiOtp() {
+                    this.loading = true;
+                    this.errorMsg = '';
+                    try {
+                        const { data, error } = await supabaseClient.auth.verifyOtp({
+                            phone: this.authPhone, token: this.otpCode, type: 'sms',
+                        });
+                        if (error) throw error;
+                        this.userId = data.user.id;
+                        this.isLoggedIn = true;
+                        this.otpSent = false;
+                        await this.muatProfilSaya();
+                    } catch (err) {
+                        this.errorMsg = 'Kode salah/kedaluwarsa: ' + err.message;
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async logout() {
+                    await supabaseClient.auth.signOut();
+                    this.otpCode = '';
+                    this.authPhone = '';
+                },
+
+                async muatProfilSaya() {
+                    this.isProfilLoading = true;
+                    try {
+                        const { data, error } = await supabaseClient
+                            .from('mitra_kurir')
+                            .select('*')
+                            .eq('owner_id', this.userId)
+                            .maybeSingle();
+                        if (error) throw error;
+                        if (data) {
+                            this.profil = data;
+                            this.form = {
+                                nama: data.nama, kendaraan: data.kendaraan, kapasitas_kg: data.kapasitas_kg,
+                                kota_domisili: data.kota_domisili, radius_layanan_km: data.radius_layanan_km,
+                                nama_bank: data.nama_bank || '', no_rekening: data.no_rekening || ''
+                            };
+                        }
+                    } catch (err) {
+                        console.error('Gagal memuat profil:', err.message);
+                    } finally {
+                        this.isProfilLoading = false;
+                    }
+                },
 
                 async daftar() {
                     this.errorMsg = '';
                     this.loading = true;
-
                     try {
-                        // CATATAN: tabel mitra_kurir belum tentu sudah dibuat di database -
-                        // lihat rancangan-kurir-ongkir.sql. Kalau insert ini gagal karena
-                        // tabel belum ada, itu bukan bug di form ini.
-                        const { error } = await supabaseClient
+                        const { data, error } = await supabaseClient
                             .from('mitra_kurir')
                             .insert({
+                                owner_id: this.userId,
                                 nama: this.form.nama,
-                                wa: this.form.wa,
+                                wa: this.authPhone,
                                 kendaraan: this.form.kendaraan,
                                 kapasitas_kg: Number(this.form.kapasitas_kg),
                                 kota_domisili: this.form.kota_domisili,
@@ -177,14 +352,45 @@
                                 nama_bank: this.form.nama_bank || null,
                                 no_rekening: this.form.no_rekening || null,
                                 status_verifikasi: 'MENUNGGU'
-                            });
+                            })
+                            .select()
+                            .single();
 
                         if (error) throw new Error(error.message);
-                        this.sukses = true;
-
+                        this.profil = data;
                     } catch (err) {
                         console.error(err);
-                        this.errorMsg = 'Gagal mengirim pendaftaran: ' + err.message + '. Coba lagi atau hubungi tim BICH lewat halaman Kontak Usaha.';
+                        this.errorMsg = 'Gagal mendaftar: ' + err.message;
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async simpanProfil() {
+                    this.errorMsg = '';
+                    this.successMsg = '';
+                    this.loading = true;
+                    try {
+                        const { data, error } = await supabaseClient.rpc('update_profil_mitra_kurir', {
+                            p_nama: this.form.nama,
+                            p_wa: this.authPhone,
+                            p_kendaraan: this.form.kendaraan,
+                            p_kapasitas_kg: Number(this.form.kapasitas_kg),
+                            p_kota_domisili: this.form.kota_domisili,
+                            p_radius_layanan_km: Number(this.form.radius_layanan_km),
+                            p_nama_bank: this.form.nama_bank || null,
+                            p_no_rekening: this.form.no_rekening || null,
+                            p_nama_pemilik_rekening: this.form.nama || null
+                        });
+
+                        if (error) throw new Error(error.message);
+                        if (!data?.success) throw new Error(data?.message || 'Gagal menyimpan.');
+
+                        this.successMsg = data.message;
+                        await this.muatProfilSaya();
+                    } catch (err) {
+                        console.error(err);
+                        this.errorMsg = 'Gagal menyimpan: ' + err.message;
                     } finally {
                         this.loading = false;
                     }
@@ -192,8 +398,5 @@
             }
         }
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </body>
 </html>
